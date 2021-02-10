@@ -1,0 +1,37 @@
+# Project build file
+
+-hblib
+-inc
+
+-olib/${hb_plat}/${hb_comp}/${hb_name}
+
+# -w3 -es2 -gc3
+
+-depurlbase=raylib:https://www.raylib.com
+-depurlbase=raylib:https://github.com/raysan5/raylib
+-deppkgname=raylib:raylib-dev{deb}
+-deppkgname=raylib:raylib-devel{rpm}
+-deppkgname=raylib:raylib{homebrew|pkgng}
+-deppkgname=raylib:raylib{pacman}
+-deppkgname=raylib:mingw-w64-i686-raylib{msys2&x86}
+-deppkgname=raylib:mingw-w64-x86_64-raylib{msys2&x86_64}
+-depkeyhead=raylib:raylib.h
+-depcontrol=raylib:${HB_WITH_RAYLIB}
+-depincpath=raylib:/usr/include
+-depincpath=raylib:/usr/local/include
+-depincpath=raylib:/opt/local/include
+-depincpath=raylib:/usr/local/opt/include
+-depimplibs=raylib:../bin/libraylib.dll
+-depimplibs=raylib:../lib/libraylib.dll.a
+-depimplibd=raylib:raylib
+-depfinish=raylib
+
+-iinclude
+
+-hbx=include/${hb_name}.hbx
+
+src/*.c
+src/*.prg
+
+$hb_pkg_dynlib.hbm
+$hb_pkg_install.hbm
