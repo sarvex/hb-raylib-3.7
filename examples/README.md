@@ -36,6 +36,8 @@ cd hb-raylib
 hb-raylib>hbmk2 hbraylib.hbp
 ```
 
+To test it, type:
+
 ```
 hb-raylib\examples\harbour\tutorial>hbmk2 tutorial_01.prg
 ```
