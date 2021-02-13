@@ -60,46 +60,6 @@ HB_FUNC( DRAWTEXT )
 }
 
 // void DrawTextEx( Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint );
-HB_FUNC( DRAWTEXTEX )
-{
-   PHB_ITEM pItem1, pItem2, pItem3;
-
-   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
-      hb_param( 2, HB_IT_STRING ) != NULL &&
-      ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
-      hb_param( 4, HB_IT_INTEGER ) != NULL &&
-      hb_param( 5, HB_IT_INTEGER ) != NULL &&
-      ( pItem3 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
-   {
-
-      Font font;
-
-      font.baseSize   = hb_arrayGetNI( pItem1, 1 );
-      font.charsCount = hb_arrayGetNI( pItem1, 2 );
-      font.texture    = hb_arrayGetTD( pItem1, 3 );
-      font.recs       = hb_arrayGetPtr( pItem1, 4 );
-      font.chars      = hb_arrayGetPtr( pItem1, 5 );
-
-      Vector2 position;
-
-      position.x = hb_arrayGetNI( pItem2, 1 );
-      position.y = hb_arrayGetNI( pItem2, 2 );
-
-      Color tint;
-
-      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
-      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
-      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
-      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
-
-      DrawTextEx( font, hb_parc( 2 ), position, hb_parni( 4 ), hb_parni( 5 ), tint );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
 // void DrawTextRec( Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint );
 // void DrawTextRecEx( Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint );
 // void DrawTextCodepoint( Font font, int codepoint, Vector2 position, float scale, Color tint );
