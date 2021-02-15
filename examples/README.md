@@ -11,7 +11,7 @@
 
 ### Install raylib
 
-Download [raylib](https://github.com/raysan5/raylib/releases/download/3.0.0/raylib-3.0.0-Win64-mingw.zip) binary archive from this page and unpack in the directory:
+Download [raylib](https://github.com/raysan5/raylib/releases/download/3.0.0/raylib-3.0.0-Win32-mingw.zip) binary archive from this page and unpack in the directory:
 
 ```
 c:\raylib\bin *.dll
