@@ -546,8 +546,8 @@ HB_FUNC( DRAWRECTANGLEV )
    PHB_ITEM pItem1, pItem2, pItem3;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
-      ( pItem2 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
-      ( pItem3 = hb_param( 7, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+      ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
    {
       Vector2 position;
 
@@ -605,17 +605,424 @@ HB_FUNC( DRAWRECTANGLEREC )
 }
 
 // void DrawRectanglePro( Rectangle rec, Vector2 origin, float rotation, Color color );
+HB_FUNC( DRAWRECTANGLEPRO )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+      ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem1, 4 );
+
+      Vector2 origin;
+
+      origin.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      origin.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      DrawRectanglePro( rec, origin, ( float ) hb_parnd( 3 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleGradientV( int posX, int posY, int width, int height, Color color1, Color color2 );
+HB_FUNC( DRAWRECTANGLEGRADIENTV )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      ( pItem1 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Color color1;
+
+      color1.r = ( unsigned char ) hb_arrayGetNI( pItem1, 1 );
+      color1.g = ( unsigned char ) hb_arrayGetNI( pItem1, 2 );
+      color1.b = ( unsigned char ) hb_arrayGetNI( pItem1, 3 );
+      color1.a = ( unsigned char ) hb_arrayGetNI( pItem1, 4 );
+
+      Color color2;
+
+      color2.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color2.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color2.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color2.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawRectangleGradientV( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), color1, color2 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleGradientH( int posX, int posY, int width, int height, Color color1, Color color2 );
+HB_FUNC( DRAWRECTANGLEGRADIENTH )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      ( pItem1 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Color color1;
+
+      color1.r = ( unsigned char ) hb_arrayGetNI( pItem1, 1 );
+      color1.g = ( unsigned char ) hb_arrayGetNI( pItem1, 2 );
+      color1.b = ( unsigned char ) hb_arrayGetNI( pItem1, 3 );
+      color1.a = ( unsigned char ) hb_arrayGetNI( pItem1, 4 );
+
+      Color color2;
+
+      color2.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color2.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color2.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color2.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawRectangleGradientH( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), color1, color2 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleGradientEx( Rectangle rec, Color col1, Color col2, Color col3, Color col4 );
+HB_FUNC( DRAWRECTANGLEGRADIENTEX )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4, pItem5;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+      ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 &&
+      ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 &&
+      ( pItem5 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem5 ) == 4 )
+   {
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem1, 4 );
+
+      Color col1;
+
+      col1.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      col1.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      col1.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      col1.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Color col2;
+
+      col2.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      col2.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      col2.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      col2.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      Color col3;
+
+      col3.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      col3.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      col3.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      col3.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      Color col4;
+
+      col4.r = ( unsigned char ) hb_arrayGetNI( pItem5, 1 );
+      col4.g = ( unsigned char ) hb_arrayGetNI( pItem5, 2 );
+      col4.b = ( unsigned char ) hb_arrayGetNI( pItem5, 3 );
+      col4.a = ( unsigned char ) hb_arrayGetNI( pItem5, 4 );
+
+      DrawRectangleGradientEx( rec, col1, col2, col3, col4 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleLines( int posX, int posY, int width, int height, Color color );
+HB_FUNC( DRAWRECTANGLELINES )
+{
+   PHB_ITEM pItem;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      DrawRectangleLines( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleLinesEx( Rectangle rec, int lineThick, Color color );
+HB_FUNC( DRAWRECTANGLELINESEX )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem1, 4 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawRectangleLinesEx( rec, hb_parni( 2 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleRounded( Rectangle rec, float roundness, int segments, Color color );
+HB_FUNC( DRAWRECTANGLEROUNDED )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem1, 4 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawRectangleRounded( rec, ( float ) hb_parnd( 2 ), hb_parni( 3 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRectangleRoundedLines( Rectangle rec, float roundness, int segments, int lineThick, Color color );
+HB_FUNC( DRAWRECTANGLEROUNDEDLINES )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+      hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem1, 4 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawRectangleRoundedLines( rec, ( float ) hb_parnd( 2 ), hb_parni( 3 ), hb_parni( 4 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTriangle( Vector2 v1, Vector2 v2, Vector2 v3, Color color );
+HB_FUNC( DRAWTRIANGLE )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+      ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+      ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 )
+   {
+      Vector2 v1;
+
+      v1.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      v1.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Vector2 v2;
+
+      v2.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      v2.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Vector2 v3;
+
+      v3.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      v3.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      DrawTriangle( v1, v2, v3, color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTriangleLines( Vector2 v1, Vector2 v2, Vector2 v3, Color color );
+HB_FUNC( DRAWTRIANGLELINES )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+      ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+      ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 )
+   {
+      Vector2 v1;
+
+      v1.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      v1.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Vector2 v2;
+
+      v2.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      v2.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Vector2 v3;
+
+      v3.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      v3.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      DrawTriangleLines( v1, v2, v3, color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTriangleFan( Vector2 *points, int numPoints, Color color );
+HB_FUNC( DRAWTRIANGLEFAN )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Vector2 points;
+
+      points.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      points.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawTriangleFan( &points, hb_parni( 2 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTriangleStrip( Vector2 *points, int pointsCount, Color color );
+HB_FUNC( DRAWTRIANGLESTRIP )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Vector2 points;
+
+      points.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      points.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawTriangleStrip( &points, hb_parni( 2 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawPoly( Vector2 center, int sides, float radius, float rotation, Color color );
 // void DrawPolyLines( Vector2 center, int sides, float radius, float rotation, Color color );
 
