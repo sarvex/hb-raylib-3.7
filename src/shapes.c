@@ -14,7 +14,9 @@ HB_FUNC( DRAWPIXEL )
 {
    PHB_ITEM pItem;
 
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL && ( pItem = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      ( pItem = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
    {
       Color color;
 
@@ -36,12 +38,13 @@ HB_FUNC( DRAWPIXELV )
 {
    PHB_ITEM pItem1, pItem2;
 
-   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 && ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
       Vector2 position;
 
-      position.x = hb_arrayGetNI( pItem1, 1 );
-      position.y = hb_arrayGetNI( pItem1, 2 );
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -95,13 +98,13 @@ HB_FUNC( DRAWLINEV )
    {
       Vector2 startPos;
 
-      startPos.x = hb_arrayGetNI( pItem1, 1 );
-      startPos.y = hb_arrayGetNI( pItem1, 2 );
+      startPos.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      startPos.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Vector2 endPos;
 
-      endPos.x = hb_arrayGetNI( pItem2, 1 );
-      endPos.y = hb_arrayGetNI( pItem2, 2 );
+      endPos.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      endPos.y = ( float ) hb_arrayGetND( pItem2, 2 );
 
       Color color;
 
@@ -125,18 +128,18 @@ HB_FUNC( DRAWLINEEX )
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
        ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
-         hb_param( 3, HB_IT_INTEGER ) != NULL &&
+         hb_param( 3, HB_IT_NUMERIC ) != NULL &&
        ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
    {
       Vector2 startPos;
 
-      startPos.x = hb_arrayGetNI( pItem1, 1 );
-      startPos.y = hb_arrayGetNI( pItem1, 2 );
+      startPos.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      startPos.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Vector2 endPos;
 
-      endPos.x = hb_arrayGetNI( pItem2, 1 );
-      endPos.y = hb_arrayGetNI( pItem2, 2 );
+      endPos.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      endPos.y = ( float ) hb_arrayGetND( pItem2, 2 );
 
       Color color;
 
@@ -145,7 +148,7 @@ HB_FUNC( DRAWLINEEX )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
 
-      DrawLineEx( startPos, endPos, hb_parni( 3 ), color );
+      DrawLineEx( startPos, endPos, ( float ) hb_parnd( 3 ), color );
    }
    else
    {
@@ -160,18 +163,18 @@ HB_FUNC( DRAWLINEBEZIER )
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
        ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
-         hb_param( 3, HB_IT_INTEGER ) != NULL &&
+         hb_param( 3, HB_IT_NUMERIC ) != NULL &&
        ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
    {
       Vector2 startPos;
 
-      startPos.x = hb_arrayGetNI( pItem1, 1 );
-      startPos.y = hb_arrayGetNI( pItem1, 2 );
+      startPos.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      startPos.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Vector2 endPos;
 
-      endPos.x = hb_arrayGetNI( pItem2, 1 );
-      endPos.y = hb_arrayGetNI( pItem2, 2 );
+      endPos.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      endPos.y = ( float ) hb_arrayGetND( pItem2, 2 );
 
       Color color;
 
@@ -180,7 +183,7 @@ HB_FUNC( DRAWLINEBEZIER )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
 
-      DrawLineBezier( startPos, endPos, hb_parni( 3 ), color );
+      DrawLineBezier( startPos, endPos, ( float ) hb_parnd( 3 ), color );
    }
    else
    {
@@ -199,8 +202,8 @@ HB_FUNC( DRAWLINESTRIP )
    {
       Vector2 points;
 
-      points.x = hb_arrayGetNI( pItem1, 1 );
-      points.y = hb_arrayGetNI( pItem1, 2 );
+      points.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      points.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -222,8 +225,10 @@ HB_FUNC( DRAWCIRCLE )
 {
    PHB_ITEM pItem;
 
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL && hb_param( 3, HB_IT_INTEGER ) != NULL &&
-       ( pItem = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+      ( pItem = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
    {
       Color color;
 
@@ -232,7 +237,7 @@ HB_FUNC( DRAWCIRCLE )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
 
-      DrawCircle( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), color );
+      DrawCircle( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ), color );
    }
    else
    {
@@ -246,7 +251,7 @@ HB_FUNC( DRAWCIRCLESECTOR )
    PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
-         hb_param( 2, HB_IT_INTEGER ) != NULL &&
+         hb_param( 2, HB_IT_NUMERIC ) != NULL &&
          hb_param( 3, HB_IT_INTEGER ) != NULL &&
          hb_param( 4, HB_IT_INTEGER ) != NULL &&
          hb_param( 5, HB_IT_INTEGER ) != NULL &&
@@ -254,8 +259,8 @@ HB_FUNC( DRAWCIRCLESECTOR )
    {
       Vector2 center;
 
-      center.x = hb_arrayGetNI( pItem1, 1 );
-      center.y = hb_arrayGetNI( pItem1, 2 );
+      center.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -264,7 +269,7 @@ HB_FUNC( DRAWCIRCLESECTOR )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawCircleSector( center, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+      DrawCircleSector( center, ( float ) hb_parnd( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
    }
    else
    {
@@ -278,7 +283,7 @@ HB_FUNC( DRAWCIRCLESECTORLINES )
   PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
-         hb_param( 2, HB_IT_INTEGER ) != NULL &&
+         hb_param( 2, HB_IT_NUMERIC ) != NULL &&
          hb_param( 3, HB_IT_INTEGER ) != NULL &&
          hb_param( 4, HB_IT_INTEGER ) != NULL &&
          hb_param( 5, HB_IT_INTEGER ) != NULL &&
@@ -286,8 +291,8 @@ HB_FUNC( DRAWCIRCLESECTORLINES )
    {
       Vector2 center;
 
-      center.x = hb_arrayGetNI( pItem1, 1 );
-      center.y = hb_arrayGetNI( pItem1, 2 );
+      center.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -296,7 +301,7 @@ HB_FUNC( DRAWCIRCLESECTORLINES )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawCircleSectorLines( center, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+      DrawCircleSectorLines( center, ( float ) hb_parnd( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
    }
    else
    {
@@ -311,7 +316,7 @@ HB_FUNC( DRAWCIRCLEGRADIENT )
 
    if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
          hb_param( 2, HB_IT_INTEGER ) != NULL &&
-         hb_param( 3, HB_IT_INTEGER ) != NULL &&
+         hb_param( 3, HB_IT_NUMERIC ) != NULL &&
        ( pItem1 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
        ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
@@ -329,7 +334,7 @@ HB_FUNC( DRAWCIRCLEGRADIENT )
       color2.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color2.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawCircleGradient( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), color1, color2 );
+      DrawCircleGradient( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ), color1, color2 );
    }
    else
    {
@@ -342,13 +347,14 @@ HB_FUNC( DRAWCIRCLEV )
 {
    PHB_ITEM pItem1, pItem2;
 
-   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 && hb_param( 2, HB_IT_INTEGER ) != NULL &&
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+      hb_param( 2, HB_IT_NUMERIC ) != NULL &&
       ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
       Vector2 center;
 
-      center.x = hb_arrayGetNI( pItem1, 1 );
-      center.y = hb_arrayGetNI( pItem1, 2 );
+      center.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -357,7 +363,7 @@ HB_FUNC( DRAWCIRCLEV )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawCircleV( center, hb_parni( 2 ), color );
+      DrawCircleV( center, ( float ) hb_parnd( 2 ), color );
    }
    else
    {
@@ -372,7 +378,7 @@ HB_FUNC( DRAWCIRCLELINES )
 
    if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
       ( pItem = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
    {
       Color color;
@@ -382,7 +388,7 @@ HB_FUNC( DRAWCIRCLELINES )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
 
-      DrawCircleLines( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), color );
+      DrawCircleLines( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ), color );
    }
    else
    {
@@ -397,8 +403,8 @@ HB_FUNC( DRAWELLIPSE )
 
    if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
-      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+      hb_param( 4, HB_IT_NUMERIC ) != NULL &&
       ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
    {
       Color color;
@@ -408,7 +414,7 @@ HB_FUNC( DRAWELLIPSE )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
 
-      DrawEllipse( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), color );
+      DrawEllipse( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), color );
    }
    else
    {
@@ -423,8 +429,8 @@ HB_FUNC( DRAWELLIPSELINES )
 
    if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
-      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+      hb_param( 4, HB_IT_NUMERIC ) != NULL &&
       ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
    {
       Color color;
@@ -434,7 +440,7 @@ HB_FUNC( DRAWELLIPSELINES )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
 
-      DrawEllipseLines( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), color );
+      DrawEllipseLines( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), color );
    }
    else
    {
@@ -448,8 +454,8 @@ HB_FUNC( DRAWRING )
    PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
       hb_param( 4, HB_IT_INTEGER ) != NULL &&
       hb_param( 5, HB_IT_INTEGER ) != NULL &&
       hb_param( 6, HB_IT_INTEGER ) != NULL &&
@@ -457,8 +463,8 @@ HB_FUNC( DRAWRING )
    {
       Vector2 center;
 
-      center.x = hb_arrayGetNI( pItem1, 1 );
-      center.y = hb_arrayGetNI( pItem1, 2 );
+      center.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -467,7 +473,7 @@ HB_FUNC( DRAWRING )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawRing( center, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), color );
+      DrawRing( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), color );
    }
    else
    {
@@ -481,8 +487,8 @@ HB_FUNC( DRAWRINGLINES )
    PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+      hb_param( 3, HB_IT_NUMERIC ) != NULL &&
       hb_param( 4, HB_IT_INTEGER ) != NULL &&
       hb_param( 5, HB_IT_INTEGER ) != NULL &&
       hb_param( 6, HB_IT_INTEGER ) != NULL &&
@@ -490,8 +496,8 @@ HB_FUNC( DRAWRINGLINES )
    {
       Vector2 center;
 
-      center.x = hb_arrayGetNI( pItem1, 1 );
-      center.y = hb_arrayGetNI( pItem1, 2 );
+      center.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Color color;
 
@@ -500,7 +506,7 @@ HB_FUNC( DRAWRINGLINES )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawRingLines( center, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), color );
+      DrawRingLines( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), color );
    }
    else
    {
@@ -545,13 +551,13 @@ HB_FUNC( DRAWRECTANGLEV )
    {
       Vector2 position;
 
-      position.x = hb_arrayGetNI( pItem1, 1 );
-      position.y = hb_arrayGetNI( pItem1, 2 );
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
 
       Vector2 size;
 
-      size.x = hb_arrayGetNI( pItem2, 1 );
-      size.y = hb_arrayGetNI( pItem2, 2 );
+      size.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      size.y = ( float ) hb_arrayGetND( pItem2, 2 );
 
       Color color;
 
@@ -578,10 +584,10 @@ HB_FUNC( DRAWRECTANGLEREC )
    {
       Rectangle rec;
 
-      rec.x      = hb_arrayGetNI( pItem1, 1 );
-      rec.y      = hb_arrayGetNI( pItem1, 2 );
-      rec.width  = hb_arrayGetNI( pItem1, 3 );
-      rec.height = hb_arrayGetNI( pItem1, 4 );
+      rec.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem1, 4 );
 
       Color color;
 
