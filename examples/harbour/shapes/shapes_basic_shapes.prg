@@ -37,7 +37,7 @@ PROCEDURE Main()
       DrawCircleGradient( Int( screenWidth / 4 ), 220, 60, GREEN, SKYBLUE )
 
       DrawLine( 18, 42, screenWidth - 18, 42, BLACK )
-      DrawCircleLines( int( screenWidth / 4 ), 340, 80, DARKBLUE )
+      DrawCircleLines( Int( screenWidth / 4 ), 340, 80, DARKBLUE )
 
       DrawTriangleLines( { screenWidth / 4 * 3, 160 }, ;
          { screenWidth / 4 * 3 - 20, 230 }, ;
