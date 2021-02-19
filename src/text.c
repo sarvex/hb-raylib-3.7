@@ -22,7 +22,7 @@
 // void DrawFPS( int posX, int posY );
 HB_FUNC( DRAWFPS )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       DrawFPS( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -75,7 +75,20 @@ HB_FUNC( DRAWTEXT )
 // bool TextIsEqual( const char *text1, const char *text2 );
 // unsigned int TextLength( const char *text );
 // const char *TextFormat( const char *text, ... );
+
 // const char *TextSubtext( const char *text, int position, int length );
+HB_FUNC( TEXTSUBTEXT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retc( TextSubtext( hb_parc( 1 ), hb_parni( 2 ), hb_parni( 3 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // char *TextReplace( char *text, const char *replace, const char *by );
 // char *TextInsert( const char *text, const char *insert, int position );
 // const char *TextJoin( const char **textList, int count, const char *delimiter );

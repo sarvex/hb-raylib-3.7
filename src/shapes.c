@@ -1,7 +1,7 @@
 /*
  * RayLib library: shapes.c
  *
- * Copyright 2020 Rafał Jopek ( rafaljopek at hotmail com )
+ * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
 

@@ -7,6 +7,7 @@
 
 /* --- Image loading functions --- */
 /* --- NOTE: This functions do not require GPU access --- */
+
 // Image LoadImage( const char *fileName );
 // Image LoadImageEx( Color *pixels, int width, int height );
 // Image LoadImagePro( void *data, int width, int height, int format );

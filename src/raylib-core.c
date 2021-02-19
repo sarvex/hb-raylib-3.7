@@ -405,9 +405,18 @@ HB_FUNC( GETFPS )
 {
    hb_retni( GetFPS() );
 }
+
 // float GetFrameTime( void );
+HB_FUNC( GETFRAMETIME )
+{
+   hb_retnd( GetFrameTime() );
+}
 
 // double GetTime( void );
+HB_FUNC( GetTime )
+{
+   hb_retnd( GetTime() );
+}
 
 /* --- Color-related functions --- */
 
@@ -434,8 +443,66 @@ HB_FUNC( COLORTOINT )
 }
 
 // Vector4 ColorNormalize( Color color );
+HB_FUNC( COLORNORMALIZE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      Vector4 normalize = ColorNormalize( color );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetND( info, 1, ( float ) normalize.x );
+      hb_arraySetND( info, 2, ( float ) normalize.y );
+      hb_arraySetND( info, 3, ( float ) normalize.z );
+      hb_arraySetND( info, 4, ( float ) normalize.w );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Color ColorFromNormalized( Vector4 normalized );
+HB_FUNC( COLORFROMNORMALIZED )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Vector4 normalized;
+
+      normalized.x = ( float ) hb_arrayGetNI( pItem, 1 );
+      normalized.y = ( float ) hb_arrayGetNI( pItem, 2 );
+      normalized.z = ( float ) hb_arrayGetNI( pItem, 3 );
+      normalized.w = ( float ) hb_arrayGetNI( pItem, 4 );
+
+      Color color = ColorFromNormalized( normalized );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetND( info, 1, ( unsigned char ) color.r );
+      hb_arraySetND( info, 2, ( unsigned char ) color.g );
+      hb_arraySetND( info, 3, ( unsigned char ) color.b );
+      hb_arraySetND( info, 4, ( unsigned char ) color.a );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Vector3 ColorToHSV( Color color );
 HB_FUNC( COLORTOHSV )
@@ -524,7 +591,7 @@ HB_FUNC( FADE )
 {
    PHB_ITEM pItem;
 
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 && hb_param( 2, HB_IT_DOUBLE ) != NULL )
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 && hb_param( 2, HB_IT_NUMERIC ) != NULL )
    {
       Color color;
 
@@ -557,7 +624,7 @@ HB_FUNC( SETCONFIGFLAGS )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
    {
-      SetConfigFlags( hb_parni( 1 ) );
+      SetConfigFlags( ( unsigned int ) hb_parni( 1 ) );
    }
    else
    {
@@ -566,10 +633,46 @@ HB_FUNC( SETCONFIGFLAGS )
 }
 
 // void SetTraceLogLevel( int logType );
+HB_FUNC( SETTRACELOGLEVEL )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetTraceLogLevel( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetTraceLogExit( int logType );
+HB_FUNC( SETTRACELOGEXIT )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetTraceLogExit( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetTraceLogCallback( TraceLogCallback callback );
 // void TraceLog( int logType, const char *text, ...  );
+
 // void TakeScreenshot( const char *fileName );
+HB_FUNC( TAKESCREENSHOT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      TakeScreenshot( hb_parc( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // int GetRandomValue( int min, int max );
 HB_FUNC( GETRANDOMVALUE )
@@ -613,9 +716,43 @@ HB_FUNC( GETRANDOMVALUE )
 /* --- Persistent storage management --- */
 
 // int LoadStorageValue( int position );
+HB_FUNC( LOADSTORAGEVALUE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retni( LoadStorageValue( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SaveStorageValue( int position, int value );
+HB_FUNC( SAVESTORAGEVALUE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      SaveStorageValue( hb_parni( 1 ), hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void OpenURL( const char *url );
+HB_FUNC( OPENURL )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      OpenURL( hb_parc( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions
@@ -697,15 +834,127 @@ HB_FUNC( SETEXITKEY )
 /* --- Input-related functions: gamepads --- */
 
 // bool IsGamepadAvailable( int gamepad );
+HB_FUNC( ISGAMEPADAVAILABLE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsGamepadAvailable( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsGamepadName( int gamepad, const char *name );
+HB_FUNC( ISGAMEPADNAME )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retl( IsGamepadName( hb_parni( 1 ), hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetGamepadName( int gamepad );
+HB_FUNC( GETGAMEPADNAME )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retc( GetGamepadName( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsGamepadButtonPressed( int gamepad, int button );
+HB_FUNC( ISGAMEPADBUTTONPRESSED )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsGamepadButtonPressed( hb_parni( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsGamepadButtonDown( int gamepad, int button );
+HB_FUNC( ISGAMEPADBUTTONDOWN )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsGamepadButtonDown( hb_parni( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsGamepadButtonReleased( int gamepad, int button );
+HB_FUNC( ISGAMEPADBUTTONRELEASED )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsGamepadButtonReleased( hb_parni( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsGamepadButtonUp( int gamepad, int button );
+HB_FUNC( ISGAMEPADBUTTONUP )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsGamepadButtonUp( hb_parni( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // int GetGamepadButtonPressed( void );
+HB_FUNC( GETGAMEPADBUTTONPRESSED )
+{
+   hb_retni( GetGamepadButtonPressed() );
+}
+
 // int GetGamepadAxisCount( int gamepad );
+HB_FUNC( GETGAMEPADAXISCOUNT )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retni( GetGamepadAxisCount( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // float GetGamepadAxisMovement( int gamepad, int axis );
+HB_FUNC( GETGAMEPADAXISMOVEMENT )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retnd( GetGamepadAxisMovement( hb_parni( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 /* --- Input-related functions: mouse --- */
 
@@ -813,19 +1062,76 @@ HB_FUNC( SETMOUSEOFFSET )
 }
 
 // void SetMouseScale( float scaleX, float scaleY );
+HB_FUNC( SETMOUSESCALE )
+{
+   if( hb_param( 1, HB_IT_NUMERIC ) != NULL && hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      SetMouseScale( ( float ) hb_parnd( 1 ), ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // int GetMouseWheelMove( void );
+HB_FUNC( GETMOUSEWHEELMOVE )
+{
+   hb_retni( GetMouseWheelMove() );
+}
 
 /* --- Input-related functions: touch --- */
 
 // int GetTouchX( void );
+HB_FUNC( GetTouchX )
+{
+   hb_retni( GetTouchX() );
+}
+
 // int GetTouchY( void );
+HB_FUNC( GETTOUCHY )
+{
+   hb_retni( GetTouchY() );
+}
+
 // Vector2 GetTouchPosition( int index );
+HB_FUNC( GETTOUCHPOSITION )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      Vector2 vector2 = GetTouchPosition( hb_parni( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 2 );
+
+      hb_arraySetNI( info, 1, vector2.x );
+      hb_arraySetNI( info, 2, vector2.y );
+
+      hb_itemReturnRelease( info );
+
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions ( Module: gestures )
 //------------------------------------------------------------------------------------
 
 // void SetGesturesEnabled( unsigned int gestureFlags );
+HB_FUNC( SETGESTURESENABLED )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetGesturesEnabled( ( unsigned int ) hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsGestureDetected( int gesture );
 // int GetGestureDetected( void );
 // int GetTouchPointsCount( void );
