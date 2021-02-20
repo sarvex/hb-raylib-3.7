@@ -88,7 +88,6 @@ PROCEDURE Main()
       IF STATE == 0
          IF ( framesCounter / 15 ) % 2 == 0
             DrawRectangle( logoPositionX, logoPositionY, 16, 16, BLACK )
-         ELSE
          ENDIF
       ELSE
          IF STATE == 1
