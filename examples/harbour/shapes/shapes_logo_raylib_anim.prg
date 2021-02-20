@@ -99,7 +99,6 @@ PROCEDURE Main()
             DrawRectangle( Int( logoPositionX ), Int( logoPositionY ), 16, leftSideRecHeight, BLACK )
          ELSE
             IF  STATE == 2
-
                DrawRectangle( Int( logoPositionX ), Int( logoPositionY ), topSideRecWidth, 16, BLACK )
                DrawRectangle( Int( logoPositionX ), Int( logoPositionY ), 16, leftSideRecHeight, BLACK )
 
@@ -107,7 +106,6 @@ PROCEDURE Main()
                DrawRectangle( Int( logoPositionX ), Int( logoPositionY ) + 240, bottomSideRecWidth, 16, BLACK )
             ELSE
                IF  STATE == 3
-
                   DrawRectangle( Int( logoPositionX ), Int( logoPositionY ), topSideRecWidth, 16, Fade( BLACK, alpha ) )
                   DrawRectangle( Int( logoPositionX ), Int( logoPositionY ) + 16, 16, leftSideRecHeight - 32, Fade( BLACK, alpha ) )
 
