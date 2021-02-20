@@ -32,7 +32,7 @@ PROCEDURE Main()
 
       IF STATE == 0
          framesCounter++
-         IF ( framesCounter == 120 )
+         IF  framesCounter == 120 
             STATE         := 1
             framesCounter := 0
          ENDIF
@@ -40,26 +40,26 @@ PROCEDURE Main()
          IF  STATE == 1
             topSideRecWidth   += 4
             leftSideRecHeight += 4
-            IF ( topSideRecWidth == 256 )
+            IF  topSideRecWidth == 256 
                STATE := 2
             END IF
          ELSE
-            IF ( STATE == 2 )
+            IF  STATE == 2 
                bottomSideRecWidth += 4
                rightSideRecHeight += 4
-               IF ( bottomSideRecWidth == 256 )
+               IF  bottomSideRecWidth == 256 
                   STATE := 3
                END IF
             ELSE
                IF  STATE == 3
                   framesCounter++
-                  IF ( framesCounter = 12 )
+                  IF  framesCounter = 12 
                      lettersCount++
                      framesCounter := 0
                   END IF
-                  IF ( lettersCount >= 10 )
+                  IF  lettersCount >= 10 
                      alpha -= 0.02
-                     IF ( alpha <= 0 )
+                     IF  alpha <= 0 
                         alpha := 0
                         STATE := 4
                      END IF
