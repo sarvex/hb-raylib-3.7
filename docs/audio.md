@@ -54,6 +54,8 @@ void SetMasterVolume( float volume );
 
 Set master volume ( listener )
 
+---
+
 ## Wave/Sound loading/unloading functions
 
 #### LoadWave()
@@ -161,6 +163,8 @@ bool ExportWaveAsCode( Wave wave, const char *fileName );
 ```
 
 Export wave sample data to code ( .h ), returns true on success
+
+---
 
 ## Wave/Sound management functions
 
@@ -342,6 +346,8 @@ void UnloadWaveSamples( float *samples );
 
 Unload samples data loaded with LoadWaveSamples(  )
 
+---
+
 ## Music management functions
 
 #### LoadMusicStream()
@@ -485,6 +491,8 @@ float GetMusicTimePlayed( Music music );
 ```
 
 Get current music time played ( in seconds )
+
+---
 
 ## AudioStream management functions
 
