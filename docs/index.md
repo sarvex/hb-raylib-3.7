@@ -14,7 +14,7 @@ View the project on [GitHub](https://github.com/rjopek/hb-raylib)
 > - [module: audio](audio "module: audio")
 > - [module: core](core "module: core")
 > - [module: models](models "module: models")
-> - [module: shaders](shaders_rlgl "module: shaders")
+> - [module: shaders](shaders "module: shaders")
 > - [module: shapes](shapes "module: shapes")
 > - [module: text](text "module: text")
 > - [module: textures](textures "module: textures")
@@ -24,7 +24,7 @@ View the project on [GitHub](https://github.com/rjopek/hb-raylib)
 
 ### Example code
 
-{% highlight ruby %}
+{% highlight ruby linenos %}
 
 
 #include "hbraylib.ch"
