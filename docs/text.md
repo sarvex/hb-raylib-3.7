@@ -4,7 +4,7 @@ title: module text
 permalink: text
 ---
 
-> # **Function reference module: text**
+# **Function reference module: text**
 
 ## Font loading/unloading functions
 

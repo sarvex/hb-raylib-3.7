@@ -1,8 +1,9 @@
 ---
+layout: default
 title: "hb-raylib"
 ---
 
-# **Harbour project extended xBase compiler.**
+# **Harbour project extended xBase compiler**
 
 ![Logo](assets/img/harbour_raylib.svg)
 
@@ -10,19 +11,22 @@ title: "hb-raylib"
 
 View the project on [GitHub](https://github.com/rjopek/hb-raylib)
 
-> - [module: core](core "module: core")
-> - [module: shapes](shapes "module: shapes")
-> - [module: textures](textures "module: textures")
-> - [module: text](text "module: text")
-> - [module: models](models "module: models")
-> - [module: shaders (rlgl)](shaders_rlgl "module: shaders (rlgl)")
 > - [module: audio](audio "module: audio")
-> - [structs](structs "structs")
+> - [module: core](core "module: core")
+> - [module: models](models "module: models")
+> - [module: shaders](shaders_rlgl "module: shaders")
+> - [module: shapes](shapes "module: shapes")
+> - [module: text](text "module: text")
+> - [module: textures](textures "module: textures")
 > - [colors](colors "colors")
+> - [structs](structs "structs")
+
 
 ### Example code
 
 {% highlight ruby %}
+
+
 #include "hbraylib.ch"
 
 PROCEDURE Main()
@@ -49,6 +53,8 @@ PROCEDURE Main()
    CloseWindow()
 
    RETURN
+
+
 {% endhighlight %}
 
 ![](docs/assets/img/core_basic_window.png)
@@ -63,4 +69,4 @@ Licencja MIT is obviously applied only for this repository, not what it builds.
 <br>
 <br>
 
-> &copy; 2020 Rafał Jopek
+> &copy; 2020 - 2021 Rafał Jopek

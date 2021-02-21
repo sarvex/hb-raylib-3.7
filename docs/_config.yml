@@ -1,10 +1,2 @@
-#
-# Site settings
-#
-
-#-
-url: https://harbour.pl/hb-raylib
-baseurl: /hb-raylib
-title: hb-raylib
-github_url: https://github.com/rjopek/hb-raylib/tree/master/docs
+title : hb-raylib
 

@@ -4,7 +4,7 @@ title: module shapes
 permalink: shapes
 ---
 
-> - # **Function reference module: shapes**
+# **Function reference module: shapes**
 
 ## Basic shapes drawing functions
 
