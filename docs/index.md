@@ -34,7 +34,7 @@ PROCEDURE Main()
    LOCAL nScreenWidth := 800
    LOCAL nScreenHeight := 450
 
-   InitWindow( nScreenWidth, nScreenHeight, "Harbour and raylib [core] example - basic window" )
+   InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [ core ] example - basic window" )
 
    SetTargetFPS( 60 )
 
@@ -57,7 +57,7 @@ PROCEDURE Main()
 
 {% endhighlight %}
 
-![](docs/assets/img/core_basic_window.png)
+![](assets/img/core/core_basic_window.png)
 
 ## License
 
