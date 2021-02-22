@@ -1,9 +1,7 @@
-
 #include "hbraylib.ch"
 
 #define X 1
 #define Y 2
-
 
 PROCEDURE Main()
 
