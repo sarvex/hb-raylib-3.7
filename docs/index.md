@@ -59,11 +59,9 @@ PROCEDURE Main()
 
 ![](assets/img/core/core_basic_window.png)
 
-## License
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](LICENSE.md)
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](.git/LICENSE)
-
-Licencja MIT is obviously applied only for this repository, not what it builds.
+License MIT is obviously applied only for this repository, not what it builds.
 
 <br>
 <br>
