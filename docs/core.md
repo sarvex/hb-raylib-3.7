@@ -1713,5 +1713,3 @@ void SetCameraMoveControls( int frontKey, int backKey, int rightKey, int leftKey
 Set camera move controls (1st person and 3rd person cameras)
 
 ---
-
-> &copy; 2020 Rafał Jopek

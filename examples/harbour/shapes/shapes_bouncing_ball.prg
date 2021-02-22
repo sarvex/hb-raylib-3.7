@@ -1,9 +1,7 @@
-
 #include "hbraylib.ch"
 
 #define VECTOR2_X 1
 #define VECTOR2_Y 2
-
 
 PROCEDURE Main()
 
