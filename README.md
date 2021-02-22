@@ -10,4 +10,4 @@ Installing **hb-raylib** requires **RayLib** including its headers. For more inf
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](.git/LICENSE)
 
-Licence MIT is obviously applied only for this repository, not what it builds.
+License MIT is obviously applied only for this repository, not what it builds.
