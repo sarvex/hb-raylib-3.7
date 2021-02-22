@@ -1,8 +1,8 @@
 
 #include "hbraylib.ch"
 
-#define X 1
-#define Y 2
+#define VECTOR2_X 1
+#define VECTOR2_Y 2
 
 
 PROCEDURE Main()
@@ -11,13 +11,13 @@ PROCEDURE Main()
    LOCAL screenHeight := 450
    LOCAL lContinue    := .T.
 
-   LOCAL ballPosition :=  {}
    LOCAL ballSpeed := { 5.0, 4.0 }
    LOCAL ballRadius := 20
-
+   
    LOCAL pause := .F.
    LOCAL framesCounter := 0
-
+   LOCAL ballPosition 
+   
    InitWindow( screenWidth, screenHeight, "Harbour raylib [shapes] example - bouncing ball" )
 
    ballPosition :=  { GetScreenWidth() / 2, GetScreenHeight() / 2 }
@@ -31,15 +31,15 @@ PROCEDURE Main()
       ENDIF
 
       IF !pause
-         ballPosition[ X ] += ballSpeed[ X ]
-         ballPosition[ Y ] += ballSpeed[ Y ]
+         ballPosition[ VECTOR2_X ] += ballSpeed[ VECTOR2_X ]
+         ballPosition[ VECTOR2_Y ] += ballSpeed[ VECTOR2_Y ]
 
-         IF ballPosition[ X ] >= GetScreenWidth() - ballRadius .OR. ballPosition[ X ] <= ballRadius
-            ballSpeed[ X ] *= -1.0
+         IF ballPosition[ VECTOR2_X ] >= GetScreenWidth() - ballRadius .OR. ballPosition[ VECTOR2_X ] <= ballRadius
+            ballSpeed[ VECTOR2_X ] *= -1.0
          ENDIF
 
-         IF ballPosition[ Y ] >= GetScreenHeight() - ballRadius .OR. ballPosition[ Y ] <= ballRadius
-            ballSpeed[ Y ] *= -1.0
+         IF ballPosition[ VECTOR2_Y ] >= GetScreenHeight() - ballRadius .OR. ballPosition[ VECTOR2_Y ] <= ballRadius
+            ballSpeed[ VECTOR2_Y ] *= -1.0
          ENDIF
       ELSE
          framesCounter++
