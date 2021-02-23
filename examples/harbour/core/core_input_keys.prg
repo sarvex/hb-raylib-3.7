@@ -1,8 +1,8 @@
 
 #include "hbraylib.ch"
 
-#define x 1
-#define y 2
+#define VECTOR2_X 1
+#define VECTOR2_Y 2
 
 PROCEDURE Main()
 
@@ -19,16 +19,16 @@ PROCEDURE Main()
    DO WHILE ! WindowShouldClose()
 
       IF IsKeyDown( KEY_RIGHT )
-         aBallPosition[ x ] += 2
+         aBallPosition[ VECTOR2_X ] += 2
       ENDIF
       IF IsKeyDown( KEY_LEFT )
-         aBallPosition[ x ] -= 2
+         aBallPosition[ VECTOR2_X ] -= 2
       ENDIF
       IF IsKeyDown( KEY_UP )
-         aBallPosition[ y ] -= 2
+         aBallPosition[ VECTOR2_Y ] -= 2
       ENDIF
       IF IsKeyDown( KEY_DOWN )
-         aBallPosition[ y ] += 2
+         aBallPosition[ VECTOR2_Y ] += 2
       ENDIF
 
       BeginDrawing()
