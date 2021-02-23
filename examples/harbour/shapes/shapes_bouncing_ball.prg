@@ -11,11 +11,11 @@ PROCEDURE Main()
 
    LOCAL ballSpeed := { 5.0, 4.0 }
    LOCAL ballRadius := 20
-   
+
    LOCAL pause := .F.
    LOCAL framesCounter := 0
-   LOCAL ballPosition 
-   
+   LOCAL ballPosition
+
    InitWindow( screenWidth, screenHeight, "Harbour raylib [shapes] example - bouncing ball" )
 
    ballPosition :=  { GetScreenWidth() / 2, GetScreenHeight() / 2 }
@@ -25,7 +25,7 @@ PROCEDURE Main()
    DO WHILE lContinue
 
       IF IsKeyPressed( KEY_SPACE )
-         iif( pause = .T., pause := .F., pause := .T. )
+         iif( pause == .T., pause := .F., pause := .T. )
       ENDIF
 
       IF !pause
@@ -49,7 +49,7 @@ PROCEDURE Main()
       DrawCircleV( ballPosition, ballRadius, MAROON )
       DrawText( "PRESS SPACE to PAUSE BALL MOVEMENT", 10, GetScreenHeight() - 25, 20, LIGHTGRAY )
 
-      IF pause .AND. framesCounter / 30  % 2 == 0
+      IF pause .AND. framesCounter / 30 % 2 == 0
          DrawText( "PAUSED", 350, 200, 30, GRAY )
       ENDIF
 
