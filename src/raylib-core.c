@@ -1,9 +1,12 @@
 /*
- * RayLib library: raylib-core.
+ * RayLib library: raylib-core.c
+ * version 3.5
  *
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
+
+#include "hbraylib.h"
 
 //------------------------------------------------------------------------------------
 // Window and Graphics Device Functions (Module: core)

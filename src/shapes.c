@@ -1,5 +1,6 @@
 /*
  * RayLib library: shapes.c
+ * version 3.5
  *
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
@@ -191,7 +192,7 @@ HB_FUNC( DRAWLINEBEZIER )
    }
 }
 
-// void DrawLineStrip( Vector2 *points, int numPoints, Color color );
+// void DrawLineStrip( Vector2 *points, int pointsCount, Color color);
 HB_FUNC( DRAWLINESTRIP )
 {
    PHB_ITEM pItem1, pItem2;
@@ -965,7 +966,7 @@ HB_FUNC( DRAWTRIANGLELINES )
    }
 }
 
-// void DrawTriangleFan( Vector2 *points, int numPoints, Color color );
+// void DrawTriangleFan( Vector2 *points, int pointsCount, Color color );
 HB_FUNC( DRAWTRIANGLEFAN )
 {
    PHB_ITEM pItem1, pItem2;
@@ -1174,45 +1175,6 @@ HB_FUNC( CHECKCOLLISIONCIRCLEREC )
    }
 }
 
-// Rectangle GetCollisionRec( Rectangle rec1, Rectangle rec2 );
-HB_FUNC( GETCOLLISIONREC )
-{
-   PHB_ITEM pItem1, pItem2;
-
-   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
-       ( pItem2 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
-   {
-      Rectangle rec1;
-
-      rec1.x      = ( float ) hb_arrayGetND( pItem1, 1 );
-      rec1.y      = ( float ) hb_arrayGetND( pItem1, 2 );
-      rec1.width  = ( float ) hb_arrayGetND( pItem1, 3 );
-      rec1.height = ( float ) hb_arrayGetND( pItem1, 4 );
-
-      Rectangle rec2;
-
-      rec2.x      = ( float ) hb_arrayGetND( pItem2, 1 );
-      rec2.y      = ( float ) hb_arrayGetND( pItem2, 2 );
-      rec2.width  = ( float ) hb_arrayGetND( pItem2, 3 );
-      rec2.height = ( float ) hb_arrayGetND( pItem2, 4 );
-
-      Rectangle rec = GetCollisionRec( rec1, rec2 );
-
-      PHB_ITEM info = hb_itemArrayNew( 4 );
-
-      hb_arraySetND( info, 1, ( float ) rec.x );
-      hb_arraySetND( info, 2, ( float ) rec.y );
-      hb_arraySetND( info, 3, ( float ) rec.width );
-      hb_arraySetND( info, 4, ( float ) rec.height );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
 // bool CheckCollisionPointRec( Vector2 point, Rectangle rec );
 HB_FUNC( CHECKCOLLISIONPOINTREC )
 {
@@ -1303,5 +1265,88 @@ HB_FUNC( CHECKCOLLISIONPOINTTRIANGLE )
    else
    {
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// bool CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 *collisionPoint );
+HB_FUNC( CHECKCOLLISIONLINES )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4, pItem5;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+       ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 2 &&
+       ( pItem5 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem5 ) == 2 )
+   {
+      Vector2 startPos1;
+
+      startPos1.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      startPos1.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Vector2 endPos1;
+
+      endPos1.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      endPos1.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Vector2 startPos2;
+
+      startPos2.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      startPos2.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Vector2 endPos2;
+
+      endPos2.x = ( float ) hb_arrayGetND( pItem4, 1 );
+      endPos2.y = ( float ) hb_arrayGetND( pItem4, 2 );
+
+      Vector2 collisionPoint;
+
+      endPos2.x = ( float ) hb_arrayGetND( pItem5, 1 );
+      endPos2.y = ( float ) hb_arrayGetND( pItem5, 2 );
+
+      hb_retl( CheckCollisionLines( startPos1, endPos1, startPos2, endPos2, &collisionPoint ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// Rectangle GetCollisionRec( Rectangle rec1, Rectangle rec2 );
+HB_FUNC( GETCOLLISIONREC )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+       ( pItem2 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Rectangle rec1;
+
+      rec1.x      = ( float ) hb_arrayGetND( pItem1, 1 );
+      rec1.y      = ( float ) hb_arrayGetND( pItem1, 2 );
+      rec1.width  = ( float ) hb_arrayGetND( pItem1, 3 );
+      rec1.height = ( float ) hb_arrayGetND( pItem1, 4 );
+
+      Rectangle rec2;
+
+      rec2.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec2.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec2.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec2.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Rectangle rec = GetCollisionRec( rec1, rec2 );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetND( info, 1, ( float ) rec.x );
+      hb_arraySetND( info, 2, ( float ) rec.y );
+      hb_arraySetND( info, 3, ( float ) rec.width );
+      hb_arraySetND( info, 4, ( float ) rec.height );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
