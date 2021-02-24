@@ -1,15 +1,16 @@
 /*
  * RayLib library: raylib-core.
  *
- * Copyright 2020 Rafał Jopek ( rafaljopek at hotmail com )
+ * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
 
-#include "hbraylib.h"
+//------------------------------------------------------------------------------------
+// Window and Graphics Device Functions (Module: core)
+//------------------------------------------------------------------------------------
 
-/* --- Window-related functions --- */
-
-// void InitWindow( int width, int height, const char *title );
+// Window-related functions
+// void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
 HB_FUNC( INITWINDOW )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL && hb_param( 3, HB_IT_STRING ) != NULL )
@@ -22,67 +23,102 @@ HB_FUNC( INITWINDOW )
    }
 }
 
-// bool WindowShouldClose( void );
+// bool WindowShouldClose(void);                               // Check if KEY_ESCAPE pressed or Close icon pressed
 HB_FUNC( WINDOWSHOULDCLOSE )
 {
    hb_retl( WindowShouldClose() );
 }
 
-// void CloseWindow( void );
+// void CloseWindow(void);                                     // Close window and unload OpenGL context
 HB_FUNC( CLOSEWINDOW )
 {
    CloseWindow();
 }
-
-// bool IsWindowReady( void );
+// bool IsWindowReady(void);                                   // Check if window has been initialized successfully
 HB_FUNC( ISWINDOWREADY )
 {
    hb_retl( IsWindowReady() );
 }
 
-// bool IsWindowMinimized( void );
-HB_FUNC( ISWINDOWMINIMIZED )
-{
-   hb_retl( IsWindowMinimized() );
-}
-
-// bool IsWindowResized( void );
-HB_FUNC( ISWINDOWRESIZED )
-{
-   hb_retl( IsWindowResized() );
-}
-
-// bool IsWindowHidden( void );
-HB_FUNC( ISWINDOWHIDDEN )
-{
-   hb_retl( IsWindowHidden() );
-}
-
-// bool IsWindowFullscreen( void );
+// bool IsWindowFullscreen(void);                              // Check if window is currently fullscreen
 HB_FUNC( ISWINDOWFULLSCREEN )
 {
    hb_retl( IsWindowFullscreen() );
 }
 
-// void ToggleFullscreen( void );
+// bool IsWindowHidden(void);                                  // Check if window is currently hidden (only PLATFORM_DESKTOP)
+HB_FUNC( ISWINDOWHIDDEN )
+{
+   hb_retl( IsWindowHidden() );
+}
+
+// bool IsWindowMinimized(void);                               // Check if window is currently minimized (only PLATFORM_DESKTOP)
+HB_FUNC( ISWINDOWMINIMIZED )
+{
+   hb_retl( IsWindowMinimized() );
+}
+
+// bool IsWindowMaximized(void);                               // Check if window is currently maximized (only PLATFORM_DESKTOP)
+HB_FUNC( ISWINDOWMAXIMIZED )
+{
+   hb_retl( IsWindowMaximized() );
+}
+
+// bool IsWindowFocused(void);                                 // Check if window is currently focused (only PLATFORM_DESKTOP)
+HB_FUNC( ISWINDOWFOCUSED )
+{
+   hb_retl( IsWindowFocused() );
+}
+
+// bool IsWindowResized(void);                                 // Check if window has been resized last frame
+HB_FUNC( ISWINDOWRESIZED )
+{
+   hb_retl( IsWindowResized() );
+}
+
+// bool IsWindowState(unsigned int flag);                      // Check if one specific window flag is enabled
+HB_FUNC( ISWINDOWSTATE )
+{
+   hb_retl( IsWindowState( ( unsigned int ) hb_parni( 1 ) ) );
+}
+
+// void SetWindowState(unsigned int flags);                    // Set window configuration state using flags
+HB_FUNC( SETWINDOWSTATE )
+{
+   SetWindowState( ( unsigned int ) hb_parni( 1 ) );
+}
+
+// void ClearWindowState(unsigned int flags);                  // Clear window configuration state flags
+HB_FUNC( CLEARWINDOWSTATE )
+{
+   ClearWindowState( ( unsigned int ) hb_parni( 1 ) );
+}
+
+// void ToggleFullscreen(void);                                // Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
 HB_FUNC( TOGGLEFULLSCREEN )
 {
    ToggleFullscreen();
 }
 
-// void UnhideWindow( void );
-HB_FUNC( UNHIDEWINDOW )
+// void MaximizeWindow(void);                                  // Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+HB_FUNC( MAXIMIZEWINDOW )
 {
-   UnhideWindow();
+   MaximizeWindow();
 }
 
-// void HideWindow( void );
-HB_FUNC( HIDEWINDOW )
+// void MinimizeWindow(void);                                  // Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+HB_FUNC( MINIMIZEWINDOW )
 {
-   HideWindow();
+   MinimizeWindow();
 }
 
-// void SetWindowIcon( Image image );
+// void RestoreWindow(void);                                   // Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+HB_FUNC( RESTOREWINDOW )
+{
+   RestoreWindow();
+}
+
+// void SetWindowIcon(Image image);                            // Set icon for window (only PLATFORM_DESKTOP)
 HB_FUNC( SETWINDOWICON )
 {
    PHB_ITEM pItem;
@@ -105,7 +141,7 @@ HB_FUNC( SETWINDOWICON )
    }
 }
 
-// void SetWindowTitle( const char *title );
+// void SetWindowTitle(const char *title);                     // Set title for window (only PLATFORM_DESKTOP)
 HB_FUNC( SETWINDOWTITLE )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL )
@@ -118,7 +154,7 @@ HB_FUNC( SETWINDOWTITLE )
    }
 }
 
-// void SetWindowPosition( int x, int y );
+// void SetWindowPosition(int x, int y);                       // Set window position on screen (only PLATFORM_DESKTOP)
 HB_FUNC( SETWINDOWPOSITION )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -131,7 +167,7 @@ HB_FUNC( SETWINDOWPOSITION )
    }
 }
 
-// void SetWindowMonitor( int monitor );
+// void SetWindowMonitor(int monitor);                         // Set monitor for the current window (fullscreen mode)
 HB_FUNC( SETWINDOWMONITOR )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -144,7 +180,7 @@ HB_FUNC( SETWINDOWMONITOR )
    }
 }
 
-// void SetWindowMinSize( int width, int height );
+// void SetWindowMinSize(int width, int height);               // Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 HB_FUNC( SETWINDOWMINSIZE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -157,7 +193,7 @@ HB_FUNC( SETWINDOWMINSIZE )
    }
 }
 
-// void SetWindowSize( int width, int height );
+// void SetWindowSize(int width, int height);                  // Set window dimensions
 HB_FUNC( SETWINDOWSIZE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -170,31 +206,52 @@ HB_FUNC( SETWINDOWSIZE )
    }
 }
 
-// void *GetWindowHandle( void );
+// void *GetWindowHandle(void);                                // Get native window handle
 HB_FUNC( GETWINDOWHANDLE )
 {
    hb_retptr( GetWindowHandle() );
 }
 
-// int GetScreenWidth( void );
+// int GetScreenWidth(void);                                   // Get current screen width
 HB_FUNC( GETSCREENWIDTH )
 {
    hb_retni( GetScreenWidth() );
 }
 
-// int GetScreenHeight( void );
+// int GetScreenHeight(void);                                  // Get current screen height
 HB_FUNC( GETSCREENHEIGHT )
 {
    hb_retni( GetScreenHeight() );
 }
 
-// int GetMonitorCount( void );
+// int GetMonitorCount(void);                                  // Get number of connected monitors
 HB_FUNC( GETMONITORCOUNT )
 {
    hb_retni( GetMonitorCount() );
 }
 
-// int GetMonitorWidth( int monitor );
+// Vector2 GetMonitorPosition(int monitor);                    // Get specified monitor position
+HB_FUNC( GETMONITORPOSITION )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      Vector2 vector2 = GetMonitorPosition( hb_parni( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 2 );
+
+      hb_arraySetNI( info, 1, vector2.x );
+      hb_arraySetNI( info, 2, vector2.y );
+
+      hb_itemReturnRelease( info );
+
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// int GetMonitorWidth(int monitor);                           // Get specified monitor width
 HB_FUNC( GETMONITORWIDTH )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -207,7 +264,7 @@ HB_FUNC( GETMONITORWIDTH )
    }
 }
 
-// int GetMonitorHeight( int monitor );
+// int GetMonitorHeight(int monitor);                          // Get specified monitor height
 HB_FUNC( GETMONITORHEIGHT )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -220,7 +277,7 @@ HB_FUNC( GETMONITORHEIGHT )
    }
 }
 
-// int GetMonitorPhysicalWidth( int monitor );
+// int GetMonitorPhysicalWidth(int monitor);                   // Get specified monitor physical width in millimetres
 HB_FUNC( GETMONITORPHYSICALWIDTH )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -233,7 +290,7 @@ HB_FUNC( GETMONITORPHYSICALWIDTH )
    }
 }
 
-// int GetMonitorPhysicalHeight( int monitor );
+// int GetMonitorPhysicalHeight(int monitor);                  // Get specified monitor physical height in millimetres
 HB_FUNC( GETMONITORPHYSICALHEIGHT )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -246,7 +303,21 @@ HB_FUNC( GETMONITORPHYSICALHEIGHT )
    }
 }
 
-// Vector2 GetWindowPosition( void );
+// int GetMonitorRefreshRate(int monitor);                     // Get specified monitor refresh rate
+HB_FUNC( GETMONITORREFRESHRATE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retni( GetMonitorRefreshRate( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+
+// Vector2 GetWindowPosition(void);                            // Get window position XY on monitor
 HB_FUNC( GETWINDOWPOSITION )
 {
    PHB_ITEM info = hb_itemArrayNew( 2 );
@@ -259,7 +330,20 @@ HB_FUNC( GETWINDOWPOSITION )
    hb_itemReturnRelease( info );
 }
 
-// const char *GetMonitorName( int monitor );
+// Vector2 GetWindowScaleDPI(void);                            // Get window scale DPI factor
+HB_FUNC( GetWindowScaleDPI )
+{
+   PHB_ITEM info = hb_itemArrayNew( 2 );
+
+   Vector2 vector2 = GetWindowScaleDPI();
+
+   hb_arraySetNI( info, 1, vector2.x );
+   hb_arraySetNI( info, 2, vector2.y );
+
+   hb_itemReturnRelease( info );
+}
+
+// const char *GetMonitorName(int monitor);                    // Get the human-readable, UTF-8 encoded name of the primary monitor
 HB_FUNC( GETMONITORNAME )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -272,20 +356,7 @@ HB_FUNC( GETMONITORNAME )
    }
 }
 
-// const char *GetClipboardText( void );
-HB_FUNC( GETCLIPBOARDTEXT )
-{
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
-   {
-      hb_retc( GetClipboardText() );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// void SetClipboardText( const char *text );
+// void SetClipboardText(const char *text);                    // Set clipboard text content
 HB_FUNC( SETCLIPBOARDTEXT )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL )
@@ -298,41 +369,61 @@ HB_FUNC( SETCLIPBOARDTEXT )
    }
 }
 
-/* --- Cursor-related functions --- */
+// const char *GetClipboardText(void);                         // Get clipboard text content
+HB_FUNC( GETCLIPBOARDTEXT )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retc( GetClipboardText() );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
-// void ShowCursor( void );
+// Cursor-related functions
+
+// void ShowCursor(void);                                      // Shows cursor
 HB_FUNC( SHOWCURSOR )
 {
    ShowCursor();
 }
 
-// void HideCursor( void );
+// void HideCursor(void);                                      // Hides cursor
 HB_FUNC( HIDECURSOR )
 {
    HideCursor();
 }
 
-// bool IsCursorHidden( void );
+// bool IsCursorHidden(void);                                  // Check if cursor is not visible
 HB_FUNC( ISCURSORHIDDEN )
 {
    hb_retl( IsCursorHidden() );
 }
 
-// void EnableCursor( void );
+// void EnableCursor(void);                                    // Enables cursor (unlock cursor)
 HB_FUNC( ENABLECURSOR )
 {
    EnableCursor();
 }
 
-// void DisableCursor( void );
+// void DisableCursor(void);                                   // Disables cursor (lock cursor)
 HB_FUNC( DISABLECURSOR )
 {
    DisableCursor();
 }
 
-/* --- Drawing-related functions --- */
+// bool IsCursorOnScreen(void);                                // Check if cursor is on the current screen.
+HB_FUNC( ISCURSORONSCREEN )
+{
+   hb_retl( IsCursorOnScreen() );
+}
 
-// void ClearBackground( Color color );
+
+// Drawing-related functions
+
+// void ClearBackground(Color color);                          // Set background color (framebuffer clear color)
 HB_FUNC( CLEARBACKGROUND )
 {
    PHB_ITEM pItem;
@@ -354,40 +445,39 @@ HB_FUNC( CLEARBACKGROUND )
    }
 }
 
-// void BeginDrawing( void );
+// void BeginDrawing(void);                                    // Setup canvas (framebuffer) to start drawing
 HB_FUNC( BEGINDRAWING )
 {
    BeginDrawing();
 }
 
-// void EndDrawing( void );
+// void EndDrawing(void);                                      // End canvas drawing and swap buffers (double buffering)
 HB_FUNC( ENDDRAWING )
 {
    EndDrawing();
 }
 
-// void BeginMode2D( Camera2D camera );
-// void EndMode2D( void );
-// void BeginMode3D( Camera3D camera );
-// void EndMode3D( void );
-// void BeginTextureMode( RenderTexture2D target );
-// void EndTextureMode( void );
-// void BeginScissorMode( int x, int y, int width, int height );
-// void EndScissorMode( void );
+// void BeginMode2D(Camera2D camera);                          // Initialize 2D mode with custom camera (2D)
+// void EndMode2D(void);                                       // Ends 2D mode with custom camera
+// void BeginMode3D(Camera3D camera);                          // Initializes 3D mode with custom camera (3D)
+// void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
+// void BeginTextureMode(RenderTexture2D target);              // Initializes render texture for drawing
+// void EndTextureMode(void);                                  // Ends drawing to render texture
+// void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
+// void EndScissorMode(void);                                  // End scissor mode
 
-/* --- Screen-space-related functions --- */
+// Screen-space-related functions
+// Ray GetMouseRay(Vector2 mousePosition, Camera camera);      // Returns a ray trace from mouse position
+// Matrix GetCameraMatrix(Camera camera);                      // Returns camera transform matrix (view matrix)
+// Matrix GetCameraMatrix2D(Camera2D camera);                  // Returns camera 2d transform matrix
+// Vector2 GetWorldToScreen(Vector3 position, Camera camera);  // Returns the screen space position for a 3d world space position
+// Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height); // Returns size position for a 3d world space position
+// Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera); // Returns the screen space position for a 2d camera world space position
+// Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera); // Returns the world space position for a 2d camera screen space position
 
-// Ray GetMouseRay( Vector2 mousePosition, Camera camera );
-// Matrix GetCameraMatrix( Camera camera );
-// Matrix GetCameraMatrix2D( Camera2D camera );
-// Vector2 GetWorldToScreen( Vector3 position, Camera camera );
-// Vector2 GetWorldToScreenEx( Vector3 position, Camera camera,int width, int height );
-// Vector2 GetWorldToScreen2D( Vector2 position, Camera2D camera );
-// Vector2 GetScreenToWorld2D( Vector2 position, Camera2D camera );
+// Timing-related functions
 
-/* --- Timing-related functions --- */
-
-// void SetTargetFPS( int fps );
+// void SetTargetFPS(int fps);                                 // Set target FPS (maximum)
 HB_FUNC( SETTARGETFPS )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -400,226 +490,27 @@ HB_FUNC( SETTARGETFPS )
    }
 }
 
-// int GetFPS( void );
+// int GetFPS(void);                                           // Returns current FPS
 HB_FUNC( GETFPS )
 {
    hb_retni( GetFPS() );
 }
 
-// float GetFrameTime( void );
+// float GetFrameTime(void);                                   // Returns time in seconds for last frame drawn
 HB_FUNC( GETFRAMETIME )
 {
    hb_retnd( GetFrameTime() );
 }
 
-// double GetTime( void );
+// double GetTime(void);                                       // Returns elapsed time in seconds since InitWindow()
 HB_FUNC( GetTime )
 {
    hb_retnd( GetTime() );
 }
 
-/* --- Color-related functions --- */
+// Misc. functions
 
-// int ColorToInt( Color color );
-HB_FUNC( COLORTOINT )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
-   {
-      Color color;
-
-      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
-      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
-      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
-      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
-
-      hb_retni( ColorToInt( color ) );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Vector4 ColorNormalize( Color color );
-HB_FUNC( COLORNORMALIZE )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
-   {
-      Color color;
-
-      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
-      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
-      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
-      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
-
-      Vector4 normalize = ColorNormalize( color );
-
-      PHB_ITEM info = hb_itemArrayNew( 4 );
-
-      hb_arraySetND( info, 1, ( float ) normalize.x );
-      hb_arraySetND( info, 2, ( float ) normalize.y );
-      hb_arraySetND( info, 3, ( float ) normalize.z );
-      hb_arraySetND( info, 4, ( float ) normalize.w );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Color ColorFromNormalized( Vector4 normalized );
-HB_FUNC( COLORFROMNORMALIZED )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
-   {
-      Vector4 normalized;
-
-      normalized.x = ( float ) hb_arrayGetNI( pItem, 1 );
-      normalized.y = ( float ) hb_arrayGetNI( pItem, 2 );
-      normalized.z = ( float ) hb_arrayGetNI( pItem, 3 );
-      normalized.w = ( float ) hb_arrayGetNI( pItem, 4 );
-
-      Color color = ColorFromNormalized( normalized );
-
-      PHB_ITEM info = hb_itemArrayNew( 4 );
-
-      hb_arraySetND( info, 1, ( unsigned char ) color.r );
-      hb_arraySetND( info, 2, ( unsigned char ) color.g );
-      hb_arraySetND( info, 3, ( unsigned char ) color.b );
-      hb_arraySetND( info, 4, ( unsigned char ) color.a );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Vector3 ColorToHSV( Color color );
-HB_FUNC( COLORTOHSV )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
-   {
-      Color color;
-
-      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
-      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
-      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
-      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
-
-      Vector3 vector3 = ColorToHSV( color );
-
-      PHB_ITEM info = hb_itemArrayNew( 3 );
-
-      hb_arraySetND( info, 1, ( float ) vector3.x );
-      hb_arraySetND( info, 2, ( float ) vector3.y );
-      hb_arraySetND( info, 3, ( float ) vector3.z );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Color ColorFromHSV( Vector3 hsv );
-HB_FUNC( COLORFROMHSV )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 3 )
-   {
-      Vector3 hsv;
-
-      hsv.x = ( float ) hb_arrayGetND( pItem, 1 );
-      hsv.y = ( float ) hb_arrayGetND( pItem, 2 );
-      hsv.z = ( float ) hb_arrayGetND( pItem, 3 );
-
-      Color color = ColorFromHSV( hsv );
-
-      PHB_ITEM info = hb_itemArrayNew( 4 );
-
-      hb_arraySetNI( info, 1, ( unsigned char ) color.r );
-      hb_arraySetNI( info, 2, ( unsigned char ) color.g );
-      hb_arraySetNI( info, 3, ( unsigned char ) color.b );
-      hb_arraySetNI( info, 4, ( unsigned char ) color.a );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Color GetColor( int hexValue );
-HB_FUNC( GETCOLOR )
-{
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
-   {
-      Color color = GetColor( hb_parni( 1 ) );
-
-      PHB_ITEM info = hb_itemArrayNew( 4 );
-
-      hb_arraySetNI( info, 1, ( unsigned char ) color.r );
-      hb_arraySetNI( info, 2, ( unsigned char ) color.g );
-      hb_arraySetNI( info, 3, ( unsigned char ) color.b );
-      hb_arraySetNI( info, 4, ( unsigned char ) color.a );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Color Fade( Color color, float alpha );
-HB_FUNC( FADE )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 && hb_param( 2, HB_IT_NUMERIC ) != NULL )
-   {
-      Color color;
-
-      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
-      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
-      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
-      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
-
-      Color ret = Fade( color, hb_parnd( 2 ) );
-
-      PHB_ITEM info = hb_itemArrayNew( 4 );
-
-      hb_arraySetNI( info, 1, ( unsigned char ) ret.r );
-      hb_arraySetNI( info, 2, ( unsigned char ) ret.g );
-      hb_arraySetNI( info, 3, ( unsigned char ) ret.b );
-      hb_arraySetNI( info, 4, ( unsigned char ) ret.a );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-/* --- Misc. functions --- */
-
-// void SetConfigFlags( unsigned int flags );
+// void SetConfigFlags(unsigned int flags);                    // Setup init configuration flags (view FLAGS)
 HB_FUNC( SETCONFIGFLAGS )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -632,7 +523,7 @@ HB_FUNC( SETCONFIGFLAGS )
    }
 }
 
-// void SetTraceLogLevel( int logType );
+// void SetTraceLogLevel(int logType);                         // Set the current threshold (minimum) log level
 HB_FUNC( SETTRACELOGLEVEL )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -645,7 +536,7 @@ HB_FUNC( SETTRACELOGLEVEL )
    }
 }
 
-// void SetTraceLogExit( int logType );
+// void SetTraceLogExit(int logType);                          // Set the exit threshold (minimum) log level
 HB_FUNC( SETTRACELOGEXIT )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -658,10 +549,22 @@ HB_FUNC( SETTRACELOGEXIT )
    }
 }
 
-// void SetTraceLogCallback( TraceLogCallback callback );
-// void TraceLog( int logType, const char *text, ...  );
+// void SetTraceLogCallback(TraceLogCallback callback);        // Set a trace log callback to enable custom logging
+// void TraceLog(int logType, const char *text, ...);          // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
 
-// void TakeScreenshot( const char *fileName );
+// void *MemAlloc(int size);                                   // Internal memory allocator
+HB_FUNC( MEMALLOC )
+{
+   hb_retptr( MemAlloc( hb_parni( 1 ) ) );
+}
+
+// void MemFree(void *ptr);                                    // Internal memory free
+HB_FUNC( MEMFREE )
+{
+   MemFree( hb_parptr( 1 ) );
+}
+
+// void TakeScreenshot(const char *fileName);                  // Takes a screenshot of current screen (saved a .png)
 HB_FUNC( TAKESCREENSHOT )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL )
@@ -674,7 +577,7 @@ HB_FUNC( TAKESCREENSHOT )
    }
 }
 
-// int GetRandomValue( int min, int max );
+// int GetRandomValue(int min, int max);                       // Returns a random value between min and max (both included)
 HB_FUNC( GETRANDOMVALUE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -687,48 +590,37 @@ HB_FUNC( GETRANDOMVALUE )
    }
 }
 
-/* --- Files management functions --- */
+// Files management functions
 
-// unsigned char *LoadFileData( const char *fileName, int *bytesRead );
-// void SaveFileData( const char *fileName, void *data, int bytesToWrite );
-// char *LoadFileText( const char *fileName );
-// void SaveFileText( const char *fileName, char *text );
-// bool FileExists( const char *fileName );
-// bool IsFileExtension( const char *fileName, const char *ext );
-// bool DirectoryExists( const char *dirPath );
-// const char *GetExtension( const char *fileName );
-// const char *GetFileName( const char *filePath );
-// const char *GetFileNameWithoutExt( const char *filePath );
-// const char *GetDirectoryPath( const char *filePath );
-// const char *GetPrevDirectoryPath( const char *dirPath );
-// const char *GetWorkingDirectory( void );
-// char **GetDirectoryFiles( const char *dirPath, int *count );
-// void ClearDirectoryFiles( void );
-// bool ChangeDirectory( const char *dir );
-// bool IsFileDropped( void );
-// char **GetDroppedFiles( int *count );
-// void ClearDroppedFiles( void );
-// long GetFileModTime( const char *fileName );
+// unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead);     // Load file data as byte array (read)
+// void UnloadFileData(unsigned char *data);                   // Unload file data allocated by LoadFileData()
+// bool SaveFileData(const char *fileName, // void *data, unsigned int bytesToWrite); // Save data to file from byte array (write), returns true on success
+// char *LoadFileText(const char *fileName);                   // Load text data from file (read), returns a '\0' terminated string
+// void UnloadFileText(unsigned char *text);                   // Unload file text data allocated by LoadFileText()
+// bool SaveFileText(const char *fileName, char *text);        // Save text data to file (write), string must be '\0' terminated, returns true on success
+// bool FileExists(const char *fileName);                      // Check if file exists
+// bool DirectoryExists(const char *dirPath);                  // Check if a directory path exists
+// bool IsFileExtension(const char *fileName, const char *ext);// Check file extension (including point: .png, .wav)
+// const char *GetFileExtension(const char *fileName);         // Get pointer to extension for a filename string (including point: ".png")
+// const char *GetFileName(const char *filePath);              // Get pointer to filename for a path string
+// const char *GetFileNameWithoutExt(const char *filePath);    // Get filename string without extension (uses static string)
+// const char *GetDirectoryPath(const char *filePath);         // Get full path for a given fileName with path (uses static string)
+// const char *GetPrevDirectoryPath(const char *dirPath);      // Get previous directory path for a given path (uses static string)
+// const char *GetWorkingDirectory(void);                      // Get current working directory (uses static string)
+// char **GetDirectoryFiles(const char *dirPath, int *count);  // Get filenames in a directory path (memory should be freed)
+// void ClearDirectoryFiles(void);                             // Clear directory files paths buffers (free memory)
+// bool ChangeDirectory(const char *dir);                      // Change working directory, return true on success
+// bool IsFileDropped(void);                                   // Check if a file has been dropped into window
+// char **GetDroppedFiles(int *count);                         // Get dropped files names (memory should be freed)
+// void ClearDroppedFiles(void);                               // Clear dropped files paths buffer (free memory)
+// long GetFileModTime(const char *fileName);                  // Get file modification time (last write time)
 
-// unsigned char *CompressData( unsigned char *data, int dataLength, int *compDataLength );
-// unsigned char *DecompressData( unsigned char *compData, int compDataLength, int *dataLength );
+// unsigned char *CompressData(unsigned char *data, int dataLength, int *compDataLength);        // Compress data (DEFLATE algorithm)
+// unsigned char *DecompressData(unsigned char *compData, int compDataLength, int *dataLength);  // Decompress data (DEFLATE algorithm)
 
-/* --- Persistent storage management --- */
+// Persistent storage management
 
-// int LoadStorageValue( int position );
-HB_FUNC( LOADSTORAGEVALUE )
-{
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
-   {
-      hb_retni( LoadStorageValue( hb_parni( 1 ) ) );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// void SaveStorageValue( int position, int value );
+// bool SaveStorageValue(unsigned int position, int value);    // Save integer value to storage file (to defined position), returns true on success
 HB_FUNC( SAVESTORAGEVALUE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -741,7 +633,20 @@ HB_FUNC( SAVESTORAGEVALUE )
    }
 }
 
-// void OpenURL( const char *url );
+// int LoadStorageValue(unsigned int position);                // Load integer value from storage file (from defined position)
+HB_FUNC( LOADSTORAGEVALUE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retni( LoadStorageValue( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void OpenURL(const char *url);                              // Open URL with default system browser (if available)
 HB_FUNC( OPENURL )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL )
@@ -755,12 +660,12 @@ HB_FUNC( OPENURL )
 }
 
 //------------------------------------------------------------------------------------
-// Input Handling Functions
+// Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
 
-/* --- Input-related functions: keyb --- */
+// Input-related functions: keyboard
 
-// bool IsKeyPressed( int key );
+// bool IsKeyPressed(int key);                             // Detect if a key has been pressed once
 HB_FUNC( ISKEYPRESSED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -773,7 +678,7 @@ HB_FUNC( ISKEYPRESSED )
    }
 }
 
-// bool IsKeyDown( int key );
+// bool IsKeyDown(int key);                                // Detect if a key is being pressed
 HB_FUNC( ISKEYDOWN )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -786,7 +691,7 @@ HB_FUNC( ISKEYDOWN )
    }
 }
 
-// bool IsKeyReleased( int key );
+// bool IsKeyReleased(int key);                            // Detect if a key has been released once
 HB_FUNC( ISKEYRELEASED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -799,7 +704,7 @@ HB_FUNC( ISKEYRELEASED )
    }
 }
 
-// bool IsKeyUp( int key );
+// bool IsKeyUp(int key);                                  // Detect if a key is NOT being pressed
 HB_FUNC( ISKEYUP )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -812,13 +717,7 @@ HB_FUNC( ISKEYUP )
    }
 }
 
-// int GetKeyPressed( void );
-HB_FUNC( GETKEYPRESSED )
-{
-   hb_retni( GetKeyPressed() );
-}
-
-// void SetExitKey( int key );
+// void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
 HB_FUNC( SETEXITKEY )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -831,9 +730,21 @@ HB_FUNC( SETEXITKEY )
    }
 }
 
-/* --- Input-related functions: gamepads --- */
+// int GetKeyPressed(void);                                // Get key pressed (keycode), call it multiple times for keys queued
+HB_FUNC( GETKEYPRESSED )
+{
+   hb_retni( GetKeyPressed() );
+}
 
-// bool IsGamepadAvailable( int gamepad );
+// int GetCharPressed(void);                               // Get char pressed (unicode), call it multiple times for chars queued
+HB_FUNC( GETCHARPRESSED )
+{
+   hb_retni( GetCharPressed() );
+}
+
+// Input-related functions: gamepads
+
+// bool IsGamepadAvailable(int gamepad);                   // Detect if a gamepad is available
 HB_FUNC( ISGAMEPADAVAILABLE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -846,7 +757,7 @@ HB_FUNC( ISGAMEPADAVAILABLE )
    }
 }
 
-// bool IsGamepadName( int gamepad, const char *name );
+// bool IsGamepadName(int gamepad, const char *name);      // Check gamepad name (if available)
 HB_FUNC( ISGAMEPADNAME )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
@@ -859,7 +770,7 @@ HB_FUNC( ISGAMEPADNAME )
    }
 }
 
-// const char *GetGamepadName( int gamepad );
+// const char *GetGamepadName(int gamepad);                // Return gamepad internal name id
 HB_FUNC( GETGAMEPADNAME )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -872,7 +783,7 @@ HB_FUNC( GETGAMEPADNAME )
    }
 }
 
-// bool IsGamepadButtonPressed( int gamepad, int button );
+// bool IsGamepadButtonPressed(int gamepad, int button);   // Detect if a gamepad button has been pressed once
 HB_FUNC( ISGAMEPADBUTTONPRESSED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -885,7 +796,7 @@ HB_FUNC( ISGAMEPADBUTTONPRESSED )
    }
 }
 
-// bool IsGamepadButtonDown( int gamepad, int button );
+// bool IsGamepadButtonDown(int gamepad, int button);      // Detect if a gamepad button is being pressed
 HB_FUNC( ISGAMEPADBUTTONDOWN )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -898,7 +809,7 @@ HB_FUNC( ISGAMEPADBUTTONDOWN )
    }
 }
 
-// bool IsGamepadButtonReleased( int gamepad, int button );
+// bool IsGamepadButtonReleased(int gamepad, int button);  // Detect if a gamepad button has been released once
 HB_FUNC( ISGAMEPADBUTTONRELEASED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -911,7 +822,7 @@ HB_FUNC( ISGAMEPADBUTTONRELEASED )
    }
 }
 
-// bool IsGamepadButtonUp( int gamepad, int button );
+// bool IsGamepadButtonUp(int gamepad, int button);        // Detect if a gamepad button is NOT being pressed
 HB_FUNC( ISGAMEPADBUTTONUP )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -924,13 +835,13 @@ HB_FUNC( ISGAMEPADBUTTONUP )
    }
 }
 
-// int GetGamepadButtonPressed( void );
+// int GetGamepadButtonPressed(void);                      // Get the last gamepad button pressed
 HB_FUNC( GETGAMEPADBUTTONPRESSED )
 {
    hb_retni( GetGamepadButtonPressed() );
 }
 
-// int GetGamepadAxisCount( int gamepad );
+// int GetGamepadAxisCount(int gamepad);                   // Return gamepad axis count for a gamepad
 HB_FUNC( GETGAMEPADAXISCOUNT )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -943,7 +854,7 @@ HB_FUNC( GETGAMEPADAXISCOUNT )
    }
 }
 
-// float GetGamepadAxisMovement( int gamepad, int axis );
+// float GetGamepadAxisMovement(int gamepad, int axis);    // Return axis movement value for a gamepad axis
 HB_FUNC( GETGAMEPADAXISMOVEMENT )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -956,9 +867,9 @@ HB_FUNC( GETGAMEPADAXISMOVEMENT )
    }
 }
 
-/* --- Input-related functions: mouse --- */
+// Input-related functions: mouse
 
-// bool IsMouseButtonPressed( int button );
+// bool IsMouseButtonPressed(int button);                  // Detect if a mouse button has been pressed once
 HB_FUNC( ISMOUSEBUTTONPRESSED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -971,7 +882,7 @@ HB_FUNC( ISMOUSEBUTTONPRESSED )
    }
 }
 
-// bool IsMouseButtonDown( int button );
+// bool IsMouseButtonDown(int button);                     // Detect if a mouse button is being pressed
 HB_FUNC( ISMOUSEBUTTONDOWN )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -984,7 +895,7 @@ HB_FUNC( ISMOUSEBUTTONDOWN )
    }
 }
 
-// bool IsMouseButtonReleased( int button );
+// bool IsMouseButtonReleased(int button);                 // Detect if a mouse button has been released once
 HB_FUNC( ISMOUSEBUTTONRELEASED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -997,7 +908,7 @@ HB_FUNC( ISMOUSEBUTTONRELEASED )
    }
 }
 
-// bool IsMouseButtonUp( int button );
+// bool IsMouseButtonUp(int button);                       // Detect if a mouse button is NOT being pressed
 HB_FUNC( ISMOUSEBUTTONUP )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -1010,19 +921,19 @@ HB_FUNC( ISMOUSEBUTTONUP )
    }
 }
 
-// int GetMouseX( void );
+// int GetMouseX(void);                                    // Returns mouse position X
 HB_FUNC( GETMOUSEX )
 {
    hb_retni( GetMouseX() );
 }
 
-// int GetMouseY( void );
+// int GetMouseY(void);                                    // Returns mouse position Y
 HB_FUNC( GETMOUSEY )
 {
    hb_retni( GetMouseY() );
 }
 
-// Vector2 GetMousePosition( void );
+// Vector2 GetMousePosition(void);                         // Returns mouse position XY
 HB_FUNC( GETMOUSEPOSITION )
 {
    PHB_ITEM info = hb_itemArrayNew( 2 );
@@ -1035,7 +946,7 @@ HB_FUNC( GETMOUSEPOSITION )
    hb_itemReturnRelease( info );
 }
 
-// void SetMousePosition( int x, int y );
+// void SetMousePosition(int x, int y);                    // Set mouse position XY
 HB_FUNC( SETMOUSEPOSITION )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -1048,7 +959,7 @@ HB_FUNC( SETMOUSEPOSITION )
    }
 }
 
-// void SetMouseOffset( int offsetX, int offsetY );
+// void SetMouseOffset(int offsetX, int offsetY);          // Set mouse offset
 HB_FUNC( SETMOUSEOFFSET )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
@@ -1061,7 +972,7 @@ HB_FUNC( SETMOUSEOFFSET )
    }
 }
 
-// void SetMouseScale( float scaleX, float scaleY );
+// void SetMouseScale(float scaleX, float scaleY);         // Set mouse scaling
 HB_FUNC( SETMOUSESCALE )
 {
    if( hb_param( 1, HB_IT_NUMERIC ) != NULL && hb_param( 2, HB_IT_NUMERIC ) != NULL )
@@ -1074,27 +985,39 @@ HB_FUNC( SETMOUSESCALE )
    }
 }
 
-// int GetMouseWheelMove( void );
+// float GetMouseWheelMove(void);                          // Returns mouse wheel movement Y
 HB_FUNC( GETMOUSEWHEELMOVE )
 {
    hb_retni( GetMouseWheelMove() );
 }
 
-/* --- Input-related functions: touch --- */
+// int GetMouseCursor(void);                               // Returns mouse cursor if (MouseCursor enum)
+HB_FUNC( GetMouseCursor )
+{
+   hb_retni( GetMouseCursor() );
+}
 
-// int GetTouchX( void );
+// void SetMouseCursor(int cursor);                        // Set mouse cursor
+HB_FUNC( SETMOUSECURSOR )
+{
+   SetMouseCursor( hb_parni( 1 ) );
+}
+
+// Input-related functions: touch
+
+// int GetTouchX(void);                                    // Returns touch position X for touch point 0 (relative to screen size)
 HB_FUNC( GetTouchX )
 {
    hb_retni( GetTouchX() );
 }
 
-// int GetTouchY( void );
+// int GetTouchY(void);                                    // Returns touch position Y for touch point 0 (relative to screen size)
 HB_FUNC( GETTOUCHY )
 {
    hb_retni( GetTouchY() );
 }
 
-// Vector2 GetTouchPosition( int index );
+// Vector2 GetTouchPosition(int index);                    // Returns touch position XY for a touch point index (relative to screen size)
 HB_FUNC( GETTOUCHPOSITION )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -1116,10 +1039,10 @@ HB_FUNC( GETTOUCHPOSITION )
 }
 
 //------------------------------------------------------------------------------------
-// Gestures and Touch Handling Functions ( Module: gestures )
+// Gestures and Touch Handling Functions (Module: gestures)
 //------------------------------------------------------------------------------------
 
-// void SetGesturesEnabled( unsigned int gestureFlags );
+// void SetGesturesEnabled(unsigned int gestureFlags);     // Enable a set of gestures using flags
 HB_FUNC( SETGESTURESENABLED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -1132,23 +1055,23 @@ HB_FUNC( SETGESTURESENABLED )
    }
 }
 
-// bool IsGestureDetected( int gesture );
-// int GetGestureDetected( void );
-// int GetTouchPointsCount( void );
-// float GetGestureHoldDuration( void );
-// Vector2 GetGestureDragVector( void );
-// float GetGestureDragAngle( void );
-// Vector2 GetGesturePinchVector( void );
-// float GetGesturePinchAngle( void );
+// bool IsGestureDetected(int gesture);                    // Check if a gesture have been detected
+// int GetGestureDetected(void);                           // Get latest detected gesture
+// int GetTouchPointsCount(void);                          // Get touch points count
+// float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
+// Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
+// float GetGestureDragAngle(void);                        // Get gesture drag angle
+// Vector2 GetGesturePinchVector(void);                    // Get gesture pinch delta
+// float GetGesturePinchAngle(void);                       // Get gesture pinch angle
 
 //------------------------------------------------------------------------------------
-// Camera System Functions ( Module: camera )
+// Camera System Functions (Module: camera)
 //------------------------------------------------------------------------------------
 
-// void SetCameraMode( Camera camera, int mode );
-// void UpdateCamera( Camera *camera );
+// void SetCameraMode(Camera camera, int mode);                // Set camera mode (multiple camera modes available)
+// void UpdateCamera(Camera *camera);                          // Update camera position for selected mode
 
-// void SetCameraPanControl( int panKey );
-// void SetCameraAltControl( int altKey );
-// void SetCameraSmoothZoomControl( int szKey );
-// void SetCameraMoveControls( int frontKey, int backKey, int rightKey, int leftKey, int upKey, int downKey );
+// void SetCameraPanControl(int keyPan);                       // Set camera pan key to combine with mouse movement (free camera)
+// void SetCameraAltControl(int keyAlt);                       // Set camera alt key to combine with mouse movement (free camera)
+// void SetCameraSmoothZoomControl(int keySmoothZoom);         // Set camera smooth zoom key to combine with mouse (free camera)
+// void SetCameraMoveControls(int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown); // Set camera move controls (1st person and 3rd person cameras)
