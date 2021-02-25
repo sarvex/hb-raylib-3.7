@@ -13,6 +13,7 @@
 //------------------------------------------------------------------------------------
 
 // Window-related functions
+
 // void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
 HB_FUNC( INITWINDOW )
 {
@@ -242,8 +243,8 @@ HB_FUNC( GETMONITORPOSITION )
 
       PHB_ITEM info = hb_itemArrayNew( 2 );
 
-      hb_arraySetNI( info, 1, vector2.x );
-      hb_arraySetNI( info, 2, vector2.y );
+      hb_arraySetNI( info, 1, ( float ) vector2.x );
+      hb_arraySetNI( info, 2, ( float ) vector2.y );
 
       hb_itemReturnRelease( info );
 
@@ -327,8 +328,8 @@ HB_FUNC( GETWINDOWPOSITION )
 
    Vector2 vector2 = GetWindowPosition();
 
-   hb_arraySetNI( info, 1, vector2.x );
-   hb_arraySetNI( info, 2, vector2.y );
+   hb_arraySetNI( info, 1, ( float ) vector2.x );
+   hb_arraySetNI( info, 2, ( float ) vector2.y );
 
    hb_itemReturnRelease( info );
 }
@@ -340,8 +341,8 @@ HB_FUNC( GetWindowScaleDPI )
 
    Vector2 vector2 = GetWindowScaleDPI();
 
-   hb_arraySetNI( info, 1, vector2.x );
-   hb_arraySetNI( info, 2, vector2.y );
+   hb_arraySetNI( info, 1, ( float ) vector2.x );
+   hb_arraySetNI( info, 2, ( float ) vector2.y );
 
    hb_itemReturnRelease( info );
 }
@@ -423,7 +424,6 @@ HB_FUNC( ISCURSORONSCREEN )
    hb_retl( IsCursorOnScreen() );
 }
 
-
 // Drawing-related functions
 
 // void ClearBackground(Color color);                          // Set background color (framebuffer clear color)
@@ -470,6 +470,7 @@ HB_FUNC( ENDDRAWING )
 // void EndScissorMode(void);                                  // End scissor mode
 
 // Screen-space-related functions
+
 // Ray GetMouseRay(Vector2 mousePosition, Camera camera);      // Returns a ray trace from mouse position
 // Matrix GetCameraMatrix(Camera camera);                      // Returns camera transform matrix (view matrix)
 // Matrix GetCameraMatrix2D(Camera2D camera);                  // Returns camera 2d transform matrix
@@ -502,7 +503,7 @@ HB_FUNC( GETFPS )
 // float GetFrameTime(void);                                   // Returns time in seconds for last frame drawn
 HB_FUNC( GETFRAMETIME )
 {
-   hb_retnd( GetFrameTime() );
+   hb_retnd( ( float ) GetFrameTime() );
 }
 
 // double GetTime(void);                                       // Returns elapsed time in seconds since InitWindow()
@@ -597,7 +598,7 @@ HB_FUNC( GETRANDOMVALUE )
 
 // unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead);     // Load file data as byte array (read)
 // void UnloadFileData(unsigned char *data);                   // Unload file data allocated by LoadFileData()
-// bool SaveFileData(const char *fileName, // void *data, unsigned int bytesToWrite); // Save data to file from byte array (write), returns true on success
+// bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite); // Save data to file from byte array (write), returns true on success
 // char *LoadFileText(const char *fileName);                   // Load text data from file (read), returns a '\0' terminated string
 // void UnloadFileText(unsigned char *text);                   // Unload file text data allocated by LoadFileText()
 // bool SaveFileText(const char *fileName, char *text);        // Save text data to file (write), string must be '\0' terminated, returns true on success
@@ -862,7 +863,7 @@ HB_FUNC( GETGAMEPADAXISMOVEMENT )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
    {
-      hb_retnd( GetGamepadAxisMovement( hb_parni( 1 ), hb_parni( 2 ) ) );
+      hb_retnd( ( float ) GetGamepadAxisMovement( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
    else
    {
@@ -943,8 +944,8 @@ HB_FUNC( GETMOUSEPOSITION )
 
    Vector2 vector2 = GetMousePosition();
 
-   hb_arraySetNI( info, 1, vector2.x );
-   hb_arraySetNI( info, 2, vector2.y );
+   hb_arraySetNI( info, 1, ( float ) vector2.x );
+   hb_arraySetNI( info, 2, ( float ) vector2.y );
 
    hb_itemReturnRelease( info );
 }
@@ -1029,11 +1030,10 @@ HB_FUNC( GETTOUCHPOSITION )
 
       PHB_ITEM info = hb_itemArrayNew( 2 );
 
-      hb_arraySetNI( info, 1, vector2.x );
-      hb_arraySetNI( info, 2, vector2.y );
+      hb_arraySetNI( info, 1, ( float ) vector2.x );
+      hb_arraySetNI( info, 2, ( float ) vector2.y );
 
       hb_itemReturnRelease( info );
-
    }
    else
    {
@@ -1059,13 +1059,73 @@ HB_FUNC( SETGESTURESENABLED )
 }
 
 // bool IsGestureDetected(int gesture);                    // Check if a gesture have been detected
+HB_FUNC( IsGestureDetected )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsGestureDetected( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // int GetGestureDetected(void);                           // Get latest detected gesture
+HB_FUNC( GetGestureDetected )
+{
+   hb_retni( GetGestureDetected() );
+}
+
 // int GetTouchPointsCount(void);                          // Get touch points count
+HB_FUNC( GetTouchPointsCount )
+{
+   hb_retni( GetTouchPointsCount() );
+}
+
 // float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
+HB_FUNC( GetGestureHoldDuration )
+{
+   hb_retnd( ( float ) GetGestureHoldDuration() );
+}
+
 // Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
+HB_FUNC( GetGestureDragVector )
+{
+   PHB_ITEM info = hb_itemArrayNew( 2 );
+
+   Vector2 vector2 = GetGestureDragVector();
+
+   hb_arraySetNI( info, 1, ( float ) vector2.x );
+   hb_arraySetNI( info, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( info );
+}
+
 // float GetGestureDragAngle(void);                        // Get gesture drag angle
+HB_FUNC( GETGESTUREDRAGANGLE )
+{
+   hb_retnd( ( float ) GetGestureDragAngle() );
+}
+
 // Vector2 GetGesturePinchVector(void);                    // Get gesture pinch delta
+HB_FUNC( GETGESTUREPINCHVECTOR )
+{
+   PHB_ITEM info = hb_itemArrayNew( 2 );
+
+   Vector2 vector2 = GetGesturePinchVector();
+
+   hb_arraySetNI( info, 1, ( float ) vector2.x );
+   hb_arraySetNI( info, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( info );
+}
+
 // float GetGesturePinchAngle(void);                       // Get gesture pinch angle
+HB_FUNC( GETGESTUREPINCHANGLE )
+{
+   hb_retnd( ( float ) GetGesturePinchAngle() );
+}
 
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: camera)
@@ -1075,6 +1135,58 @@ HB_FUNC( SETGESTURESENABLED )
 // void UpdateCamera(Camera *camera);                          // Update camera position for selected mode
 
 // void SetCameraPanControl(int keyPan);                       // Set camera pan key to combine with mouse movement (free camera)
+HB_FUNC( SETCAMERAPANCONTROL )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetCameraPanControl( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetCameraAltControl(int keyAlt);                       // Set camera alt key to combine with mouse movement (free camera)
+HB_FUNC( SETCAMERAALTCONTROL )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetCameraAltControl( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetCameraSmoothZoomControl(int keySmoothZoom);         // Set camera smooth zoom key to combine with mouse (free camera)
+HB_FUNC( SETCAMERASMOOTHZOOMCONTROL )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetCameraSmoothZoomControl( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetCameraMoveControls(int keyFront, int keyBack, int keyRight, int keyLeft, int keyUp, int keyDown); // Set camera move controls (1st person and 3rd person cameras)
+HB_FUNC( SetCameraMoveControls )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       hb_param( 6, HB_IT_INTEGER ) != NULL )
+   {
+      SetCameraMoveControls( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
