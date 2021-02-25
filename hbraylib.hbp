@@ -21,6 +21,7 @@
 -depincpath=raylib:/usr/local/include
 -depincpath=raylib:/opt/local/include
 -depincpath=raylib:/usr/local/opt/include
+-depimplibs=raylib:../bin/raylib.dll
 -depimplibs=raylib:../lib/libraylib.a
 -depimplibd=raylib:raylib
 -depfinish=raylib
