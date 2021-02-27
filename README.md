@@ -1,4 +1,4 @@
-# hb-raylib
+# hb-raylib v3.5
 
 **Harbour** bindings for raylib 3.5, a simple and easy to use library to learn videogames programming [**raylib v3.5**](https://www.raylib.com). The project has an educational nature - the main goal is to expand knowledge in the field of creating the aplications with the usege of Harbour programing language.
 
