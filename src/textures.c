@@ -330,7 +330,7 @@ HB_FUNC( GenImageGradientRadial )
       outer.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       outer.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      Image image = GenImageGradientRadial( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parni( 3 ), inner, outer );
+      Image image = GenImageGradientRadial( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ), inner, outer );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
@@ -399,7 +399,7 @@ HB_FUNC( GENIMAGEWHITENOISE )
        hb_param( 2, HB_IT_INTEGER ) != NULL &&
        hb_param( 3, HB_IT_NUMERIC ) != NULL )
    {
-      Image image = GenImageWhiteNoise( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parni( 3 ) );
+      Image image = GenImageWhiteNoise( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ) );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
@@ -426,7 +426,7 @@ HB_FUNC( GENIMAGEPERLINNOISE )
        hb_param( 4, HB_IT_INTEGER ) != NULL &&
        hb_param( 5, HB_IT_NUMERIC ) != NULL )
    {
-      Image image = GenImagePerlinNoise( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), ( float ) hb_parni( 5 ) );
+      Image image = GenImagePerlinNoise( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), ( float ) hb_parnd( 5 ) );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
@@ -469,7 +469,6 @@ HB_FUNC( GENIMAGECELLULAR )
    }
 }
 
-
 // Image manipulation functions
 
 // Image ImageCopy(Image image);                                                                      // Create an image duplicate (useful for transformations)
@@ -479,15 +478,15 @@ HB_FUNC( IMAGECOPY )
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
    {
-      Image imagePar;
+      Image image;
 
-      imagePar.data    =  hb_arrayGetPtr( pItem, 1 );
-      imagePar.width   =  hb_arrayGetNI( pItem, 2 );
-      imagePar.height  =  hb_arrayGetNI( pItem, 3 );
-      imagePar.mipmaps =  hb_arrayGetNI( pItem, 4 );
-      imagePar.format  =  hb_arrayGetNI( pItem, 5 );
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
 
-      Image imageRet = ImageCopy( imagePar );
+      Image imageRet = ImageCopy( image );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
@@ -506,28 +505,529 @@ HB_FUNC( IMAGECOPY )
 }
 
 // Image ImageFromImage(Image image, Rectangle rec);                                                  // Create an image from another image piece
+HB_FUNC( IMAGEFROMIMAGE )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Image imageRet = ImageFromImage( image, rec );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, imageRet.data );
+      hb_arraySetNI( info, 2, imageRet.width );
+      hb_arraySetNI( info, 3, imageRet.height );
+      hb_arraySetNI( info, 4, imageRet.mipmaps );
+      hb_arraySetNI( info, 5, imageRet.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Image ImageText(const char *text, int fontSize, Color color);                                      // Create an image from text (default font)
+HB_FUNC( IMAGETEXT )
+{
+     PHB_ITEM pItem;
+
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       ( pItem = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      Image image = ImageText( hb_parc( 1 ), hb_parni( 2 ), color );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint);         // Create an image from text (custom sprite font)
+
 // void ImageFormat(Image *image, int newFormat);                                                     // Convert image data to desired format
+HB_FUNC( IMAGEFORMAT )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
+        hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageFormat( &image, hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageToPOT(Image *image, Color fill);                                                         // Convert image to POT (power-of-two)
+HB_FUNC( IMAGETOPOT )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color fill;
+
+      fill.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      fill.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      fill.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      fill.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageToPOT( &image, fill );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageCrop(Image *image, Rectangle crop);                                                      // Crop an image to a defined rectangle
+HB_FUNC( IMAGECROP )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Rectangle crop;
+
+      crop.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      crop.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      crop.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      crop.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      ImageCrop( &image, crop );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageAlphaCrop(Image *image, float threshold);                                                // Crop image depending on alpha value
+HB_FUNC( IMAGEALPHACROP )
+{
+   PHB_ITEM pItem1;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 && hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      ImageAlphaCrop( &image, ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageAlphaClear(Image *image, Color color, float threshold);                                  // Clear alpha channel to desired color
+HB_FUNC( IMAGEALPHACLEAR )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 && hb_param( 3, HB_IT_NUMERIC ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageAlphaClear( &image, color, ( float ) hb_parnd( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageAlphaMask(Image *image, Image alphaMask);                                                // Apply alpha mask to image
+HB_FUNC( ImageAlphaMask )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Image alphaMask;
+
+      alphaMask.data    =  hb_arrayGetPtr( pItem2, 1 );
+      alphaMask.width   =  hb_arrayGetNI( pItem2, 2 );
+      alphaMask.height  =  hb_arrayGetNI( pItem2, 3 );
+      alphaMask.mipmaps =  hb_arrayGetNI( pItem2, 4 );
+      alphaMask.format  =  hb_arrayGetNI( pItem2, 5 );
+
+      ImageAlphaMask( &image, alphaMask );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageAlphaPremultiply(Image *image);                                                          // Premultiply alpha channel
+HB_FUNC( IMAGEALPHAPREMULTIPLY )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageAlphaPremultiply( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageResize(Image *image, int newWidth, int newHeight);                                       // Resize image (Bicubic scaling algorithm)
+HB_FUNC( IMAGERESIZE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageResize( &image, hb_parni( 2 ), hb_parni( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageResizeNN(Image *image, int newWidth,int newHeight);                                      // Resize image (Nearest-Neighbor scaling algorithm)
+HB_FUNC( IMAGERESIZENN )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageResizeNN( &image, hb_parni( 2 ), hb_parni( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageResizeCanvas(Image *image, int newWidth, int newHeight, int offsetX, int offsetY, Color fill);  // Resize canvas and fill with color
+HB_FUNC( IMAGERESIZECANVAS )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      hb_param( 5, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageResizeCanvas( &image, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageMipmaps(Image *image);                                                                   // Generate all mipmap levels for a provided image
+HB_FUNC( IMAGEMIPMAPS )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageMipmaps( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDither(Image *image, int rBpp, int gBpp, int bBpp, int aBpp);                            // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+HB_FUNC( IMAGEDITHER )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      hb_param( 5, HB_IT_INTEGER ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageDither( &image, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageFlipVertical(Image *image);                                                              // Flip image vertically
+HB_FUNC( IMAGEFLIPVERTICAL )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageFlipVertical( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageFlipHorizontal(Image *image);                                                            // Flip image horizontally
+HB_FUNC( IMAGEFLIPHORIZONTAL )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageFlipHorizontal( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageRotateCW(Image *image);                                                                  // Rotate image clockwise 90deg
+HB_FUNC( IMAGEROTATECW )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageRotateCW( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageRotateCCW(Image *image);                                                                 // Rotate image counter-clockwise 90deg
+HB_FUNC( IMAGEROTATECCW )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageRotateCCW( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageColorTint(Image *image, Color color);                                                    // Modify image color: tint
+
 // void ImageColorInvert(Image *image);                                                               // Modify image color: invert
+HB_FUNC( IMAGECOLORINVERT )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageColorInvert( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageColorGrayscale(Image *image);                                                            // Modify image color: grayscale
 // void ImageColorContrast(Image *image, float contrast);                                             // Modify image color: contrast (-100 to 100)
 // void ImageColorBrightness(Image *image, int brightness);                                           // Modify image color: brightness (-255 to 255)
