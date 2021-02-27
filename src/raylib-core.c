@@ -597,6 +597,7 @@ HB_FUNC( GETRANDOMVALUE )
 // Files management functions
 
 // unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead);     // Load file data as byte array (read)
+
 // void UnloadFileData(unsigned char *data);                   // Unload file data allocated by LoadFileData()
 // bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite); // Save data to file from byte array (write), returns true on success
 // char *LoadFileText(const char *fileName);                   // Load text data from file (read), returns a '\0' terminated string

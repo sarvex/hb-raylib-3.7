@@ -16,28 +16,499 @@
 // NOTE: This functions do not require GPU access
 
 // Image LoadImage(const char *fileName);                                                             // Load image from file into CPU memory (RAM)
+HB_FUNC( LOADIMAGE )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      Image image = LoadImage( hb_parc( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image LoadImageRaw(const char *fileName, int width, int height, int format, int headerSize);       // Load image from RAW file data
+HB_FUNC( LOADIMAGERAW )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      hb_param( 4, HB_IT_INTEGER ) != NULL &&
+      hb_param( 5, HB_IT_INTEGER ) != NULL )
+   {
+      Image image = LoadImageRaw( hb_parc( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image LoadImageAnim(const char *fileName, int *frames);                                            // Load image sequence from file (frames appended to image.data)
+HB_FUNC( LOADIMAGEANIM )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      int frames = hb_parni( 2 );
+      Image image = LoadImageAnim( hb_parc( 1 ), &frames );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image LoadImageFromMemory(const char *fileType, const unsigned char *fileData, int dataSize);      // Load image from memory buffer, fileType refers to extension: i.e. "png"
+HB_FUNC( LOADIMAGEFROMMEMORY )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      const unsigned char fileData = ( const unsigned char ) hb_parni( 2 );
+      Image image = LoadImageFromMemory( hb_parc( 1 ), &fileData, hb_parni( 3 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UnloadImage(Image image);                                                                     // Unload image from CPU memory (RAM)
+HB_FUNC( UNLOADIMAGE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      UnloadImage( image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool ExportImage(Image image, const char *fileName);                                               // Export image data to file, returns true on success
+HB_FUNC( EXPORTIMAGE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_STRING ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      hb_retl( ExportImage( image, hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool ExportImageAsCode(Image image, const char *fileName);                                         // Export image as code file defining an array of bytes, returns true on success
+HB_FUNC( EXPORTIMAGEASCODE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_STRING ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      hb_retl( ExportImageAsCode( image, hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Image generation functions
 
 // Image GenImageColor(int width, int height, Color color);                                           // Generate image: plain color
+HB_FUNC( GENIMAGECOLOR )
+{
+   PHB_ITEM pItem;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       ( pItem = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      Image image = GenImageColor( hb_parni( 1 ), hb_parni( 2 ), color );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImageGradientV(int width, int height, Color top, Color bottom);                           // Generate image: vertical gradient
+HB_FUNC( GENIMAGEGRADIENTV )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       ( pItem1 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+       ( pItem2 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Color top;
+
+      top.r = ( unsigned char ) hb_arrayGetNI( pItem1, 1 );
+      top.g = ( unsigned char ) hb_arrayGetNI( pItem1, 2 );
+      top.b = ( unsigned char ) hb_arrayGetNI( pItem1, 3 );
+      top.a = ( unsigned char ) hb_arrayGetNI( pItem1, 4 );
+
+      Color bottom;
+
+      bottom.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      bottom.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      bottom.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      bottom.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Image image = GenImageGradientV( hb_parni( 1 ), hb_parni( 2 ), top, bottom );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImageGradientH(int width, int height, Color left, Color right);                           // Generate image: horizontal gradient
+HB_FUNC( GENIMAGEGRADIENTH )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       ( pItem1 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+       ( pItem2 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Color left;
+
+      left.r = ( unsigned char ) hb_arrayGetNI( pItem1, 1 );
+      left.g = ( unsigned char ) hb_arrayGetNI( pItem1, 2 );
+      left.b = ( unsigned char ) hb_arrayGetNI( pItem1, 3 );
+      left.a = ( unsigned char ) hb_arrayGetNI( pItem1, 4 );
+
+      Color right;
+
+      right.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      right.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      right.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      right.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Image image = GenImageGradientH( hb_parni( 1 ), hb_parni( 2 ), left, right );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImageGradientRadial(int width, int height, float density, Color inner, Color outer);      // Generate image: radial gradient
+HB_FUNC( GenImageGradientRadial )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+       ( pItem1 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+       ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Color inner;
+
+      inner.r = ( unsigned char ) hb_arrayGetNI( pItem1, 1 );
+      inner.g = ( unsigned char ) hb_arrayGetNI( pItem1, 2 );
+      inner.b = ( unsigned char ) hb_arrayGetNI( pItem1, 3 );
+      inner.a = ( unsigned char ) hb_arrayGetNI( pItem1, 4 );
+
+      Color outer;
+
+      outer.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      outer.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      outer.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      outer.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Image image = GenImageGradientRadial( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parni( 3 ), inner, outer );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImageChecked(int width, int height, int checksX, int checksY, Color col1, Color col2);    // Generate image: checked
+HB_FUNC( GENIMAGECHECKED )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       ( pItem1 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 4 &&
+       ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Color col1;
+
+      col1.r = ( unsigned char ) hb_arrayGetNI( pItem1, 1 );
+      col1.g = ( unsigned char ) hb_arrayGetNI( pItem1, 2 );
+      col1.b = ( unsigned char ) hb_arrayGetNI( pItem1, 3 );
+      col1.a = ( unsigned char ) hb_arrayGetNI( pItem1, 4 );
+
+      Color col2;
+
+      col2.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      col2.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      col2.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      col2.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Image image = GenImageChecked( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), col1, col2 );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImageWhiteNoise(int width, int height, float factor);                                     // Generate image: white noise
+HB_FUNC( GENIMAGEWHITENOISE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_NUMERIC ) != NULL )
+   {
+      Image image = GenImageWhiteNoise( hb_parni( 1 ), hb_parni( 2 ), ( float ) hb_parni( 3 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImagePerlinNoise(int width, int height, int offsetX, int offsetY, float scale);           // Generate image: perlin noise
+HB_FUNC( GENIMAGEPERLINNOISE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       hb_param( 5, HB_IT_NUMERIC ) != NULL )
+   {
+      Image image = GenImagePerlinNoise( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), ( float ) hb_parni( 5 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GenImageCellular(int width, int height, int tileSize);                                       // Generate image: cellular algorithm. Bigger tileSize means bigger cells
+HB_FUNC( GENIMAGECELLULAR )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      Image image = GenImageCellular( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 
 // Image manipulation functions
+
 // Image ImageCopy(Image image);                                                                      // Create an image duplicate (useful for transformations)
+HB_FUNC( IMAGECOPY )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image imagePar;
+
+      imagePar.data    =  hb_arrayGetPtr( pItem, 1 );
+      imagePar.width   =  hb_arrayGetNI( pItem, 2 );
+      imagePar.height  =  hb_arrayGetNI( pItem, 3 );
+      imagePar.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      imagePar.format  =  hb_arrayGetNI( pItem, 5 );
+
+      Image imageRet = ImageCopy( imagePar );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, imageRet.data );
+      hb_arraySetNI( info, 2, imageRet.width );
+      hb_arraySetNI( info, 3, imageRet.height );
+      hb_arraySetNI( info, 4, imageRet.mipmaps );
+      hb_arraySetNI( info, 5, imageRet.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image ImageFromImage(Image image, Rectangle rec);                                                  // Create an image from another image piece
+
 // Image ImageText(const char *text, int fontSize, Color color);                                      // Create an image from text (default font)
+
 // Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint);         // Create an image from text (custom sprite font)
 // void ImageFormat(Image *image, int newFormat);                                                     // Convert image data to desired format
 // void ImageToPOT(Image *image, Color fill);                                                         // Convert image to POT (power-of-two)
