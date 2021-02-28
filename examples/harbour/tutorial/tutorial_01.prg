@@ -10,6 +10,9 @@ PROCEDURE Main()
 
    InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [ tutorial_01 ] SetConfigFlags()" )
 
+   SetWindowIcon( LoadImage( "../../../docs/assets/img/LogoWindow16x16.png" ) )
+
+
    SetTargetFPS( 60 )
 
    DO WHILE ! WindowShouldClose()
