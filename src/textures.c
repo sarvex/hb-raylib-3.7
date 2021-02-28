@@ -42,10 +42,10 @@ HB_FUNC( LOADIMAGE )
 HB_FUNC( LOADIMAGERAW )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
-      hb_param( 4, HB_IT_INTEGER ) != NULL &&
-      hb_param( 5, HB_IT_INTEGER ) != NULL )
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       hb_param( 5, HB_IT_INTEGER ) != NULL )
    {
       Image image = LoadImageRaw( hb_parc( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ) );
 
@@ -69,7 +69,7 @@ HB_FUNC( LOADIMAGERAW )
 HB_FUNC( LOADIMAGEANIM )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL )
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       int frames = hb_parni( 2 );
       Image image = LoadImageAnim( hb_parc( 1 ), &frames );
@@ -1108,7 +1108,7 @@ HB_FUNC( IMAGECOLORBRIGHTNESS )
 {
    PHB_ITEM pItem;
 
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_INTEGER ) != NULL)
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       Image image;
 
@@ -1248,18 +1248,505 @@ HB_FUNC( GETIMAGEALPHABORDER )
 // NOTE: Image software-rendering functions (CPU)
 
 // void ImageClearBackground(Image *dst, Color color);                                                // Clear image background with given color
+HB_FUNC( ImageClearBackground )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageClearBackground( &dst, color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawPixel(Image *dst, int posX, int posY, Color color);                                  // Draw pixel within an image
+HB_FUNC( IMAGEDRAWPIXEL )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+      hb_param( 2, HB_IT_INTEGER ) != NULL &&
+      hb_param( 3, HB_IT_INTEGER ) != NULL &&
+      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageDrawPixel( &dst, hb_parni( 2 ), hb_parni( 3 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawPixelV(Image *dst, Vector2 position, Color color);                                   // Draw pixel within an image (Vector version)
+HB_FUNC( IMAGEDRAWPIXELV )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      ImageDrawPixelV( &dst, position, color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawLine(Image *dst, int startPosX, int startPosY, int endPosX, int endPosY, Color color); // Draw line within an image
+HB_FUNC( IMAGEDRAWLINE )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 4, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageDrawLine( &dst, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawLineV(Image *dst, Vector2 start, Vector2 end, Color color);                          // Draw line within an image (Vector version)
+HB_FUNC( IMAGEDRAWLINEV )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+       ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 start;
+
+      start.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      start.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Vector2 end;
+
+      end.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      end.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      ImageDrawLineV( &dst, start, end, color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawCircle(Image *dst, int centerX, int centerY, int radius, Color color);               // Draw circle within an image
+HB_FUNC( IMAGEDRAWCIRCLE )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageDrawCircle( &dst, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawCircleV(Image *dst, Vector2 center, int radius, Color color);                        // Draw circle within an image (Vector version)
+HB_FUNC( IMAGEDRAWCIRCLEV )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 center;
+
+      center.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      ImageDrawCircleV( &dst, center, hb_parni( 3 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawRectangle(Image *dst, int posX, int posY, int width, int height, Color color);       // Draw rectangle within an image
+HB_FUNC( IMAGEDRAWRECTANGLE )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 4, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageDrawRectangle( &dst, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawRectangleV(Image *dst, Vector2 position, Vector2 size, Color color);                 // Draw rectangle within an image (Vector version)
+HB_FUNC( IMAGEDRAWRECTANGLEV )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+       ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Vector2 size;
+
+      size.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      size.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      ImageDrawRectangleV( &dst, position, size, color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawRectangleRec(Image *dst, Rectangle rec, Color color);                                // Draw rectangle within an image
+HB_FUNC( IMAGEDRAWRECTANGLEREC )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      ImageDrawRectangleRec( &dst, rec, color );
+
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawRectangleLines(Image *dst, Rectangle rec, int thick, Color color);                   // Draw rectangle lines within an image
+HB_FUNC( IMAGEDRAWRECTANGLELINES )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      ImageDrawRectangleLines( &dst, rec, hb_parni( 3 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDraw(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint);             // Draw a source image within a destination image (tint applied to source)
+HB_FUNC( IMAGEDRAW )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4, pItem5;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 5 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 &&
+       ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 &&
+       ( pItem5 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem5 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Image src;
+
+      src.data    =  hb_arrayGetPtr( pItem1, 1 );
+      src.width   =  hb_arrayGetNI( pItem1, 2 );
+      src.height  =  hb_arrayGetNI( pItem1, 3 );
+      src.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      src.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Rectangle srcRec;
+
+      srcRec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      srcRec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      srcRec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      srcRec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Rectangle dstRec;
+
+      dstRec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      dstRec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      dstRec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      dstRec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      ImageDraw( &dst, src, srcRec, dstRec, tint );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawText(Image *dst, const char *text, int posX, int posY, int fontSize, Color color);   // Draw text (using default font) within an image (destination)
+HB_FUNC( IMAGEDRAWTEXT )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+                  hb_param( 2, HB_IT_STRING ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 4, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageDrawText( &dst, hb_parc( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
 
 // Texture loading functions
