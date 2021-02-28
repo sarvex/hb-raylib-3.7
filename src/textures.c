@@ -1004,6 +1004,35 @@ HB_FUNC( IMAGEROTATECCW )
 }
 
 // void ImageColorTint(Image *image, Color color);                                                    // Modify image color: tint
+HB_FUNC( IMAGECOLORTINT )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      ImageColorTint( &image, color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void ImageColorInvert(Image *image);                                                               // Modify image color: invert
 HB_FUNC( IMAGECOLORINVERT )
@@ -1029,17 +1058,195 @@ HB_FUNC( IMAGECOLORINVERT )
 }
 
 // void ImageColorGrayscale(Image *image);                                                            // Modify image color: grayscale
+HB_FUNC( IMAGECOLORGRAYSCALE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageColorGrayscale( &image );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageColorContrast(Image *image, float contrast);                                             // Modify image color: contrast (-100 to 100)
+HB_FUNC( IMAGECOLORCONTRAST )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageColorContrast( &image, hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageColorBrightness(Image *image, int brightness);                                           // Modify image color: brightness (-255 to 255)
+HB_FUNC( IMAGECOLORBRIGHTNESS )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_INTEGER ) != NULL)
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      ImageColorBrightness( &image, hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ImageColorReplace(Image *image, Color color, Color replace);                                  // Modify image color: replace color
+HB_FUNC( IMAGECOLORREPLACE )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Color replace;
+
+      replace.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      replace.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      replace.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      replace.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      ImageColorReplace( &image, color, replace );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Color *LoadImageColors(Image image);                                                               // Load color data from image as a Color array (RGBA - 32bit)
 // Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorsCount);                        // Load colors palette from image as a Color array (RGBA - 32bit)
+
 // void UnloadImageColors(Color *colors);                                                             // Unload color data loaded with LoadImageColors()
+HB_FUNC( UNLOADIMAGECOLORS )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      UnloadImageColors( &color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UnloadImagePalette(Color *colors);                                                            // Unload colors palette loaded with LoadImagePalette()
+HB_FUNC( UNLOADIMAGEPALETTE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      UnloadImagePalette( &color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Rectangle GetImageAlphaBorder(Image image, float threshold);                                       // Get image alpha border rectangle
+HB_FUNC( GETIMAGEALPHABORDER )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      Rectangle rec = GetImageAlphaBorder( image, ( float ) hb_parnd( 2 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetND( info, 1, ( float ) rec.x );
+      hb_arraySetND( info, 2, ( float ) rec.y );
+      hb_arraySetND( info, 3, ( float ) rec.width );
+      hb_arraySetND( info, 4, ( float ) rec.height );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Image drawing functions
 // NOTE: Image software-rendering functions (CPU)
+
 // void ImageClearBackground(Image *dst, Color color);                                                // Clear image background with given color
 // void ImageDrawPixel(Image *dst, int posX, int posY, Color color);                                  // Draw pixel within an image
 // void ImageDrawPixelV(Image *dst, Vector2 position, Color color);                                   // Draw pixel within an image (Vector version)
