@@ -1810,9 +1810,115 @@ HB_FUNC( FADE )
 }
 
 // int ColorToInt(Color color);                                          // Returns hexadecimal value for a Color
+HB_FUNC( COLORTOINT )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      hb_retni( ColorToInt( color ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 // Vector4 ColorNormalize(Color color);                                  // Returns Color normalized as float [0..1]
+HB_FUNC( COLORNORMALIZE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      Vector4 normalize = ColorNormalize( color );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetND( info, 1, ( float ) normalize.x );
+      hb_arraySetND( info, 2, ( float ) normalize.y );
+      hb_arraySetND( info, 3, ( float ) normalize.z );
+      hb_arraySetND( info, 4, ( float ) normalize.w );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 // Color ColorFromNormalized(Vector4 normalized);                        // Returns Color from normalized values [0..1]
+HB_FUNC( COLORFROMNORMALIZED )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Vector4 normalized;
+
+      normalized.x = ( float ) hb_arrayGetNI( pItem, 1 );
+      normalized.y = ( float ) hb_arrayGetNI( pItem, 2 );
+      normalized.z = ( float ) hb_arrayGetNI( pItem, 3 );
+      normalized.w = ( float ) hb_arrayGetNI( pItem, 4 );
+
+      Color color = ColorFromNormalized( normalized );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetND( info, 1, ( unsigned char ) color.r );
+      hb_arraySetND( info, 2, ( unsigned char ) color.g );
+      hb_arraySetND( info, 3, ( unsigned char ) color.b );
+      hb_arraySetND( info, 4, ( unsigned char ) color.a );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 // Vector3 ColorToHSV(Color color);                                      // Returns HSV values for a Color
+HB_FUNC( COLORTOHSV )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      Vector3 vector3 = ColorToHSV( color );
+
+      PHB_ITEM info = hb_itemArrayNew( 3 );
+
+      hb_arraySetND( info, 1, ( float ) vector3.x );
+      hb_arraySetND( info, 2, ( float ) vector3.y );
+      hb_arraySetND( info, 3, ( float ) vector3.z );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Color ColorFromHSV(float hue, float saturation, float value);         // Returns a Color from HSV values
 HB_FUNC( COLORFROMHSV )
@@ -1842,6 +1948,26 @@ HB_FUNC( COLORFROMHSV )
 // Color ColorAlpha(Color color, float alpha);                           // Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 // Color ColorAlphaBlend(Color dst, Color src, Color tint);              // Returns src alpha-blended into dst color with tint
 // Color GetColor(int hexValue);                                         // Get Color structure from hexadecimal value
+HB_FUNC( GETCOLOR )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      Color color = GetColor( hb_parni( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetNI( info, 1, ( unsigned char ) color.r );
+      hb_arraySetNI( info, 2, ( unsigned char ) color.g );
+      hb_arraySetNI( info, 3, ( unsigned char ) color.b );
+      hb_arraySetNI( info, 4, ( unsigned char ) color.a );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 // Color GetPixelColor(void *srcPtr, int format);                        // Get Color from a source pixel pointer of certain format
 // void SetPixelColor(void *dstPtr, Color color, int format);            // Set color formatted into destination pixel pointer
 // int GetPixelDataSize(int width, int height, int format);              // Get pixel data size in bytes for certain format

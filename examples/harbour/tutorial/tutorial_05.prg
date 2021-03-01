@@ -16,8 +16,9 @@ PROCEDURE Main()
 
       BeginDrawing()
 
-      ClearBackground( ColorFromHSV( { 0.00, 0.00, 0.20 } ) )
+     ClearBackground( ColorFromHSV( 54.5,0.75, 0.9 ))
 
+     
       EndDrawing()
 
    ENDDO
