@@ -1813,7 +1813,32 @@ HB_FUNC( FADE )
 // Vector4 ColorNormalize(Color color);                                  // Returns Color normalized as float [0..1]
 // Color ColorFromNormalized(Vector4 normalized);                        // Returns Color from normalized values [0..1]
 // Vector3 ColorToHSV(Color color);                                      // Returns HSV values for a Color
+
 // Color ColorFromHSV(float hue, float saturation, float value);         // Returns a Color from HSV values
+HB_FUNC( COLORFROMHSV )
+{
+   if( hb_param( 1, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 3, HB_IT_NUMERIC ) != NULL )
+   {
+
+      Color color = ColorFromHSV( ( float ) hb_parnd( 1 ), ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetNI( info, 1, ( unsigned char ) color.r );
+      hb_arraySetNI( info, 2, ( unsigned char ) color.g );
+      hb_arraySetNI( info, 3, ( unsigned char ) color.b );
+      hb_arraySetNI( info, 4, ( unsigned char ) color.a );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Color ColorAlpha(Color color, float alpha);                           // Returns color with alpha applied, alpha goes from 0.0f to 1.0f
 // Color ColorAlphaBlend(Color dst, Color src, Color tint);              // Returns src alpha-blended into dst color with tint
 // Color GetColor(int hexValue);                                         // Get Color structure from hexadecimal value
