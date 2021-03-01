@@ -81,7 +81,7 @@ PROCEDURE Main()
 
       DrawFPS( 10, 10 )
 
-       EndDrawing()
+      EndDrawing()
 
    ENDDO
 

@@ -23,8 +23,8 @@ PROCEDURE Main()
 
       EndDrawing()
 
-      ENDDO
+   ENDDO
 
-    CloseWindow()
+   CloseWindow()
 
    RETURN

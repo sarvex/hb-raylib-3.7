@@ -1777,7 +1777,38 @@ HB_FUNC( IMAGEDRAWTEXT )
 // void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint);  // Draws a texture (or part of it) that stretches or shrinks nicely
 
 // Color/pixel related functions
+
 // Color Fade(Color color, float alpha);                                 // Returns color with alpha applied, alpha goes from 0.0f to 1.0f
+HB_FUNC( FADE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 && hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      Color colorRet = Fade( color, ( float ) hb_parnd( 2 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 4 );
+
+      hb_arraySetNI( info, 1, ( unsigned char ) colorRet.r );
+      hb_arraySetNI( info, 2, ( unsigned char ) colorRet.g );
+      hb_arraySetNI( info, 3, ( unsigned char ) colorRet.b );
+      hb_arraySetNI( info, 4, ( unsigned char ) colorRet.a );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // int ColorToInt(Color color);                                          // Returns hexadecimal value for a Color
 // Vector4 ColorNormalize(Color color);                                  // Returns Color normalized as float [0..1]
 // Color ColorFromNormalized(Vector4 normalized);                        // Returns Color from normalized values [0..1]
