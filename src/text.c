@@ -71,6 +71,18 @@ HB_FUNC( DRAWTEXT )
 
 // Text misc. functions
 // int MeasureText(const char *text, int fontSize);                                      // Measure string width for default font
+HB_FUNC( MEASURETEXT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retni( MeasureText( hb_parc( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Vector2 MeasureTextEx(Font font, const char *text, float fontSize, float spacing);    // Measure string size for Font
 // int GetGlyphIndex(Font font, int codepoint);                                          // Get index position for a unicode character on font
 
@@ -79,7 +91,20 @@ HB_FUNC( DRAWTEXT )
 // int TextCopy(char *dst, const char *src);                                             // Copy one string to another, returns bytes copied
 // bool TextIsEqual(const char *text1, const char *text2);                               // Check if two text string are equal
 // unsigned int TextLength(const char *text);                                            // Get text length, checks for '\0' ending
+
 // const char *TextFormat(const char *text, ...);                                        // Text formatting with variables (sprintf style)
+HB_FUNC( TEXTFORMAT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retc( TextFormat( hb_parc( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *TextSubtext(const char *text, int position, int length);                  // Get a piece of a text string
 HB_FUNC( TEXTSUBTEXT )
 {
