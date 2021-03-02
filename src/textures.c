@@ -71,8 +71,9 @@ HB_FUNC( LOADIMAGEANIM )
    if( hb_param( 1, HB_IT_STRING ) != NULL &&
        hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
-      int frames = hb_parni( 2 );
+      int frames;
       Image image = LoadImageAnim( hb_parc( 1 ), &frames );
+      hb_storni( frames, 2 );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
