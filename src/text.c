@@ -88,9 +88,34 @@ HB_FUNC( MEASURETEXT )
 
 // Text strings management functions (no utf8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
+
 // int TextCopy(char *dst, const char *src);                                             // Copy one string to another, returns bytes copied
+
 // bool TextIsEqual(const char *text1, const char *text2);                               // Check if two text string are equal
+HB_FUNC( TEXTISEQUAL )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL )
+   {
+      hb_retl( TextIsEqual( hb_parc( 1 ), hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // unsigned int TextLength(const char *text);                                            // Get text length, checks for '\0' ending
+HB_FUNC( TEXTLENGTH )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retni( ( unsigned int ) TextLength( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // const char *TextFormat(const char *text, ...);                                        // Text formatting with variables (sprintf style)
 HB_FUNC( TEXTFORMAT )
@@ -123,15 +148,117 @@ HB_FUNC( TEXTSUBTEXT )
 // const char *TextJoin(const char **textList, int count, const char *delimiter);        // Join text strings with delimiter
 // const char **TextSplit(const char *text, char delimiter, int *count);                 // Split text into multiple strings
 // void TextAppend(char *text, const char *append, int *position);                       // Append text at specific position and move cursor!
+
 // int TextFindIndex(const char *text, const char *find);                                // Find first text occurrence within a string
+HB_FUNC( TEXTFINDINDEX )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL )
+   {
+      hb_retni( TextFindIndex( hb_parc( 1 ), hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *TextToUpper(const char *text);                      // Get upper case version of provided string
+HB_FUNC( TEXTTOUPPER )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( TextToUpper( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *TextToLower(const char *text);                      // Get lower case version of provided string
+HB_FUNC( TEXTTOLOWER )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( TextToLower( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *TextToPascal(const char *text);                     // Get Pascal case notation version of provided string
+HB_FUNC( TEXTTOPASCAL )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( TextToPascal( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // int TextToInteger(const char *text);                            // Get integer value from text (negative values not supported)
+HB_FUNC( TEXTTOINTEGER )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retni( TextToInteger( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // char *TextToUtf8(int *codepoints, int length);                  // Encode text codepoint into utf8 text (memory must be freed!)
 
 // UTF8 text strings management functions
+
 // int *GetCodepoints(const char *text, int *count);               // Get all codepoints in a string, codepoints count returned by parameters
+
 // int GetCodepointsCount(const char *text);                       // Get total number of characters (codepoints) in a UTF8 encoded string
+HB_FUNC( GETCODEPOINTSCOUNT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retni( GetCodepointsCount( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // int GetNextCodepoint(const char *text, int *bytesProcessed);    // Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure
+HB_FUNC( GETNEXTCODEPOINT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      int bytesProcessed;
+      hb_retni( GetNextCodepoint( hb_parc( 1 ), &bytesProcessed ) );
+      hb_storni( bytesProcessed, 2 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *CodepointToUtf8(int codepoint, int *byteLength);    // Encode codepoint into utf8 text (char array length returned as parameter)
+HB_FUNC( CODEPOINTTOUTF8 )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      int byteLength;
+      hb_retc( CodepointToUtf8( hb_parni( 1 ), &byteLength ) );
+      hb_storni( byteLength, 2 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
