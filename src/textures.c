@@ -1751,13 +1751,144 @@ HB_FUNC( IMAGEDRAWTEXT )
 
 // Texture loading functions
 // NOTE: These functions require GPU access
+
 // Texture2D LoadTexture(const char *fileName);                                                       // Load texture from file into GPU memory (VRAM)
+HB_FUNC( LOADTEXTURE )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      Texture2D texture2d = LoadTexture( hb_parc( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetNI( info, 1, ( unsigned int ) texture2d.id );
+      hb_arraySetNI( info, 2, texture2d.width );
+      hb_arraySetNI( info, 3, texture2d.height );
+      hb_arraySetNI( info, 4, texture2d.mipmaps );
+      hb_arraySetNI( info, 5, texture2d.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Texture2D LoadTextureFromImage(Image image);                                                       // Load texture from image data
+HB_FUNC( LOADTEXTUREFROMIMAGE )
+{
+    PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      Texture2D texture2d = LoadTextureFromImage( image );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetNI( info, 1, ( unsigned int ) texture2d.id );
+      hb_arraySetNI( info, 2, texture2d.width );
+      hb_arraySetNI( info, 3, texture2d.height );
+      hb_arraySetNI( info, 4, texture2d.mipmaps );
+      hb_arraySetNI( info, 5, texture2d.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // TextureCubemap LoadTextureCubemap(Image image, int layoutType);                                    // Load cubemap from image, multiple image cubemap layouts supported
+HB_FUNC( LOADTEXTURECUBEMAP )
+{
+    PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.width   =  hb_arrayGetNI( pItem, 2 );
+      image.height  =  hb_arrayGetNI( pItem, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem, 4 );
+      image.format  =  hb_arrayGetNI( pItem, 5 );
+
+      TextureCubemap texturecubemap = LoadTextureCubemap( image, hb_parni( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetNI( info, 1, ( unsigned int ) texturecubemap.id );
+      hb_arraySetNI( info, 2, texturecubemap.width );
+      hb_arraySetNI( info, 3, texturecubemap.height );
+      hb_arraySetNI( info, 4, texturecubemap.mipmaps );
+      hb_arraySetNI( info, 5, texturecubemap.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // RenderTexture2D LoadRenderTexture(int width, int height);                                          // Load texture for rendering (framebuffer)
 // void UnloadTexture(Texture2D texture);                                                             // Unload texture from GPU memory (VRAM)
+HB_FUNC( UNLOADTEXTURE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      texture.width   = hb_arrayGetNI( pItem, 2 );
+      texture.height  = hb_arrayGetNI( pItem, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
+      texture.format  = hb_arrayGetNI( pItem, 5 );
+
+      UnloadTexture( texture );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UnloadRenderTexture(RenderTexture2D target);                                                  // Unload render texture from GPU memory (VRAM)
 // void UpdateTexture(Texture2D texture, const void *pixels);                                         // Update GPU texture with new data
+HB_FUNC( UPDATETEXTURE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      texture.width   = hb_arrayGetNI( pItem, 2 );
+      texture.height  = hb_arrayGetNI( pItem, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
+      texture.format  = hb_arrayGetNI( pItem, 5 );
+
+      UpdateTexture( texture, hb_parptr( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
 // Image GetTextureData(Texture2D texture);                                                           // Get pixel data from GPU texture and return an Image
 // Image GetScreenData(void);                                                                         // Get pixel data from screen buffer and return an Image (screenshot)
