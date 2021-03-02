@@ -344,7 +344,7 @@ void UnloadWaveSamples( float *samples );
 
 ```
 
-Unload samples data loaded with LoadWaveSamples(  )
+Unload samples data loaded with LoadWaveSamples()
 
 ---
 

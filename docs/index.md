@@ -7,9 +7,11 @@ title: "hb-raylib"
 
 ![Logo](assets/img/harbour_raylib.svg)
 
-**hb-raylib** is a cross-platform open-source software development library. The library is meant to create graphical applications and games. The source code is written in C Language. It supports compilation to many target platforms, including Windows, GNU Linux, macOS, FreeBSD, Android.
+**hb-raylib v3.5** is a cross-platform open-source software development library. The library is meant to create graphical applications and games. The source code is written in C Language. It supports compilation to many target platforms, including Windows, GNU Linux, macOS, FreeBSD, Android.
 
 View the project on [GitHub](https://github.com/rjopek/hb-raylib)
+
+### Function reference v3.5
 
 > - [module: audio](audio "module: audio")
 > - [module: core](core "module: core")
@@ -20,7 +22,6 @@ View the project on [GitHub](https://github.com/rjopek/hb-raylib)
 > - [module: textures](textures "module: textures")
 > - [colors](colors "colors")
 > - [structs](structs "structs")
-
 
 ### Example code
 
@@ -59,12 +60,14 @@ PROCEDURE Main()
 
 ![](assets/img/core/core_basic_window.png)
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](LICENSE.md)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](LICENSE)
+
+This site is based on the original [RayLib v3.5](https://www.raylib.com/cheatsheet/cheatsheet.html) documentation.
 
 License MIT is obviously applied only for this repository, not what it builds.
 
-<br>
-<br>
-<br>
+&copy; 2020 - 2021 Rafał Jopek
 
-> &copy; 2020 - 2021 Rafał Jopek
+<br>
+<br>
+<br>

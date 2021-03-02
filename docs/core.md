@@ -1,4 +1,5 @@
 ---
+layout: default
 title: module core
 permalink: core
 ---
@@ -55,42 +56,6 @@ Check if window has been initialized successfully
 
 ---
 
-#### IsWindowMinimized()
-
-```c
-
-bool IsWindowMinimized( void );
-
-```
-
-Check if window has been minimized (or lost focus)
-
----
-
-#### IsWindowResized()
-
-```c
-
-bool IsWindowResized( void );
-
-```
-
-Check if window has been resized
-
----
-
-#### IsWindowHidden()
-
-```c
-
-bool IsWindowHidden( void );
-
-```
-
-Check if window is currently hidden
-
----
-
 #### IsWindowFullscreen()
 
 ```c
@@ -103,6 +68,102 @@ Check if window is currently fullscreen
 
 ---
 
+#### IsWindowHidden()
+
+```c
+
+bool IsWindowHidden( void );
+
+```
+
+Check if window is currently hidden ( only PLATFORM_DESKTOP )
+
+---
+
+#### IsWindowMinimized()
+
+```c
+
+bool IsWindowMinimized( void );
+
+```
+
+Check if window is currently minimized ( only PLATFORM_DESKTOP )
+
+---
+
+#### IsWindowMaximized()
+
+```c
+
+bool IsWindowMaximized( void );
+
+```
+
+Check if window is currently maximized ( only PLATFORM_DESKTOP )
+
+---
+
+#### IsWindowFocused()
+
+```c
+
+bool IsWindowFocused( void );
+
+```
+
+Check if window is currently focused ( only PLATFORM_DESKTOP )
+
+---
+
+#### IsWindowResized()
+
+```c
+
+bool IsWindowResized( void );
+
+```
+
+Check if window has been resized last frame
+
+---
+
+#### IsWindowState()
+
+```c
+
+bool IsWindowState( unsigned int flag );
+
+```
+
+Check if one specific window flag is enabled
+
+---
+
+#### SetWindowState()
+
+```c
+
+void SetWindowState( unsigned int flags );
+
+```
+
+Set window configuration state using flags
+
+---
+
+#### ClearWindowState()
+
+```c
+
+void ClearWindowState( unsigned int flags );
+
+```
+
+Clear window configuration state flags
+
+---
+
 #### ToggleFullscreen()
 
 ```c
@@ -111,31 +172,43 @@ void ToggleFullscreen( void );
 
 ```
 
-Toggle fullscreen mode (only PLATFORM_DESKTOP)
+Toggle window state: fullscreen/windowed ( only PLATFORM_DESKTOP )
 
 ---
 
-#### UnhideWindow()
+#### MaximizeWindow()
 
 ```c
 
-void UnhideWindow( void );
+void MaximizeWindow( void );
 
 ```
 
-Show the window
+Set window state: maximized, if resizable ( only PLATFORM_DESKTOP )
 
 ---
 
-#### HideWindow()
+#### MinimizeWindow()
 
 ```c
 
-void HideWindow( void );
+void MinimizeWindow( void );
 
 ```
 
-Hide the window
+Set window state: minimized, if resizable ( only PLATFORM_DESKTOP )
+
+---
+
+#### RestoreWindow()
+
+```c
+
+void RestoreWindow( void );
+
+```
+
+Set window state: not minimized/maximized ( only PLATFORM_DESKTOP )
 
 ---
 
@@ -147,7 +220,7 @@ void SetWindowIcon( Image image );
 
 ```
 
-Set icon for window (only PLATFORM_DESKTOP)
+Set icon for window ( only PLATFORM_DESKTOP )
 
 ---
 
@@ -159,7 +232,7 @@ void SetWindowTitle( const char *title );
 
 ```
 
-Set title for window (only PLATFORM_DESKTOP)
+Set title for window ( only PLATFORM_DESKTOP )
 
 ---
 
@@ -171,7 +244,7 @@ void SetWindowPosition( int x, int y );
 
 ```
 
-Set window position on screen (only PLATFORM_DESKTOP)
+Set window position on screen ( only PLATFORM_DESKTOP )
 
 ---
 
@@ -183,7 +256,7 @@ void SetWindowMonitor( int monitor );
 
 ```
 
-Set monitor for the current window (fullscreen mode)
+Set monitor for the current window ( fullscreen mode )
 
 ---
 
@@ -195,7 +268,7 @@ void SetWindowMinSize( int width, int height );
 
 ```
 
-Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+Set window minimum dimensions ( for FLAG_WINDOW_RESIZABLE )
 
 ---
 
@@ -259,6 +332,18 @@ Get number of connected monitors
 
 ---
 
+#### GetMonitorPosition()
+
+```c
+
+Vector2 GetMonitorPosition( int monitor );
+
+```
+
+Get specified monitor position
+
+---
+
 #### GetMonitorWidth()
 
 ```c
@@ -267,7 +352,7 @@ int GetMonitorWidth( int monitor );
 
 ```
 
-Get primary monitor width
+Get specified monitor width
 
 ---
 
@@ -279,7 +364,7 @@ int GetMonitorHeight( int monitor );
 
 ```
 
-Get primary monitor height
+Get specified monitor height
 
 ---
 
@@ -291,7 +376,7 @@ int GetMonitorPhysicalWidth( int monitor );
 
 ```
 
-Get primary monitor physical width in millimetres
+Get specified monitor physical width in millimetres
 
 ---
 
@@ -303,7 +388,19 @@ int GetMonitorPhysicalHeight( int monitor );
 
 ```
 
-Get primary monitor physical height in millimetres
+Get specified monitor physical height in millimetres
+
+---
+
+#### GetMonitorRefreshRate()
+
+```c
+
+int GetMonitorRefreshRate( int monitor );
+
+```
+
+Get specified monitor refresh rate
 
 ---
 
@@ -319,7 +416,19 @@ Get window position XY on monitor
 
 ---
 
-#### GetMonitorName()
+#### GetWindowScaleDPI()
+
+```c
+
+Vector2 GetWindowScaleDPI( void );
+
+```
+
+Get window scale DPI factor
+
+---
+
+GetMonitorName()
 
 ```c
 
@@ -328,18 +437,6 @@ const char *GetMonitorName( int monitor );
 ```
 
 Get the human-readable, UTF-8 encoded name of the primary monitor
-
----
-
-#### GetClipboardText()
-
-```c
-
-const char *GetClipboardText( void );
-
-```
-
-Get clipboard text content
 
 ---
 
@@ -352,6 +449,18 @@ void SetClipboardText( const char *text );
 ```
 
 Set clipboard text content
+
+---
+
+#### GetClipboardText()
+
+```c
+
+const char *GetClipboardText( void );
+
+```
+
+Get clipboard text content
 
 ---
 
@@ -401,7 +510,7 @@ void EnableCursor( void );
 
 ```
 
-Enables cursor (unlock cursor)
+Enables cursor ( unlock cursor )
 
 ---
 
@@ -413,7 +522,19 @@ void DisableCursor( void );
 
 ```
 
-Disables cursor (lock cursor)
+Disables cursor ( lock cursor )
+
+---
+
+#### IsCursorOnScreen()
+
+```c
+
+bool IsCursorOnScreen( void );
+
+```
+
+Check if cursor is on the current screen.
 
 ---
 
@@ -427,7 +548,7 @@ void ClearBackground( Color color );
 
 ```
 
-Set background color (framebuffer clear color)
+Set background color ( framebuffer clear color )
 
 ---
 
@@ -439,7 +560,7 @@ void BeginDrawing( void );
 
 ```
 
-Setup canvas (framebuffer) to start drawing
+Setup canvas ( framebuffer ) to start drawing
 
 ---
 
@@ -451,7 +572,7 @@ void EndDrawing( void );
 
 ```
 
-End canvas drawing and swap buffers (double buffering)
+End canvas drawing and swap buffers ( double buffering )
 
 ---
 
@@ -463,7 +584,7 @@ void BeginMode2D( Camera2D camera );
 
 ```
 
-Initialize 2D mode with custom camera (2D)
+Initialize 2D mode with custom camera ( 2D )
 
 ---
 
@@ -487,7 +608,7 @@ void BeginMode3D( Camera3D camera );
 
 ```
 
-Initializes 3D mode with custom camera (3D)
+Initializes 3D mode with custom camera ( 3D )
 
 ---
 
@@ -535,7 +656,7 @@ void BeginScissorMode( int x, int y, int width, int height );
 
 ```
 
-Begin scissor mode (define screen area for following drawing)
+Begin scissor mode ( define screen area for following drawing )
 
 ---
 
@@ -573,7 +694,7 @@ Matrix GetCameraMatrix( Camera camera );
 
 ```
 
-Returns camera transform matrix (view matrix)
+Returns camera transform matrix ( view matrix )
 
 ---
 
@@ -647,7 +768,7 @@ void SetTargetFPS( int fps );
 
 ```
 
-Set target FPS (maximum)
+Set target FPS ( maximum )
 
 ---
 
@@ -683,93 +804,7 @@ double GetTime( void );
 
 ```
 
-Returns elapsed time in seconds since InitWindow()
-
----
-
-## Color-related functions
-
-#### ColorToInt()
-
-```c
-
-int ColorToInt( Color color );
-
-```
-
-Returns hexadecimal value for a Color
-
----
-
-#### ColorNormalize()
-
-```c
-
-Vector4 ColorNormalize( Color color );
-
-```
-
-Returns color normalized as float [0..1]
-
----
-
-#### ColorFromNormalized()
-
-```c
-
-Color ColorFromNormalized( Vector4 normalized );
-
-```
-
-Returns color from normalized values [0..1]
-
----
-
-#### ColorToHSV()
-
-```c
-
-Vector3 ColorToHSV( Color color );
-
-```
-
-Returns HSV values for a Color
-
----
-
-#### ColorFromHSV()
-
-```c
-
-Color ColorFromHSV( Vector3 hsv );
-
-```
-
-Returns a Color from HSV values
-
----
-
-#### GetColor()
-
-```c
-
-Color GetColor( int hexValue );
-
-```
-
-Returns a Color struct from hexadecimal value
-
----
-
-#### Fade()
-
-```c
-
-Color Fade( Color color, float alpha );
-
-```
-
-Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
+Returns elapsed time in seconds since InitWindow( )
 
 ---
 
@@ -783,7 +818,7 @@ void SetConfigFlags( unsigned int flags );
 
 ```
 
-Setup window configuration flags (view FLAGS)
+Setup init configuration flags ( view FLAGS )
 
 ---
 
@@ -795,7 +830,7 @@ void SetTraceLogLevel( int logType );
 
 ```
 
-Set the current threshold (minimum) log level
+Set the current threshold ( minimum ) log level
 
 ---
 
@@ -807,7 +842,7 @@ void SetTraceLogExit( int logType );
 
 ```
 
-Set the exit threshold (minimum) log level
+Set the exit threshold ( minimum ) log level
 
 ---
 
@@ -831,7 +866,31 @@ void TraceLog( int logType, const char *text, ... );
 
 ```
 
-Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
+Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR )
+
+---
+
+#### MemAlloc()
+
+```c
+
+void *MemAlloc( int size );
+
+```
+
+Internal memory allocator
+
+---
+
+#### MemFree()
+
+```c
+
+void MemFree( void *ptr );
+
+```
+
+Internal memory free
 
 ---
 
@@ -843,7 +902,7 @@ void TakeScreenshot( const char *fileName );
 
 ```
 
-Takes a screenshot of current screen (saved a .png)
+Takes a screenshot of current screen ( saved a .png )
 
 ---
 
@@ -855,7 +914,7 @@ int GetRandomValue( int min, int max );
 
 ```
 
-Returns a random value between min and max (both included)
+Returns a random value between min and max ( both included )
 
 ---
 
@@ -869,7 +928,19 @@ unsigned char *LoadFileData( const char *fileName, unsigned int *bytesRead );
 
 ```
 
-Load file data as byte array (read)
+Load file data as byte array ( read )
+
+---
+
+#### UnloadFileData()
+
+```c
+
+void UnloadFileData( unsigned char *data );
+
+```
+
+Unload file data allocated by LoadFileData( )
 
 ---
 
@@ -877,11 +948,11 @@ Load file data as byte array (read)
 
 ```c
 
-void SaveFileData( const char *fileName, void *data, unsigned int bytesToWrite );
+bool SaveFileData( const char *fileName, void *data, unsigned int bytesToWrite );
 
 ```
 
-Save data to file from byte array (write)
+Save data to file from byte array ( write ), returns true on success
 
 ---
 
@@ -893,7 +964,19 @@ char *LoadFileText( const char *fileName );
 
 ```
 
-Load text data from file (read), returns a '\0' terminated string
+Load text data from file ( read ), returns a '\0' terminated string
+
+---
+
+#### UnloadFileText()
+
+```c
+
+void UnloadFileText( unsigned char *text );
+
+```
+
+Unload file text data allocated by LoadFileText( )
 
 ---
 
@@ -901,11 +984,11 @@ Load text data from file (read), returns a '\0' terminated string
 
 ```c
 
-void SaveFileText( const char *fileName, char *text );
+bool SaveFileText( const char *fileName, char *text );
 
 ```
 
-Save text data to file (write), string must be '\0' terminated
+Save text data to file ( write ), string must be '\0' terminated, returns true on success
 
 ---
 
@@ -921,18 +1004,6 @@ Check if file exists
 
 ---
 
-#### IsFileExtension()
-
-```c
-
-bool IsFileExtension( const char *fileName, const char *ext );
-
-```
-
-Check file extension
-
----
-
 #### DirectoryExists()
 
 ```c
@@ -945,15 +1016,27 @@ Check if a directory path exists
 
 ---
 
-#### GetExtension()
+#### IsFileExtension()
 
 ```c
 
-const char *GetExtension( const char *fileName );
+bool IsFileExtension( const char *fileName, const char *ext );
 
 ```
 
-Get pointer to extension for a filename string
+Check file extension ( including point: .png, .wav )
+
+---
+
+#### GetFileExtension()
+
+```c
+
+const char *GetFileExtension( const char *fileName );
+
+```
+
+Get pointer to extension for a filename string ( including point: ".png" )
 
 ---
 
@@ -977,7 +1060,7 @@ const char *GetFileNameWithoutExt( const char *filePath );
 
 ```
 
-Get filename string without extension (uses static string)
+Get filename string without extension ( uses static string )
 
 ---
 
@@ -989,7 +1072,7 @@ const char *GetDirectoryPath( const char *filePath );
 
 ```
 
-Get full path for a given fileName with path (uses static string)
+Get full path for a given fileName with path ( uses static string )
 
 ---
 
@@ -1001,7 +1084,7 @@ const char *GetPrevDirectoryPath( const char *dirPath );
 
 ```
 
-Get previous directory path for a given path (uses static string)
+Get previous directory path for a given path ( uses static string )
 
 ---
 
@@ -1013,7 +1096,9 @@ const char *GetWorkingDirectory( void );
 
 ```
 
-Get current working directory (uses static string)
+Get current working directory ( uses static string )
+
+---
 
 #### GetDirectoryFiles()
 
@@ -1023,7 +1108,7 @@ char **GetDirectoryFiles( const char *dirPath, int *count );
 
 ```
 
-Get filenames in a directory path (memory should be freed)
+Get filenames in a directory path ( memory should be freed )
 
 ---
 
@@ -1035,7 +1120,7 @@ void ClearDirectoryFiles( void );
 
 ```
 
-Clear directory files paths buffers (free memory)
+Clear directory files paths buffers ( free memory )
 
 ---
 
@@ -1047,7 +1132,7 @@ bool ChangeDirectory( const char *dir );
 
 ```
 
-Change working directory, returns true if success
+Change working directory, return true on success
 
 ---
 
@@ -1071,7 +1156,7 @@ char **GetDroppedFiles( int *count );
 
 ```
 
-Get dropped files names (memory should be freed)
+Get dropped files names ( memory should be freed )
 
 ---
 
@@ -1083,7 +1168,7 @@ void ClearDroppedFiles( void );
 
 ```
 
-Clear dropped files paths buffer (free memory)
+Clear dropped files paths buffer ( free memory )
 
 ---
 
@@ -1095,7 +1180,7 @@ long GetFileModTime( const char *fileName );
 
 ```
 
-Get file modification time (last write time)
+Get file modification time ( last write time )
 
 ---
 
@@ -1107,7 +1192,7 @@ unsigned char *CompressData( unsigned char *data, int dataLength, int *compDataL
 
 ```
 
-Compress data (DEFLATE algorythm)
+Compress data ( DEFLATE algorithm )
 
 ---
 
@@ -1119,21 +1204,21 @@ unsigned char *DecompressData( unsigned char *compData, int compDataLength, int 
 
 ```
 
-Decompress data (DEFLATE algorythm)
+Decompress data ( DEFLATE algorithm )
 
 ---
 
 ## Persistent storage management
 
-#### SaveStorageValue()
+SaveStorageValue
 
 ```c
 
-void SaveStorageValue( unsigned int position, int value );
+bool SaveStorageValue( unsigned int position, int value );
 
 ```
 
-Save integer value to storage file (to defined position)
+Save integer value to storage file ( to defined position ), returns true on success
 
 ---
 
@@ -1145,7 +1230,7 @@ int LoadStorageValue( unsigned int position );
 
 ```
 
-Load integer value from storage file (from defined position)
+Load integer value from storage file ( from defined position )
 
 ---
 
@@ -1157,13 +1242,13 @@ void OpenURL( const char *url );
 
 ```
 
-Open URL with default system browser (if available)
+Open URL with default system browser ( if available )
 
 ---
 
-> Input Handling Functions
+# Input Handling Functions ( Module: core )
 
-## Input-related functions: keyb
+## Input-related functions: keyboard
 
 #### IsKeyPressed()
 
@@ -1213,18 +1298,6 @@ Detect if a key is NOT being pressed
 
 ---
 
-#### GetKeyPressed()
-
-```c
-
-int GetKeyPressed( void );
-
-```
-
-Get latest key pressed
-
----
-
 #### SetExitKey()
 
 ```c
@@ -1233,7 +1306,31 @@ void SetExitKey( int key );
 
 ```
 
-Set a custom key to exit program (default is ESC)
+Set a custom key to exit program ( default is ESC )
+
+---
+
+#### GetKeyPressed()
+
+```c
+
+int GetKeyPressed( void );
+
+```
+
+Get key pressed ( keycode ), call it multiple times for keys queued
+
+---
+
+#### GetCharPressed()
+
+```c
+
+int GetCharPressed( void );
+
+```
+
+Get char pressed ( unicode ), call it multiple times for chars queued
 
 ---
 
@@ -1259,7 +1356,7 @@ bool IsGamepadName( int gamepad, const char *name );
 
 ```
 
-Check gamepad name (if available)
+Check gamepad name ( if available )
 
 ---
 
@@ -1323,7 +1420,7 @@ Detect if a gamepad button is NOT being pressed
 
 ---
 
-### GetGamepadButtonPressed()
+#### GetGamepadButtonPressed()
 
 ```c
 
@@ -1435,7 +1532,8 @@ Returns mouse position Y
 
 #### GetMousePosition()
 
-```
+```c
+
 Vector2 GetMousePosition( void );
 
 ```
@@ -1484,11 +1582,35 @@ Set mouse scaling
 
 ```c
 
-int GetMouseWheelMove( void );
+float GetMouseWheelMove( void );
 
 ```
 
 Returns mouse wheel movement Y
+
+---
+
+#### GetMouseCursor()
+
+```c
+
+int GetMouseCursor( void );
+
+```
+
+Returns mouse cursor if ( MouseCursor enum )
+
+---
+
+#### SetMouseCursor()
+
+```c
+
+void SetMouseCursor( int cursor );
+
+```
+
+Set mouse cursor
 
 ---
 
@@ -1502,7 +1624,7 @@ int GetTouchX( void );
 
 ```
 
-Returns touch position X for touch point 0 (relative to screen size)
+Returns touch position X for touch point 0 ( relative to screen size )
 
 ---
 
@@ -1514,7 +1636,7 @@ int GetTouchY( void );
 
 ```
 
-Returns touch position Y for touch point 0 (relative to screen size)
+Returns touch position Y for touch point 0 ( relative to screen size )
 
 ---
 
@@ -1526,11 +1648,11 @@ Vector2 GetTouchPosition( int index );
 
 ```
 
-Returns touch position XY for a touch point index (relative to screen size)
+Returns touch position XY for a touch point index ( relative to screen size )
 
 ---
 
-> Gestures and Touch Handling Functions (Module: gestures)
+# Gestures and Touch Handling Functions ( Module: gestures )
 
 #### SetGesturesEnabled()
 
@@ -1640,7 +1762,7 @@ Get gesture pinch angle
 
 ---
 
-> Camera System Functions (Module: camera)
+# Camera System Functions ( Module: camera )
 
 #### SetCameraMode()
 
@@ -1650,7 +1772,7 @@ void SetCameraMode( Camera camera, int mode );
 
 ```
 
-Set camera mode (multiple camera modes available)
+Set camera mode ( multiple camera modes available )
 
 ---
 
@@ -1670,11 +1792,11 @@ Update camera position for selected mode
 
 ```c
 
-void SetCameraPanControl( int panKey );
+void SetCameraPanControl( int keyPan );
 
 ```
 
-Set camera pan key to combine with mouse movement (free camera)
+Set camera pan key to combine with mouse movement ( free camera )
 
 ---
 
@@ -1682,11 +1804,11 @@ Set camera pan key to combine with mouse movement (free camera)
 
 ```c
 
-void SetCameraAltControl( int altKey );
+void SetCameraAltControl( int keyAlt );
 
 ```
 
-Set camera alt key to combine with mouse movement (free camera)
+Set camera alt key to combine with mouse movement ( free camera )
 
 ---
 
@@ -1694,11 +1816,11 @@ Set camera alt key to combine with mouse movement (free camera)
 
 ```c
 
-void SetCameraSmoothZoomControl( int szKey );
+void SetCameraSmoothZoomControl( int keySmoothZoom );
 
 ```
 
-Set camera smooth zoom key to combine with mouse (free camera)
+Set camera smooth zoom key to combine with mouse ( free camera )
 
 ---
 
@@ -1710,6 +1832,4 @@ void SetCameraMoveControls( int frontKey, int backKey, int rightKey, int leftKey
 
 ```
 
-Set camera move controls (1st person and 3rd person cameras)
-
----
+Set camera move controls ( 1st person and 3rd person cameras )

@@ -36,3 +36,5 @@ permalink: colors
 #define RAYWHITE   (Color){ 245, 245, 245, 255 }        // Ray White
 
 ```
+
+---

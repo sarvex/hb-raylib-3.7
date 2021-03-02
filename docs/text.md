@@ -20,7 +20,7 @@ Get the default Font
 
 ---
 
-### LoadFont()
+#### LoadFont()
 
 ```c
 
@@ -28,7 +28,7 @@ Font LoadFont( const char *fileName );
 
 ```
 
-Load font from file into GPU memory (VRAM)
+Load font from file into GPU memory ( VRAM )
 
 ---
 
@@ -52,7 +52,19 @@ Font LoadFontFromImage( Image image, Color key, int firstChar );
 
 ```
 
-Load font from Image (XNA style)
+Load font from Image ( XNA style )
+
+---
+
+#### LoadFontFromMemory()
+
+```c
+
+Font LoadFontFromMemory( const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int charsCount );
+
+```
+
+Load font from memory buffer
 
 ---
 
@@ -60,7 +72,7 @@ Load font from Image (XNA style)
 
 ```c
 
-CharInfo *LoadFontData( const char *fileName, int fontSize, int *fontChars, int charsCount, int type );
+CharInfo *LoadFontData( const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int charsCount, int type );
 
 ```
 
@@ -80,6 +92,18 @@ Generate image font atlas using chars info
 
 ---
 
+#### UnloadFontData()
+
+```c
+
+void UnloadFontData( CharInfo *chars, int charsCount );
+
+```
+
+Unload font chars info data ( RAM )
+
+---
+
 #### UnloadFont()
 
 ```c
@@ -88,7 +112,7 @@ void UnloadFont( Font font );
 
 ```
 
-Unload Font from GPU memory (VRAM)
+Unload Font from GPU memory ( VRAM )
 
 ---
 
@@ -114,7 +138,7 @@ void DrawText( const char *text, int posX, int posY, int fontSize, Color color )
 
 ```
 
-Draw text (using default font)
+Draw text ( using default font )
 
 ---
 
@@ -146,8 +170,7 @@ Draw text using font inside rectangle limits
 
 ```c
 
-void DrawTextRecEx( Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, olor
-selectTint, Color selectBackTint );
+void DrawTextRecEx( Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint );
 
 ```
 
@@ -159,11 +182,11 @@ Draw text using font inside rectangle limits with support for text selection
 
 ```c
 
-void DrawTextCodepoint( Font font, int codepoint, Vector2 position, float scale, Color tint );
+void DrawTextCodepoint( Font font, int codepoint, Vector2 position, float fontSize, Color tint );
 
 ```
 
-Draw one character (codepoint)
+Draw one character ( codepoint )
 
 ---
 
@@ -205,7 +228,7 @@ Get index position for a unicode character on font
 
 ---
 
-## Text strings management functions (no utf8 strings, only byte chars)
+## Text strings management functions ( no utf8 strings, only byte chars )
 
 > NOTE: Some strings allocate memory internally for returned strings, just be careful!
 
@@ -253,7 +276,7 @@ const char *TextFormat( const char *text, ... );
 
 ```
 
-Text formatting with variables (sprintf style)
+Text formatting with variables ( sprintf style )
 
 ---
 
@@ -277,7 +300,7 @@ char *TextReplace( char *text, const char *replace, const char *by );
 
 ```
 
-Replace text string (memory must be freed!)
+Replace text string ( memory must be freed! )
 
 ---
 
@@ -289,7 +312,7 @@ char *TextInsert( const char *text, const char *insert, int position );
 
 ```
 
-Insert text in a position (memory must be freed!)
+Insert text in a position ( memory must be freed! )
 
 ---
 
@@ -305,7 +328,7 @@ Join text strings with delimiter
 
 ---
 
-### TextSplit()
+#### TextSplit()
 
 ```c
 
@@ -385,7 +408,7 @@ int TextToInteger( const char *text );
 
 ```
 
-Get integer value from text (negative values not supported)
+Get integer value from text ( negative values not supported )
 
 ---
 
@@ -397,7 +420,7 @@ char *TextToUtf8( int *codepoints, int length );
 
 ```
 
-Encode text codepoint into utf8 text (memory must be freed!)
+Encode text codepoint into utf8 text ( memory must be freed! )
 
 ---
 
@@ -423,7 +446,7 @@ int GetCodepointsCount( const char *text );
 
 ```
 
-Get total number of characters (codepoints) in a UTF8 encoded string
+Get total number of characters ( codepoints ) in a UTF8 encoded string
 
 ---
 
@@ -435,7 +458,7 @@ int GetNextCodepoint( const char *text, int *bytesProcessed );
 
 ```
 
-Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure
+Returns next codepoint in a UTF8 encoded string; 0x3f( '?' ) is returned on failure
 
 ---
 
@@ -447,6 +470,6 @@ const char *CodepointToUtf8( int codepoint, int *byteLength );
 
 ```
 
-Encode codepoint into utf8 text (char array length returned as parameter)
+Encode codepoint into utf8 text ( char array length returned as parameter )
 
 ---

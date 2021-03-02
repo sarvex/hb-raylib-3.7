@@ -84,7 +84,7 @@ Draw a line using cubic-bezier curves in-out
 
 ```c
 
-void DrawLineStrip( Vector2 *points, int numPoints, Color color );
+void DrawLineStrip( Vector2 *points, int pointsCount, Color color );
 
 ```
 
@@ -372,7 +372,7 @@ Draw triangle outline (vertex in counter-clockwise order!)
 
 ```c
 
-void DrawTriangleFan( Vector2 *points, int numPoints, Color color );
+void DrawTriangleFan( Vector2 *points, int pointsCount, Color color );
 
 ```
 
@@ -454,18 +454,6 @@ Check collision between circle and rectangle
 
 ---
 
-#### GetCollisionRec()
-
-```c
-
-Rectangle GetCollisionRec( Rectangle rec1, Rectangle rec2 );
-
-```
-
-Get collision rectangle for two rectangles collision
-
----
-
 #### CheckCollisionPointRec()
 
 ```c
@@ -499,5 +487,27 @@ bool CheckCollisionPointTriangle( Vector2 point, Vector2 p1, Vector2 p2, Vector2
 ```
 
 Check if point is inside a triangle
+
+---
+
+#### CheckCollisionLines()
+
+````c
+
+bool CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 *collisionPoint);
+
+Check the collision between two lines
+
+---
+
+#### GetCollisionRec()
+
+```c
+
+Rectangle GetCollisionRec( Rectangle rec1, Rectangle rec2 );
+
+````
+
+## Get collision rectangle for two rectangles collision
 
 ---

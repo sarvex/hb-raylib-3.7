@@ -1,7 +1,7 @@
 ---
 layout: default
 title: License
-permalink: License
+permalink: LICENSE
 ---
 
 MIT License
