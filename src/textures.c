@@ -1927,7 +1927,6 @@ HB_FUNC( COLORFROMHSV )
        hb_param( 2, HB_IT_NUMERIC ) != NULL &&
        hb_param( 3, HB_IT_NUMERIC ) != NULL )
    {
-
       Color color = ColorFromHSV( ( float ) hb_parnd( 1 ), ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ) );
 
       PHB_ITEM info = hb_itemArrayNew( 4 );
