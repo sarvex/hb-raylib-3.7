@@ -28,9 +28,10 @@ PROCEDURE Main()
       mousePosition := GetMousePosition()
 
       IF CheckCollisionPointRec( mousePosition, rec ) .AND. ;
-         CheckCollisionPointRec( mousePosition, { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ] - MOUSE_SCALE_MARK_SIZE, ;
-                                                rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] - MOUSE_SCALE_MARK_SIZE, ;
-                                                MOUSE_SCALE_MARK_SIZE, MOUSE_SCALE_MARK_SIZE } )
+            CheckCollisionPointRec( mousePosition, { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ] - MOUSE_SCALE_MARK_SIZE, ;
+            rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] - MOUSE_SCALE_MARK_SIZE, ;
+            MOUSE_SCALE_MARK_SIZE, MOUSE_SCALE_MARK_SIZE } )
+            
          mouseScaleReady := .T.
 
          IF IsMouseButtonPressed( MOUSE_LEFT_BUTTON )
@@ -56,7 +57,7 @@ PROCEDURE Main()
             rec[ RECTANGLE_HEIGHT ] := MOUSE_SCALE_MARK_SIZE
          ENDIF
 
-         if IsMouseButtonReleased( MOUSE_LEFT_BUTTON )
+         IF IsMouseButtonReleased( MOUSE_LEFT_BUTTON )
             mouseScaleMode := .F.
          ENDIF
       ENDIF
@@ -69,12 +70,12 @@ PROCEDURE Main()
 
       DrawRectangleRec( rec, Fade( GREEN, 0.5 ) )
 
-      if mouseScaleReady
+      IF mouseScaleReady
 
          DrawRectangleLinesEx( rec, 1, RED )
 
-         DrawTriangle( { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ] - MOUSE_SCALE_MARK_SIZE, rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] },;
-                       { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] },;
+         DrawTriangle( { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ] - MOUSE_SCALE_MARK_SIZE, rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] }, ;
+                       { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] }, ;
                        { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] - MOUSE_SCALE_MARK_SIZE }, RED )
       ENDIF
 
@@ -82,6 +83,6 @@ PROCEDURE Main()
 
    ENDDO
 
-    CloseWindow()
+   CloseWindow()
 
    RETURN
