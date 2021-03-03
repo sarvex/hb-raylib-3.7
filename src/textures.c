@@ -2,7 +2,7 @@
  * RayLib library: textures.c
  * version 3.5
  *
- * Copyright 2020 Rafał Jopek ( rafaljopek at hotmail com )
+ * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
 
@@ -1843,6 +1843,7 @@ HB_FUNC( LOADTEXTURECUBEMAP )
 }
 
 // RenderTexture2D LoadRenderTexture(int width, int height);                                          // Load texture for rendering (framebuffer)
+
 // void UnloadTexture(Texture2D texture);                                                             // Unload texture from GPU memory (VRAM)
 HB_FUNC( UNLOADTEXTURE )
 {
@@ -1867,6 +1868,7 @@ HB_FUNC( UNLOADTEXTURE )
 }
 
 // void UnloadRenderTexture(RenderTexture2D target);                                                  // Unload render texture from GPU memory (VRAM)
+
 // void UpdateTexture(Texture2D texture, const void *pixels);                                         // Update GPU texture with new data
 HB_FUNC( UPDATETEXTURE )
 {
@@ -1891,10 +1893,89 @@ HB_FUNC( UPDATETEXTURE )
 }
 
 // void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
+HB_FUNC( UPDATETEXTUREREC )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+                  hb_param( 3, HB_IT_POINTER ) != NULL )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem1, 1 );
+      texture.width   = hb_arrayGetNI( pItem1, 2 );
+      texture.height  = hb_arrayGetNI( pItem1, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem1, 4 );
+      texture.format  = hb_arrayGetNI( pItem1, 5 );
+
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      UpdateTextureRec( texture, rec, hb_parptr( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GetTextureData(Texture2D texture);                                                           // Get pixel data from GPU texture and return an Image
+HB_FUNC( GETTEXTUREDATA )
+{
+     PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      texture.width   = hb_arrayGetNI( pItem, 2 );
+      texture.height  = hb_arrayGetNI( pItem, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
+      texture.format  = hb_arrayGetNI( pItem, 5 );
+
+      Image image = GetTextureData( texture );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( info, 1, image.data );
+      hb_arraySetNI( info, 2, image.width );
+      hb_arraySetNI( info, 3, image.height );
+      hb_arraySetNI( info, 4, image.mipmaps );
+      hb_arraySetNI( info, 5, image.format );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Image GetScreenData(void);                                                                         // Get pixel data from screen buffer and return an Image (screenshot)
+HB_FUNC( GETSCREENDATA )
+{
+   Image image = GetScreenData();
+
+   PHB_ITEM info = hb_itemArrayNew( 5 );
+
+   hb_arraySetPtr( info, 1, image.data );
+   hb_arraySetNI( info, 2, image.width );
+   hb_arraySetNI( info, 3, image.height );
+   hb_arraySetNI( info, 4, image.mipmaps );
+   hb_arraySetNI( info, 5, image.format );
+
+   hb_itemReturnRelease( info );
+}
+
 // Texture configuration functions
 // void GenTextureMipmaps(Texture2D *texture);                                                        // Generate GPU mipmaps for a texture
+
 // void SetTextureFilter(Texture2D texture, int filterMode);                                          // Set texture scaling filter mode
 // void SetTextureWrap(Texture2D texture, int wrapMode);                                              // Set texture wrapping mode
 
@@ -1962,6 +2043,7 @@ HB_FUNC( COLORTOINT )
       hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
+
 // Vector4 ColorNormalize(Color color);                                  // Returns Color normalized as float [0..1]
 HB_FUNC( COLORNORMALIZE )
 {
@@ -1992,6 +2074,7 @@ HB_FUNC( COLORNORMALIZE )
       hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
+
 // Color ColorFromNormalized(Vector4 normalized);                        // Returns Color from normalized values [0..1]
 HB_FUNC( COLORFROMNORMALIZED )
 {
@@ -2022,6 +2105,7 @@ HB_FUNC( COLORFROMNORMALIZED )
       hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
+
 // Vector3 ColorToHSV(Color color);                                      // Returns HSV values for a Color
 HB_FUNC( COLORTOHSV )
 {
