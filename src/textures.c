@@ -1974,16 +1974,189 @@ HB_FUNC( GETSCREENDATA )
 }
 
 // Texture configuration functions
+
 // void GenTextureMipmaps(Texture2D *texture);                                                        // Generate GPU mipmaps for a texture
+HB_FUNC( GENTEXTUREMIPMAPS )
+{
+     PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      texture.width   = hb_arrayGetNI( pItem, 2 );
+      texture.height  = hb_arrayGetNI( pItem, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
+      texture.format  = hb_arrayGetNI( pItem, 5 );
+
+      GenTextureMipmaps( &texture );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void SetTextureFilter(Texture2D texture, int filterMode);                                          // Set texture scaling filter mode
+HB_FUNC( SETTEXTUREFILTER )
+{
+     PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      texture.width   = hb_arrayGetNI( pItem, 2 );
+      texture.height  = hb_arrayGetNI( pItem, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
+      texture.format  = hb_arrayGetNI( pItem, 5 );
+
+      SetTextureFilter( texture, hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetTextureWrap(Texture2D texture, int wrapMode);                                              // Set texture wrapping mode
+HB_FUNC( SetTextureWrap )
+{
+     PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      texture.width   = hb_arrayGetNI( pItem, 2 );
+      texture.height  = hb_arrayGetNI( pItem, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
+      texture.format  = hb_arrayGetNI( pItem, 5 );
+
+      SetTextureWrap( texture, hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Texture drawing functions
+
 // void DrawTexture(Texture2D texture, int posX, int posY, Color tint);                               // Draw a Texture2D
+HB_FUNC( DRAWTEXTURE )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem1, 1 );
+      texture.width   = hb_arrayGetNI( pItem1, 2 );
+      texture.height  = hb_arrayGetNI( pItem1, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem1, 4 );
+      texture.format  = hb_arrayGetNI( pItem1, 5 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      DrawTexture( texture, hb_parni( 2 ), hb_parni( 3 ), tint );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTextureV(Texture2D texture, Vector2 position, Color tint);                                // Draw a Texture2D with position defined as Vector2
+HB_FUNC( DRAWTEXTUREV )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem1, 1 );
+      texture.width   = hb_arrayGetNI( pItem1, 2 );
+      texture.height  = hb_arrayGetNI( pItem1, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem1, 4 );
+      texture.format  = hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      DrawTextureV( texture, position, tint );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTextureEx(Texture2D texture, Vector2 position, float rotation, float scale, Color tint);  // Draw a Texture2D with extended parameters
+HB_FUNC( DRAWTEXTUREEX )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+                  hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem3 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem1, 1 );
+      texture.width   = hb_arrayGetNI( pItem1, 2 );
+      texture.height  = hb_arrayGetNI( pItem1, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem1, 4 );
+      texture.format  = hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      DrawTextureEx( texture, position, ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), tint );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTextureRec(Texture2D texture, Rectangle source, Vector2 position, Color tint);         // Draw a part of a texture defined by a rectangle
+
 // void DrawTextureQuad(Texture2D texture, Vector2 tiling, Vector2 offset, Rectangle quad, Color tint);  // Draw texture quad with tiling and offset parameters
 // void DrawTextureTiled(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint);  // Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
 // void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint);       // Draw a part of a texture defined by a rectangle with 'pro' parameters
