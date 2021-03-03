@@ -4,7 +4,6 @@ PROCEDURE Main()
 
    LOCAL nScreenWidth := 800
    LOCAL nScreenHeight := 450
-
    LOCAL MESSAGE := e"This sample illustrates a text writing\nanimation effect! Check it out! ;)"
    LOCAL framesCounter := 0
 
