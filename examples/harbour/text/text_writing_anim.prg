@@ -4,8 +4,8 @@ PROCEDURE Main()
 
    LOCAL nScreenWidth := 800
    LOCAL nScreenHeight := 450
-   
-   LOCAL MESSAGE := "This sample illustrates a text writing" + Chr( 10 ) + "animation effect! take a look and you" + Chr( 10 ) + "  will see that Harbor is great! ;)"
+
+   LOCAL MESSAGE := e"This sample illustrates a text writing\nanimation effect! Check it out! ;)"
    LOCAL framesCounter := 0
 
    InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [text] example - text writing anim" )
