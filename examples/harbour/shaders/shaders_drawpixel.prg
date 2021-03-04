@@ -1,4 +1,3 @@
-
 #include "hbraylib.ch"
 
 PROCEDURE Main()
@@ -27,8 +26,6 @@ PROCEDURE Main()
       FOR x := 0 TO 800
          FOR y := 0 TO 450
             DrawPixel( x, y, { hb_RandomInt( 0, 255 ), hb_RandomInt( 0, 255 ), hb_RandomInt( 0, 255 ), 255 } )
-            /* --- or --- */
-            // DrawPixelV( { x, y }, { hb_RandomInt( 0, 255 ), hb_RandomInt( 0, 255 ), hb_RandomInt( 0, 255 ), 255 } )
          NEXT
       NEXT
 
