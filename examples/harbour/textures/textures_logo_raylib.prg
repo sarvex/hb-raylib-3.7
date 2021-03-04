@@ -1,7 +1,7 @@
 #include "hbraylib.ch"
 
-#define WIDTH  2
-#define HEIGHT 3
+#define TEXTURE2D_WIDTH  2
+#define TEXTURE2D_HEIGHT 3
 
 PROCEDURE Main()
 
@@ -22,7 +22,7 @@ PROCEDURE Main()
 
       ClearBackground( RAYWHITE )
 
-      DrawTexture( texture, Int( screenWidth / 2 - texture[ WIDTH ] / 2 ), Int( screenHeight / 2 - texture[ HEIGHT ] / 2 ), WHITE )
+      DrawTexture( texture, Int( screenWidth / 2 - texture[ TEXTURE2D_WIDTH ] / 2 ), Int( screenHeight / 2 - texture[ TEXTURE2D_HEIGHT ] / 2 ), WHITE )
 
       DrawText( "this IS a texture!", 360, 370, 10, GRAY )
 
