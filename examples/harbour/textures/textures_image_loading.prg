@@ -1,9 +1,7 @@
 #include "hbraylib.ch"
 
-
 #define WIDTH  2
 #define HEIGHT 3
-
 
 PROCEDURE Main()
 
@@ -14,7 +12,6 @@ PROCEDURE Main()
    LOCAL texture
 
    InitWindow( ScreenWidth, ScreenHeight, "Harbour raylib [textures] example - image loading" )
-
 
    image := LoadImage( "resources/raylib_logo.png" )
 
