@@ -1,9 +1,7 @@
 #include "hbraylib.ch"
 
-
 #define WIDTH  2
 #define HEIGHT 3
-
 
 PROCEDURE Main()
 
