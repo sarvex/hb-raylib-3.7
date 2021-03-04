@@ -16,7 +16,7 @@ PROCEDURE Main()
    LOCAL frameWidth
    LOCAL frameHeight
 
-   LOCAL origin 
+   LOCAL origin
    LOCAL sourceRec
    LOCAL destRec
    LOCAL rotation := 0
