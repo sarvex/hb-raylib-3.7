@@ -307,7 +307,7 @@ HB_FUNC( GENIMAGEGRADIENTH )
 }
 
 // Image GenImageGradientRadial(int width, int height, float density, Color inner, Color outer);      // Generate image: radial gradient
-HB_FUNC( GenImageGradientRadial )
+HB_FUNC( GENIMAGEGRADIENTRADIAL )
 {
    PHB_ITEM pItem1, pItem2;
 
@@ -1824,7 +1824,7 @@ HB_FUNC( LOADTEXTURECUBEMAP )
       image.mipmaps =  hb_arrayGetNI( pItem, 4 );
       image.format  =  hb_arrayGetNI( pItem, 5 );
 
-      TextureCubemap texturecubemap = LoadTextureCubemap( image, hb_parni( 1 ) );
+      TextureCubemap texturecubemap = LoadTextureCubemap( image, hb_parni( 2 ) );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
