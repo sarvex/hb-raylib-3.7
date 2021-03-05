@@ -1843,6 +1843,42 @@ HB_FUNC( LOADTEXTURECUBEMAP )
 }
 
 // RenderTexture2D LoadRenderTexture(int width, int height);                                          // Load texture for rendering (framebuffer)
+HB_FUNC( LOADRENDERTEXTURE )
+{
+   PHB_ITEM pSubarray;
+
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+      {
+      RenderTexture2D rendertexture2d = LoadRenderTexture( hb_parni( 1 ), hb_parni( 2 ) );
+
+      PHB_ITEM pRenderTextureArray = hb_itemArrayNew( 3 );
+
+      hb_arraySetNI( pRenderTextureArray, 1, rendertexture2d.id );
+
+      pSubarray = hb_arrayGetItemPtr( pRenderTextureArray, 2 );
+      hb_arrayNew( pSubarray, 5 );
+      hb_arraySetNI( pSubarray, 1, rendertexture2d.texture.id );
+      hb_arraySetNI( pSubarray, 2, rendertexture2d.texture.width );
+      hb_arraySetNI( pSubarray, 3, rendertexture2d.texture.height );
+      hb_arraySetNI( pSubarray, 4, rendertexture2d.texture.mipmaps );
+      hb_arraySetNI( pSubarray, 5, rendertexture2d.texture.format );
+
+      pSubarray = hb_arrayGetItemPtr( pRenderTextureArray, 3 );
+      hb_arrayNew( pSubarray, 5 );
+      hb_arraySetNI( pSubarray, 1, rendertexture2d.depth.id );
+      hb_arraySetNI( pSubarray, 2, rendertexture2d.depth.width );
+      hb_arraySetNI( pSubarray, 3, rendertexture2d.depth.height );
+      hb_arraySetNI( pSubarray, 4, rendertexture2d.depth.mipmaps );
+      hb_arraySetNI( pSubarray, 5, rendertexture2d.depth.format );
+
+      hb_itemReturnRelease( pRenderTextureArray );
+
+      }
+   else
+      {
+         hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      }
+}
 
 // void UnloadTexture(Texture2D texture);                                                             // Unload texture from GPU memory (VRAM)
 HB_FUNC( UNLOADTEXTURE )
