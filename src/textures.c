@@ -307,7 +307,7 @@ HB_FUNC( GENIMAGEGRADIENTH )
 }
 
 // Image GenImageGradientRadial(int width, int height, float density, Color inner, Color outer);      // Generate image: radial gradient
-HB_FUNC( GenImageGradientRadial )
+HB_FUNC( GENIMAGEGRADIENTRADIAL )
 {
    PHB_ITEM pItem1, pItem2;
 
