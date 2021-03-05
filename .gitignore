@@ -9,5 +9,6 @@ docs/vendor
 *.exe
 *.bak
 *.hbx
+*.log
 lib
 tmp
