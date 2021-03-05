@@ -1848,7 +1848,7 @@ HB_FUNC( LOADRENDERTEXTURE )
    PHB_ITEM pSubarray;
 
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
-      {
+   {
       RenderTexture2D rendertexture2d = LoadRenderTexture( hb_parni( 1 ), hb_parni( 2 ) );
 
       PHB_ITEM pRenderTextureArray = hb_itemArrayNew( 3 );
@@ -1872,12 +1872,11 @@ HB_FUNC( LOADRENDERTEXTURE )
       hb_arraySetNI( pSubarray, 5, rendertexture2d.depth.format );
 
       hb_itemReturnRelease( pRenderTextureArray );
-
-      }
+   }
    else
-      {
-         hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-      }
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // void UnloadTexture(Texture2D texture);                                                             // Unload texture from GPU memory (VRAM)
