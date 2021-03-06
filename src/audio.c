@@ -14,14 +14,113 @@
 
 // Audio device management functions
 // void InitAudioDevice(void);                                     // Initialize audio device and context
+HB_FUNC( INITAUDIODEVICE )
+{
+   InitAudioDevice();
+}
+
 // void CloseAudioDevice(void);                                    // Close the audio device and context
+HB_FUNC( CLOSEAUDIODEVICE )
+{
+   CloseAudioDevice();
+}
+
 // bool IsAudioDeviceReady(void);                                  // Check if audio device has been initialized successfully
+HB_FUNC( ISAUDIODEVICEREADY )
+{
+   hb_retl( IsAudioDeviceReady() );
+}
+
 // void SetMasterVolume(float volume);                             // Set master volume (listener)
+HB_FUNC( SETMASTERVOLUME )
+{
+   if( hb_param( 1, HB_IT_NUMERIC ) != NULL )
+   {
+      SetMasterVolume( ( float ) hb_parnd( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Wave/Sound loading/unloading functions
+
 // Wave LoadWave(const char *fileName);                            // Load wave data from file
+HB_FUNC( LOADWAVE )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      Wave wave = LoadWave( hb_parc( 1 ) );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetNI( info, 1, ( unsigned int ) wave.sampleCount );
+      hb_arraySetNI( info, 2, ( unsigned int ) wave.sampleRate );
+      hb_arraySetNI( info, 3, ( unsigned int ) wave.sampleSize );
+      hb_arraySetNI( info, 4, ( unsigned int ) wave.channels );
+      hb_arraySetPtr( info, 5, wave.data );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Wave LoadWaveFromMemory(const char *fileType, const unsigned char *fileData, int dataSize); // Load wave from memory buffer, fileType refers to extension: i.e. "wav"
+HB_FUNC( LOADWAVEFROMMEMORY )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL && hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      const unsigned char fileData = hb_parni( 2 );
+      Wave wave = LoadWaveFromMemory( hb_parc( 1 ), &fileData, hb_parni( 3 ) );
+      hb_storni( fileData, 2 );
+
+      PHB_ITEM info = hb_itemArrayNew( 5 );
+
+      hb_arraySetNI( info, 1, ( unsigned int ) wave.sampleCount );
+      hb_arraySetNI( info, 2, ( unsigned int ) wave.sampleRate );
+      hb_arraySetNI( info, 3, ( unsigned int ) wave.sampleSize );
+      hb_arraySetNI( info, 4, ( unsigned int ) wave.channels );
+      hb_arraySetPtr( info, 5, wave.data );
+
+      hb_itemReturnRelease( info );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Sound LoadSound(const char *fileName);                          // Load sound from file
+HB_FUNC( LOADSOUND )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      Sound sound = LoadSound( hb_parc( 1 ) );
+
+      PHB_ITEM pLoadSoundArray = hb_itemArrayNew( 2 );
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pLoadSoundArray, 1 );
+
+      hb_arrayNew( pSubarray, 4 );
+      hb_arraySetPtr( pSubarray, 1, sound.stream.buffer );
+      hb_arraySetNI( pSubarray, 2, ( unsigned int ) sound.stream.sampleRate );
+      hb_arraySetNI( pSubarray, 3, ( unsigned int ) sound.stream.sampleSize );
+      hb_arraySetNI( pSubarray, 4, ( unsigned int ) sound.stream.channels );
+
+      hb_arraySetNI( pLoadSoundArray, 2, ( unsigned int ) sound.sampleCount );
+
+      hb_itemReturnRelease( pLoadSoundArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Sound LoadSoundFromWave(Wave wave);                             // Load sound from wave data
 // void UpdateSound(Sound sound, const void *data, int samplesCount);// Update sound buffer with new data
 // void UnloadWave(Wave wave);                                     // Unload wave data

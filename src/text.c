@@ -120,7 +120,7 @@ HB_FUNC( TEXTLENGTH )
 // const char *TextFormat(const char *text, ...);                                        // Text formatting with variables (sprintf style)
 HB_FUNC( TEXTFORMAT )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_NUMERIC ) != NULL )
    {
       hb_retc( TextFormat( hb_parc( 1 ), hb_parni( 2 ) ) );
    }

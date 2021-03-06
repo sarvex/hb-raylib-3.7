@@ -70,7 +70,7 @@ PROCEDURE Main()
       DrawRectangleLines( 15 + Int( aFrameRec[ RECTANGLE_X ] ), 40 + Int( aFrameRec[ RECTANGLE_Y ] ), Int( aFrameRec[ RECTANGLE_WIDTH ] ), Int( aFrameRec[ RECTANGLE_HEIGHT ] ), RED )
 
       DrawText( "FRAME SPEED: ", 165, 210, 10, DARKGRAY )
-      DrawText( TextFormat( "  %02i FPS", nFramesSpeed ), 575, 210, 10, DARKGRAY )
+      DrawText( TextFormat( "%02i FPS", nFramesSpeed ), 575, 210, 10, DARKGRAY )
       DrawText( "PRESS RIGHT/LEFT KEYS to CHANGE SPEED!", 290, 240, 10, DARKGRAY )
 
       FOR i := 0 TO MAX_FRAME_SPEED - 1

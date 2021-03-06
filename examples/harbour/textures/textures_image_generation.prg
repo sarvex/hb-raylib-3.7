@@ -38,7 +38,7 @@ PROCEDURE Main()
 
    DO WHILE ! WindowShouldClose()
 
-      IF IsMouseButtonPressed( MOUSE_LEFT_BUTTON ) .OR.  IsKeyPressed( KEY_RIGHT )
+      IF IsMouseButtonPressed( MOUSE_LEFT_BUTTON ) .OR. IsKeyPressed( KEY_RIGHT )
          iif( nCurrentTexture < 7, nCurrentTexture++, nCurrentTexture := 1 )
       ENDIF
 
