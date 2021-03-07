@@ -599,26 +599,219 @@ HB_FUNC( GETRANDOMVALUE )
 // unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead);     // Load file data as byte array (read)
 
 // void UnloadFileData(unsigned char *data);                   // Unload file data allocated by LoadFileData()
+HB_FUNC( UNLOADFILEDATA )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      unsigned char data;
+      UnloadFileData( &data );
+      hb_storni( data, 1 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite); // Save data to file from byte array (write), returns true on success
+HB_FUNC( SAVEFILEDATA )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_POINTER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( SaveFileData( hb_parc( 1 ), hb_parptr( 2 ), hb_parni( 3 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // char *LoadFileText(const char *fileName);                   // Load text data from file (read), returns a '\0' terminated string
+
 // void UnloadFileText(unsigned char *text);                   // Unload file text data allocated by LoadFileText()
+HB_FUNC( UNLOADFILETEXT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      unsigned char text = ( unsigned char ) hb_parni( 1 );
+      UnloadFileText( &text );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool SaveFileText(const char *fileName, char *text);        // Save text data to file (write), string must be '\0' terminated, returns true on success
+HB_FUNC( SAVEFILETEXT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      char text = ( char ) hb_parni( 2 );
+      hb_retl( SaveFileText( hb_parc( 1 ), &text ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool FileExists(const char *fileName);                      // Check if file exists
+HB_FUNC( FILEEXISTS )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retl( FileExists( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool DirectoryExists(const char *dirPath);                  // Check if a directory path exists
+HB_FUNC( DIRECTORYEXISTS )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retl( DirectoryExists( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsFileExtension(const char *fileName, const char *ext);// Check file extension (including point: .png, .wav)
+HB_FUNC( ISFILEEXTENSION )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retl( IsFileExtension( hb_parc( 1 ), hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetFileExtension(const char *fileName);         // Get pointer to extension for a filename string (including point: ".png")
+HB_FUNC( GETFILEEXTENSION )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( GetFileExtension( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetFileName(const char *filePath);              // Get pointer to filename for a path string
+HB_FUNC( GETFILENAME )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( GetFileName( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetFileNameWithoutExt(const char *filePath);    // Get filename string without extension (uses static string)
+HB_FUNC( GETFILENAMEWITHOUTEXT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( GetFileNameWithoutExt( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetDirectoryPath(const char *filePath);         // Get full path for a given fileName with path (uses static string)
+HB_FUNC( GETDIRECTORYPATH )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( GetDirectoryPath( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetPrevDirectoryPath(const char *dirPath);      // Get previous directory path for a given path (uses static string)
+HB_FUNC( GETPREVDIRECTORYPATH )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( GetPrevDirectoryPath( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *GetWorkingDirectory(void);                      // Get current working directory (uses static string)
+HB_FUNC( GETWORKINGDIRECTORY )
+{
+   hb_retc( GetWorkingDirectory() );
+}
+
 // char **GetDirectoryFiles(const char *dirPath, int *count);  // Get filenames in a directory path (memory should be freed)
+
 // void ClearDirectoryFiles(void);                             // Clear directory files paths buffers (free memory)
+HB_FUNC( CLEARDIRECTORYFILES )
+{
+   ClearDirectoryFiles();
+}
+
 // bool ChangeDirectory(const char *dir);                      // Change working directory, return true on success
+HB_FUNC( CHANGEDIRECTORY )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retnl( ChangeDirectory( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsFileDropped(void);                                   // Check if a file has been dropped into window
+HB_FUNC( ISFILEDROPPED )
+{
+   hb_retl( IsFileDropped() );
+}
+
 // char **GetDroppedFiles(int *count);                         // Get dropped files names (memory should be freed)
 // void ClearDroppedFiles(void);                               // Clear dropped files paths buffer (free memory)
+HB_FUNC( CLEARDROPPEDFILES )
+{
+   ClearDroppedFiles();
+}
+
 // long GetFileModTime(const char *fileName);                  // Get file modification time (last write time)
+HB_FUNC( GETFILEMODTIME )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retnl( GetFileModTime( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // unsigned char *CompressData(unsigned char *data, int dataLength, int *compDataLength);        // Compress data (DEFLATE algorithm)
 // unsigned char *DecompressData(unsigned char *compData, int compDataLength, int *dataLength);  // Decompress data (DEFLATE algorithm)
