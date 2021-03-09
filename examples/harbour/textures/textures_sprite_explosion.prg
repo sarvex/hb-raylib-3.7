@@ -52,7 +52,8 @@ PROCEDURE Main()
          aPosition[ VECTOR2_X ] -= nFrameWidth / 2
          aPosition[ VECTOR2_Y ] -= nFrameHeight / 2
 
-         PlaySound( aFxBoom )
+         //PlaySound( aFxBoom )
+         HB_SYMBOL_UNUSED( aFxBoom )
       ENDIF
 
       IF ( lActive )
@@ -94,7 +95,7 @@ PROCEDURE Main()
    ENDDO
 
    UnloadTexture( aExplosion )
-   UnloadSound( aFxBoom )
+   //UnloadSound( aFxBoom )
 
    CloseAudioDevice()
 
