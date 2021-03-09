@@ -5,51 +5,51 @@
 
 PROCEDURE Main()
 
-   LOCAL screenWidth  := 800
-   LOCAL screenHeight := 450
+   LOCAL nScreenWidth  := 800
+   LOCAL nScreenHeight := 450
    LOCAL lContinue    := .T.
 
-   LOCAL ballSpeed := { 5.0, 4.0 }
-   LOCAL ballRadius := 20
+   LOCAL aBallSpeed := { 5.0, 4.0 }
+   LOCAL nBallRadius := 20
 
-   LOCAL pause := .F.
-   LOCAL framesCounter := 0
-   LOCAL ballPosition
+   LOCAL lPause := .F.
+   LOCAL nFramesCounter := 0
+   LOCAL aBallPosition
 
-   InitWindow( screenWidth, screenHeight, "Harbour raylib [shapes] example - bouncing ball" )
+   InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [shapes] example - bouncing ball" )
 
-   ballPosition :=  { GetScreenWidth() / 2, GetScreenHeight() / 2 }
+   aBallPosition :=  { GetScreenWidth() / 2, GetScreenHeight() / 2 }
 
    SetTargetFPS( 60 )
 
    DO WHILE lContinue
 
       IF IsKeyPressed( KEY_SPACE )
-         iif( pause == .T., pause := .F., pause := .T. )
+         iif( lPause == .T., lPause := .F., lPause := .T. )
       ENDIF
 
-      IF !pause
-         ballPosition[ VECTOR2_X ] += ballSpeed[ VECTOR2_X ]
-         ballPosition[ VECTOR2_Y ] += ballSpeed[ VECTOR2_Y ]
+      IF !lPause
+         aBallPosition[ VECTOR2_X ] += aBallSpeed[ VECTOR2_X ]
+         aBallPosition[ VECTOR2_Y ] += aBallSpeed[ VECTOR2_Y ]
 
-         IF ballPosition[ VECTOR2_X ] >= GetScreenWidth() - ballRadius .OR. ballPosition[ VECTOR2_X ] <= ballRadius
-            ballSpeed[ VECTOR2_X ] *= -1.0
+         IF aBallPosition[ VECTOR2_X ] >= GetScreenWidth() - nBallRadius .OR. aBallPosition[ VECTOR2_X ] <= nBallRadius
+            aBallSpeed[ VECTOR2_X ] *= -1.0
          ENDIF
 
-         IF ballPosition[ VECTOR2_Y ] >= GetScreenHeight() - ballRadius .OR. ballPosition[ VECTOR2_Y ] <= ballRadius
-            ballSpeed[ VECTOR2_Y ] *= -1.0
+         IF aBallPosition[ VECTOR2_Y ] >= GetScreenHeight() - nBallRadius .OR. aBallPosition[ VECTOR2_Y ] <= nBallRadius
+            aBallSpeed[ VECTOR2_Y ] *= -1.0
          ENDIF
       ELSE
-         framesCounter++
+         nFramesCounter++
       ENDIF
 
       BeginDrawing()
       ClearBackground( RAYWHITE )
 
-      DrawCircleV( ballPosition, ballRadius, MAROON )
+      DrawCircleV( aBallPosition, nBallRadius, MAROON )
       DrawText( "PRESS SPACE to PAUSE BALL MOVEMENT", 10, GetScreenHeight() - 25, 20, LIGHTGRAY )
 
-      IF pause .AND. framesCounter / 30 % 2 == 0
+      IF lPause .AND. nFramesCounter / 30 % 2 == 0
          DrawText( "PAUSED", 350, 200, 30, GRAY )
       ENDIF
 

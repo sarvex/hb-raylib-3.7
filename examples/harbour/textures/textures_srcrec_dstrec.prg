@@ -8,29 +8,29 @@
 
 PROCEDURE Main()
 
-   LOCAL ScreenWidth := 800
-   LOCAL ScreenHeight := 450
+   LOCAL nScreenWidth := 800
+   LOCAL nScreenHeight := 450
 
-   LOCAL scarfy
+   LOCAL aScarfy
 
-   LOCAL frameWidth
-   LOCAL frameHeight
+   LOCAL aFrameWidth
+   LOCAL aFrameHeight
 
-   LOCAL origin
-   LOCAL sourceRec
-   LOCAL destRec
-   LOCAL rotation := 0
+   LOCAL aOrigin
+   LOCAL aSourceRec
+   LOCAL aDestRec
+   LOCAL nRotation := 0
 
-   InitWindow( screenWidth, screenHeight, "Harbour raylib [textures] examples - texture source and destination rectangles" )
+   InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [textures] examples - texture source and destination rectangles" )
 
-   scarfy := LoadTexture( "resources/scarfy.png" )
+   aScarfy := LoadTexture( "resources/Scarfy.png" )
+   
+   aFrameWidth  := aScarfy[ TEXTURE2D_WIDTH ] / 6
+   aFrameHeight := aScarfy[ TEXTURE2D_HEIGHT ]
 
-   frameWidth  := scarfy[ TEXTURE2D_WIDTH ] / 6
-   frameHeight := scarfy[ TEXTURE2D_HEIGHT ]
-
-   sourceRec := { 0.0, 0.0, frameWidth, frameHeight }
-   destRec := { screenWidth / 2, screenHeight / 2, frameWidth * 2, frameHeight * 2 }
-   origin := { frameWidth, frameHeight }
+   aSourceRec := { 0.0, 0.0, aFrameWidth, aFrameHeight }
+   aDestRec := { nScreenWidth / 2, nScreenHeight / 2, aFrameWidth * 2, aFrameHeight * 2 }
+   aOrigin := { aFrameWidth, aFrameHeight }
 
    SetTargetFPS( 60 )
 
@@ -40,20 +40,20 @@ PROCEDURE Main()
 
       ClearBackground( RAYWHITE )
 
-      rotation++
+      nRotation++
 
-      DrawTexturePro( scarfy, sourceRec, destRec, origin, rotation, WHITE )
+      DrawTexturePro( aScarfy, aSourceRec, aDestRec, aOrigin, nRotation, WHITE )
 
-      DrawLine( Int( destRec[ VECTOR2_X ] ), 0, Int( destRec[ VECTOR2_X ] ), screenHeight, GRAY )
-      DrawLine( 0, Int( destRec[ VECTOR2_Y ] ), screenWidth, Int( destRec[ VECTOR2_Y ] ), GRAY )
+      DrawLine( Int( aDestRec[ VECTOR2_X ] ), 0, Int( aDestRec[ VECTOR2_X ] ), nScreenHeight, GRAY )
+      DrawLine( 0, Int( aDestRec[ VECTOR2_Y ] ), nScreenWidth, Int( aDestRec[ VECTOR2_Y ] ), GRAY )
 
-      DrawText( "(c) Scarfy sprite by Eiden Marsal", screenWidth - 200, screenHeight - 20, 10, GRAY )
+      DrawText( "(c) Scarfy sprite by Eiden Marsal", nScreenWidth - 200, nScreenHeight - 20, 10, GRAY )
 
       EndDrawing()
 
    ENDDO
 
-   UnloadTexture( scarfy )
+   UnloadTexture( aScarfy )
 
    CloseWindow()
 

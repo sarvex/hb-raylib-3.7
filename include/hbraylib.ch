@@ -180,6 +180,19 @@
 #define   MOUSE_RIGHT_BUTTON              1
 #define   MOUSE_MIDDLE_BUTTON             2
 
+// Mouse cursor types
+#define  MOUSE_CURSOR_DEFAULT             0
+#define  MOUSE_CURSOR_ARROW               1
+#define  MOUSE_CURSOR_IBEAM               2
+#define  MOUSE_CURSOR_CROSSHAIR           3
+#define  MOUSE_CURSOR_POINTING_HAND       4
+#define  MOUSE_CURSOR_RESIZE_EW           5     // The horizontal resize/move arrow shape
+#define  MOUSE_CURSOR_RESIZE_NS           6     // The vertical resize/move arrow shape
+#define  MOUSE_CURSOR_RESIZE_NWSE         7     // The top-left to bottom-right diagonal resize/move arrow shape
+#define  MOUSE_CURSOR_RESIZE_NESW         8     // The top-right to bottom-left diagonal resize/move arrow shape
+#define  MOUSE_CURSOR_RESIZE_ALL          9     // The omni-directional resize/move cursor shape
+#define  MOUSE_CURSOR_NOT_ALLOWED         10    // The operation-not-allowed shape
+
 /* --- Gamepad number --- */
 #define   GAMEPAD_PLAYER1                 0
 #define   GAMEPAD_PLAYER2                 1

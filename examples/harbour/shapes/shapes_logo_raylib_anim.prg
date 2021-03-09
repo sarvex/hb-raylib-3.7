@@ -2,79 +2,79 @@
 
 PROCEDURE Main()
 
-   LOCAL screenWidth  := 800
-   LOCAL screenHeight := 450
+   LOCAL nScreenWidth  := 800
+   LOCAL nScreenHeight := 450
    LOCAL lContinue    := .T.
 
-   LOCAL logoPositionX := Int( screenWidth / 2 - 128 )
-   LOCAL logoPositionY := Int( screenHeight / 2 - 128 )
+   LOCAL nLogoPositionX := Int( nScreenWidth / 2 - 128 )
+   LOCAL nLogoPositionY := Int( nScreenHeight / 2 - 128 )
 
-   LOCAL framesCounter := 0
-   LOCAL lettersCount  := 0
+   LOCAL nFramesCounter := 0
+   LOCAL nLettersCount  := 0
 
-   LOCAL topSideRecWidth   := 16
-   LOCAL leftSideRecHeight := 16
+   LOCAL nTopSideRecWidth   := 16
+   LOCAL nLeftSideRecHeight := 16
 
-   LOCAL bottomSideRecWidth := 16
-   LOCAL rightSideRecHeight := 16
+   LOCAL nBottomSideRecWidth := 16
+   LOCAL nRightSideRecHeight := 16
+   
+   LOCAL nState := 0
+   LOCAL nAlpha := 1.0
 
-   LOCAL STATE := 0
-   LOCAL alpha := 1.0
-
-   InitWindow( screenWidth, screenHeight, "Harbour raylib [shapes] example - Harbour raylib logo animation" )
+   InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [shapes] example - Harbour raylib logo animation" )
 
    SetTargetFPS( 60 )
 
    DO WHILE lContinue
 
-      IF STATE == 0
-         framesCounter++
-         IF framesCounter == 120
-            STATE         := 1
-            framesCounter := 0
+      IF nState == 0
+         nFramesCounter++
+         IF nFramesCounter == 120
+            nState         := 1
+            nFramesCounter := 0
          ENDIF
       ELSE
-         IF STATE == 1
-            topSideRecWidth    += 4
-            leftSideRecHeight  += 4
-            IF topSideRecWidth == 256
-               STATE := 2
+         IF nState == 1
+            nTopSideRecWidth    += 4
+            nLeftSideRecHeight  += 4
+            IF nTopSideRecWidth == 256
+               nState := 2
             ENDIF
          ELSE
-            IF STATE == 2
-               bottomSideRecWidth    += 4
-               rightSideRecHeight    += 4
-               IF bottomSideRecWidth == 256
-                  STATE := 3
+            IF nState == 2
+               nBottomSideRecWidth    += 4
+               nRightSideRecHeight    += 4
+               IF nBottomSideRecWidth == 256
+                  nState := 3
                ENDIF
             ELSE
-               IF STATE == 3
-                  framesCounter++
-                  IF framesCounter = 12
-                     lettersCount++
-                     framesCounter := 0
+               IF nState == 3
+                  nFramesCounter++
+                  IF nFramesCounter = 12
+                     nLettersCount++
+                     nFramesCounter := 0
                   ENDIF
-                  IF lettersCount >= 10
-                     alpha -= 0.02
-                     IF alpha <= 0
-                        alpha := 0
-                        STATE := 4
+                  IF nLettersCount >= 18
+                     nAlpha -= 0.02
+                     IF nAlpha <= 0
+                        nAlpha := 0
+                        nState := 4
                      ENDIF
                   ENDIF
                ELSE
-                  IF STATE == 4
+                  IF nState == 4
                      IF IsKeyPressed( KEY_R )
-                        framesCounter := 0
-                        lettersCount  := 0
+                        nFramesCounter := 0
+                        nLettersCount  := 0
 
-                        topSideRecWidth   := 16
-                        leftSideRecHeight := 16
+                        nTopSideRecWidth   := 16
+                        nLeftSideRecHeight := 16
 
-                        bottomSideRecWidth := 16
-                        rightSideRecHeight := 16
+                        nBottomSideRecWidth := 16
+                        nRightSideRecHeight := 16
 
-                        alpha := 1.0
-                        STATE := 0
+                        nAlpha := 1.0
+                        nState := 0
                      ENDIF
                   ENDIF
                ENDIF
@@ -85,35 +85,34 @@ PROCEDURE Main()
       BeginDrawing()
       ClearBackground( RAYWHITE )
 
-      IF STATE == 0
-         IF ( framesCounter / 15 ) % 2 == 0
-            DrawRectangle( logoPositionX, logoPositionY, 16, 16, BLACK )
+      IF nState == 0
+         IF ( nFramesCounter / 15 ) % 2 == 0
+            DrawRectangle( nLogoPositionX,  nLogoPositionY, 16, 16, BLACK )
          ENDIF
       ELSE
-         IF STATE == 1
-            DrawRectangle( logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK )
-            DrawRectangle( logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK )
+         IF nState == 1
+            DrawRectangle( nLogoPositionX,  nLogoPositionY, nTopSideRecWidth, 16, BLACK )
+            DrawRectangle( nLogoPositionX,  nLogoPositionY, 16, nLeftSideRecHeight, BLACK )
          ELSE
-            IF STATE == 2
-               DrawRectangle( logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK )
-               DrawRectangle( logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK )
+            IF nState == 2
+               DrawRectangle( nLogoPositionX,  nLogoPositionY, nTopSideRecWidth, 16, BLACK )
+               DrawRectangle( nLogoPositionX,  nLogoPositionY, 16, nLeftSideRecHeight, BLACK )
 
-               DrawRectangle( logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, BLACK )
-               DrawRectangle( logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, BLACK )
+               DrawRectangle( nLogoPositionX + 240,  nLogoPositionY, 16, nRightSideRecHeight, BLACK )
+               DrawRectangle( nLogoPositionX,  nLogoPositionY + 240, nBottomSideRecWidth, 16, BLACK )
             ELSE
-               IF STATE == 3
-                  DrawRectangle( logoPositionX, logoPositionY, topSideRecWidth, 16, Fade( BLACK, alpha ) )
-                  DrawRectangle( logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, Fade( BLACK, alpha ) )
+               IF nState == 3
+                  DrawRectangle( nLogoPositionX,  nLogoPositionY, nTopSideRecWidth, 16, Fade( BLACK, nAlpha ) )
+                  DrawRectangle( nLogoPositionX,  nLogoPositionY + 16, 16, nLeftSideRecHeight - 32, Fade( BLACK, nAlpha ) )
 
-                  DrawRectangle( logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, Fade( BLACK, alpha ) )
-                  DrawRectangle( logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, Fade( BLACK, alpha ) )
+                  DrawRectangle( nLogoPositionX + 240,  nLogoPositionY + 16, 16, nRightSideRecHeight - 32, Fade( BLACK, nAlpha ) )
+                  DrawRectangle( nLogoPositionX,  nLogoPositionY + 240, nBottomSideRecWidth, 16, Fade( BLACK, nAlpha ) )
 
-                  DrawRectangle( Int( screenWidth / 2 - 112 ), Int( screenHeight / 2 - 112 ), 224, 224, Fade( RAYWHITE, alpha ) )
+                  DrawRectangle( Int( nScreenWidth / 2 - 112 ), Int( nScreenHeight / 2 - 112 ), 224, 224, Fade( RAYWHITE, nAlpha ) )
 
-                  DrawText( TextSubtext( "Harbour", 0, lettersCount ), Int( screenWidth / 2 - 100 ), Int( screenHeight / 2  ), 50, Fade( BLACK, alpha ) )
-                  DrawText( TextSubtext( " raylib", 0, lettersCount ), Int( screenWidth / 2 - 30 ), Int( screenHeight / 2 + 48 ), 40, Fade( BLACK, alpha ) )
+                  DrawText( TextSubtext( e"Harbour\n  raylib", 0, nLettersCount ), Int( nScreenWidth / 2 - 60 ), Int( nScreenHeight / 2  ), 40, Fade( BLACK, nAlpha ) )
                ELSE
-                  IF STATE == 4
+                  IF nState == 4
                      DrawText( "[R] REPLAY", 340, 200, 20, GRAY )
                   ENDIF
                ENDIF

@@ -5,19 +5,19 @@
 
 PROCEDURE Main()
 
-   LOCAL ScreenWidth := 800
-   LOCAL ScreenHeight := 450
+   LOCAL nScreenWidth := 800
+   LOCAL nScreenHeight := 450
 
-   LOCAL image
-   LOCAL texture
+   LOCAL aImage
+   LOCAL aTexture
 
-   InitWindow( ScreenWidth, ScreenHeight, "Harbour raylib [textures] example - image loading" )
+   InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [textures] example - image loading" )
 
-   image := LoadImage( "resources/raylib_logo.png" )
+   aImage := LoadImage( "resources/raylib_logo.png" )
 
-   texture := LoadTextureFromImage( image )
+   aTexture := LoadTextureFromImage( aImage )
 
-   UnloadImage( image )
+   UnloadImage( aImage )
 
    SetTargetFPS( 60 )
 
@@ -27,7 +27,7 @@ PROCEDURE Main()
 
       ClearBackground( RAYWHITE )
 
-      DrawTexture( texture, Int( screenWidth / 2 - texture[ TEXTURE2D_WIDTH ] / 2 ), Int( screenHeight / 2 - texture[ TEXTURE2D_HEIGHT ] / 2 ), WHITE )
+      DrawTexture( aTexture, Int( nScreenWidth / 2 - aTexture[ TEXTURE2D_WIDTH ] / 2 ), Int( nScreenHeight / 2 - aTexture[ TEXTURE2D_HEIGHT ] / 2 ), WHITE )
 
       DrawText( "this IS a texture loaded from an image!", 300, 370, 10, GRAY )
 
@@ -35,7 +35,7 @@ PROCEDURE Main()
 
    ENDDO
 
-   UnloadTexture( texture )
+   UnloadTexture( aTexture )
 
    CloseWindow()
 

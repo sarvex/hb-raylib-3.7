@@ -1190,7 +1190,7 @@ HB_FUNC( GETMOUSEWHEELMOVE )
 }
 
 // int GetMouseCursor(void);                               // Returns mouse cursor if (MouseCursor enum)
-HB_FUNC( GetMouseCursor )
+HB_FUNC( GETMOUSECURSOR )
 {
    hb_retni( GetMouseCursor() );
 }
