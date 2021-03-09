@@ -1871,6 +1871,7 @@ HB_FUNC( LOADRENDERTEXTURE )
       hb_arraySetNI( pSubarray, 5, rendertexture2d.depth.format );
 
       hb_itemReturnRelease( pRenderTextureArray );
+      hb_itemRelease( pSubarray );
    }
    else
    {

@@ -106,14 +106,19 @@ HB_FUNC( LOADSOUND )
       PHB_ITEM pSubarray = hb_arrayGetItemPtr( pLoadSoundArray, 1 );
 
       hb_arrayNew( pSubarray, 4 );
-      hb_arraySetPtr( pSubarray, 1, sound.stream.buffer );
       hb_arraySetNI( pSubarray, 2, ( unsigned int ) sound.stream.sampleRate );
       hb_arraySetNI( pSubarray, 3, ( unsigned int ) sound.stream.sampleSize );
       hb_arraySetNI( pSubarray, 4, ( unsigned int ) sound.stream.channels );
 
       hb_arraySetNI( pLoadSoundArray, 2, ( unsigned int ) sound.sampleCount );
 
+      PHB_ITEM pEmptyArray = hb_arrayGetItemPtr( pSubarray, 1 );
+      hb_arrayNew( pEmptyArray, 0 );
+      hb_arraySetPtr( pSubarray, 1, pEmptyArray );
+
       hb_itemReturnRelease( pLoadSoundArray );
+      hb_itemRelease( pSubarray );
+      hb_itemRelease( pEmptyArray );
    }
    else
    {
