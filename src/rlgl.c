@@ -47,7 +47,22 @@
 // void BeginShaderMode(Shader shader);                                // Begin custom shader drawing
 // void EndShaderMode(void);                                           // End custom shader drawing (use default shader)
 // void BeginBlendMode(int mode);                                      // Begin blending mode (alpha, additive, multiplied)
-// void EndBlendMode(void);                                            // End blending mode (reset to default: alpha blending)
+HB_FUNC( BEGINBLENDMODE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      BeginBlendMode( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+// void EndBlendMode(void);               // End blending mode (reset to default: alpha blending)
+HB_FUNC( ENDBLENDMODE )
+{
+   EndBlendMode();
+}
 
 // VR control functions
 // void InitVrSimulator(void);                       // Init VR simulator for selected device parameters
