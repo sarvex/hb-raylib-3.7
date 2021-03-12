@@ -2,26 +2,26 @@
 
 #define MAX_INPUT_CHARS 9
 
-#define RECTANGLE_X 1
-#define RECTANGLE_Y 2
-#define RECTANGLE_WIDTH  3
-#define RECTANGLE_HEIGHT 4
+#define RECTANGLE_X        1
+#define RECTANGLE_Y        2
+#define RECTANGLE_WIDTH    3
+#define RECTANGLE_HEIGHT   4
 
 PROCEDURE Main()
 
    LOCAL nScreenWidth := 800
    LOCAL nScreenHeight := 450
    LOCAL cName := ""
-   LOCAL nLetterCount    := 0
+   LOCAL nLetterCount := 0
    LOCAL aTextBox := { nScreenWidth / 2 - 100, 180, 225, 50 }
-   LOCAL lMouseOnText 
+   LOCAL lMouseOnText
    LOCAL nFramesCounter := 0
-   LOCAL nKey 
+   LOCAL nKey
 
    InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [text] example - input box" )
 
    SetTargetFPS( 10 )
-   
+
    DO WHILE ! WindowShouldClose()
 
       IF CheckCollisionPointRec( GetMousePosition(), aTextBox )
@@ -35,7 +35,7 @@ PROCEDURE Main()
          nKey := GetCharPressed()
          WHILE nKey > 0
             IF nKey >= 32 .AND. nKey <= 125 .AND. nLetterCount < MAX_INPUT_CHARS
-               cName := cName += Chr( nKey )
+               cName += Chr( nKey )
                nLetterCount++
             ENDIF
             nKey := GetCharPressed()
@@ -48,7 +48,7 @@ PROCEDURE Main()
             ENDIF
          ENDIF
       ELSE
-         IF GetMouseCursor() <> MOUSE_CURSOR_DEFAULT
+         IF GetMouseCursor() != MOUSE_CURSOR_DEFAULT
             SetMouseCursor( MOUSE_CURSOR_DEFAULT )
          ENDIF
       ENDIF
@@ -75,7 +75,7 @@ PROCEDURE Main()
 
       DrawText( cName, Int( aTextBox[ RECTANGLE_X ] ) + 5, Int( aTextBox[ RECTANGLE_Y ] ) + 8, 40, MAROON )
 
-      DrawText( TextFormat( "INPUT CHARS:%i/%i", nLetterCount, MAX_INPUT_CHARS ), 315, 250, 20, DARKGRAY )
+      DrawText( TextFormat( "INPUT CHARS: %i/%i", nLetterCount, MAX_INPUT_CHARS ), 315, 250, 20, DARKGRAY )
 
       IF lMouseOnText
          IF nLetterCount < MAX_INPUT_CHARS

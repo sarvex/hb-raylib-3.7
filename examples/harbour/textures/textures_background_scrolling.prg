@@ -18,7 +18,6 @@ PROCEDURE Main()
 
    InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [textures] example - background scrolling" )
 
-
    aBackground := LoadTexture( "resources/cyberpunk_street_background.png" )
    aMidground := LoadTexture( "resources/cyberpunk_street_midground.png" )
    aForeground := LoadTexture( "resources/cyberpunk_street_foreground.png" )
