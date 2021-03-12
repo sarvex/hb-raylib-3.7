@@ -50,7 +50,7 @@ PROCEDURE Main()
 
       lExitWindow := GuiWindowBox( { 0.0, 0.0, nScreenWidth + 0.5, nScreenHeight + 0.5 }, "PORTABLE WINDOW" )
 
-      DrawText( TextFormat( "Mouse Position: [ %.0f, %.0f ]",  aMousePosition[ VECTOR2_X ], aMousePosition[ VECTOR2_Y ] ), 10, 40, 10, DARKGRAY )
+      DrawText( TextFormat( "Mouse Position: [ %i, %i ]",  aMousePosition[ VECTOR2_X ], aMousePosition[ VECTOR2_Y ] ), 10, 40, 10, DARKGRAY )
 
       EndDrawing()
 
