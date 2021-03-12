@@ -18,6 +18,4 @@ extern HB_EXPORT Image* hb_raylib_param( int iParam );
 
 HB_EXTERN_END
 
-bool GuiWindowBox(Rectangle bounds, const char *title);
-
 #endif /* HB_RAYLIB_H_ */

@@ -466,8 +466,26 @@ HB_FUNC( ENDDRAWING )
 // void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
 // void BeginTextureMode(RenderTexture2D target);              // Initializes render texture for drawing
 // void EndTextureMode(void);                                  // Ends drawing to render texture
+
 // void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
+HB_FUNC( BEGINSCISSORMODE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL && hb_param( 4, HB_IT_INTEGER ) != NULL )
+   {
+      BeginScissorMode( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void EndScissorMode(void);                                  // End scissor mode
+HB_FUNC( ENDSCISSORMODE )
+{
+   EndScissorMode();
+}
 
 // Screen-space-related functions
 
