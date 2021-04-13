@@ -95,7 +95,7 @@ PROCEDURE Main()
    ENDDO
 
    UnloadTexture( aExplosion )
-//   UnloadSound( aFxBoom )
+   UnloadSound( aFxBoom )
 
    CloseAudioDevice()
 

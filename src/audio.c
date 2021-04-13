@@ -127,6 +127,36 @@ HB_FUNC( LOADSOUND )
 // void UpdateSound(Sound sound, const void *data, int samplesCount);// Update sound buffer with new data
 // void UnloadWave(Wave wave);                                     // Unload wave data
 // void UnloadSound(Sound sound);                                  // Unload sound
+
+HB_FUNC( UNLOADSOUND )
+{
+    PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      UnloadSound( sound );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+
+
+
+
 // bool ExportWave(Wave wave, const char *fileName);               // Export wave data to file, returns true on success
 // bool ExportWaveAsCode(Wave wave, const char *fileName);         // Export wave sample data to code (.h), returns true on success
 
