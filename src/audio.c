@@ -106,19 +106,16 @@ HB_FUNC( LOADSOUND )
       PHB_ITEM pSubarray = hb_arrayGetItemPtr( pLoadSoundArray, 1 );
 
       hb_arrayNew( pSubarray, 4 );
+      hb_arraySetPtr( pSubarray, 1, sound.stream.buffer );
       hb_arraySetNI( pSubarray, 2, ( unsigned int ) sound.stream.sampleRate );
       hb_arraySetNI( pSubarray, 3, ( unsigned int ) sound.stream.sampleSize );
       hb_arraySetNI( pSubarray, 4, ( unsigned int ) sound.stream.channels );
 
       hb_arraySetNI( pLoadSoundArray, 2, ( unsigned int ) sound.sampleCount );
 
-      PHB_ITEM pEmptyArray = hb_arrayGetItemPtr( pSubarray, 1 );
-      hb_arrayNew( pEmptyArray, 0 );
-      hb_arraySetPtr( pSubarray, 1, pEmptyArray );
-
       hb_itemReturnRelease( pLoadSoundArray );
       hb_itemRelease( pSubarray );
-      hb_itemRelease( pEmptyArray );
+
    }
    else
    {
@@ -135,6 +132,33 @@ HB_FUNC( LOADSOUND )
 
 // Wave/Sound management functions
 // void PlaySound(Sound sound);                                    // Play a sound
+
+HB_FUNC( PLAYSOUND )
+{
+    PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      PlaySound( sound );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+
 // void StopSound(Sound sound);                                    // Stop playing a sound
 // void PauseSound(Sound sound);                                   // Pause a sound
 // void ResumeSound(Sound sound);                                  // Resume a paused sound
