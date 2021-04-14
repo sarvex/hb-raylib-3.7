@@ -153,16 +153,10 @@ HB_FUNC( UNLOADSOUND )
    }
 }
 
-
-
-
-
 // bool ExportWave(Wave wave, const char *fileName);               // Export wave data to file, returns true on success
 // bool ExportWaveAsCode(Wave wave, const char *fileName);         // Export wave sample data to code (.h), returns true on success
-
 // Wave/Sound management functions
 // void PlaySound(Sound sound);                                    // Play a sound
-
 HB_FUNC( PLAYSOUND )
 {
     PHB_ITEM pItem;
@@ -188,13 +182,47 @@ HB_FUNC( PLAYSOUND )
    }
 }
 
-
 // void StopSound(Sound sound);                                    // Stop playing a sound
 // void PauseSound(Sound sound);                                   // Pause a sound
 // void ResumeSound(Sound sound);                                  // Resume a paused sound
 // void PlaySoundMulti(Sound sound);                               // Play a sound (using multichannel buffer pool)
+HB_FUNC( PLAYSOUNDMULTI )
+{
+    PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      PlaySoundMulti( sound );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void StopSoundMulti(void);                                      // Stop any sound playing (using multichannel buffer pool)
+HB_FUNC(STOPSOUNDMULTI)
+{
+   StopSoundMulti(); 
+}
+
 // int GetSoundsPlaying(void);                                     // Get number of sounds playing in the multichannel
+HB_FUNC(GETSOUNDSPLAYING)
+{
+   hb_retni(GetSoundsPlaying());
+}
+
 // bool IsSoundPlaying(Sound sound);                               // Check if a sound is currently playing
 // void SetSoundVolume(Sound sound, float volume);                 // Set volume for a sound (1.0 is max level)
 // void SetSoundPitch(Sound sound, float pitch);                   // Set pitch for a sound (1.0 is base level)
