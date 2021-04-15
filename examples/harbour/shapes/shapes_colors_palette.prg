@@ -22,7 +22,7 @@ PROCEDURE Main()
    LOCAL i
 
    InitWindow( screenWidth, screenHeight, "Harbour raylib [shapes] example - colors palette" )
-   
+
    SetWindowIcon( LoadImage( "../../../docs/assets/img/LogoWindow16x16.png" ) )
 
    FOR i := 1 TO MAX_COLORS_COUNT

@@ -84,8 +84,8 @@ PROCEDURE Main()
          IF aMouseTail[ ACTIVE, i ]
             DrawTexturePro( aSmoke, { aSourceRec[ RECTANGLE_X ], aSourceRec[ RECTANGLE_Y ], aSmoke[ TEXTURE2D_WIDTH ], aSmoke[ TEXTURE2D_HEIGHT ]  }, ;
                { aMouseTail[ POSITION, i, VECTOR2_X ], aMouseTail[ POSITION, i, VECTOR2_Y ], aSmoke[ TEXTURE2D_WIDTH ] * aMouseTail[ SIZE, i ], aSmoke[ TEXTURE2D_HEIGHT ] * aMouseTail[ SIZE, i ] }, ;
-               { ( aSmoke[ TEXTURE2D_WIDTH ] * aMouseTail[ SIZE, i ] / 2.0 ), ( aSmoke[ TEXTURE2D_HEIGHT ] * aMouseTail[ SIZE, i ] / 2.0 ) },;
-                aMouseTail[ ROTATION, i ], Fade( aMouseTail[ ACOLOR, i ], aMouseTail[ ALPHA, i ] ) )
+               { ( aSmoke[ TEXTURE2D_WIDTH ] * aMouseTail[ SIZE, i ] / 2.0 ), ( aSmoke[ TEXTURE2D_HEIGHT ] * aMouseTail[ SIZE, i ] / 2.0 ) }, ;
+               aMouseTail[ ROTATION, i ], Fade( aMouseTail[ ACOLOR, i ], aMouseTail[ ALPHA, i ] ) )
          ENDIF
       NEXT
 

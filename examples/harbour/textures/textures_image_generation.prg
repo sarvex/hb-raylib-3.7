@@ -12,7 +12,7 @@ PROCEDURE Main()
    LOCAL aWhiteNoise := GenImageWhiteNoise( nScreenWidth, nScreenHeight, 0.5 )
    LOCAL aPerlinNoise := GenImagePerlinNoise( nScreenWidth, nScreenHeight, 50, 50, 4.0 )
    LOCAL aCellular  := GenImageCellular( nScreenWidth, nScreenHeight, 32 )
-   LOCAL aTextures[7]
+   LOCAL aTextures[ 7 ]
    LOCAL nCurrentTexture := 1
    LOCAL i
 

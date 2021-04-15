@@ -20,22 +20,22 @@ PROCEDURE Main()
       ClearBackground( { 32, 32, 32, 255 } )
 
       IF WindowShouldClose()
-         lContinue := .F. //WindowShouldClose()
+         lContinue := .F. // WindowShouldClose()
       ENDIF
 
       DrawText( hb_ntos( GetKeyPressed() ), 190, 200, 20, LIGHTGRAY )
 
-//      GetKeyPressed()
+// GetKeyPressed()
 
-//      SWITCH nKey
+// SWITCH nKey
 
-//      CASE K_ESC
-//         lContinue := .F.
-//         EXIT
+// CASE K_ESC
+// lContinue := .F.
+// EXIT
 
-//      OTHERWISE
+// OTHERWISE
 
-//      ENDSWITCH
+// ENDSWITCH
 
       EndDrawing()
 

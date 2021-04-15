@@ -2,6 +2,8 @@
  * RayLib library: textures.c
  * version 3.5
  *
+ * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
+ * Copyright 2021 Maurizio la Cecilia ( m.lacecilia at gmail com )
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
@@ -588,7 +590,7 @@ HB_FUNC( IMAGEFORMAT )
    PHB_ITEM pItem;
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
-        hb_param( 2, HB_IT_INTEGER ) != NULL )
+                 hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       Image image;
 
@@ -783,8 +785,8 @@ HB_FUNC( IMAGERESIZE )
    PHB_ITEM pItem;
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL )
+                 hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                 hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
       Image image;
 
@@ -808,8 +810,8 @@ HB_FUNC( IMAGERESIZENN )
    PHB_ITEM pItem;
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL )
+                 hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                 hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
       Image image;
 
@@ -833,11 +835,11 @@ HB_FUNC( IMAGERESIZECANVAS )
    PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
-      hb_param( 4, HB_IT_INTEGER ) != NULL &&
-      hb_param( 5, HB_IT_INTEGER ) != NULL &&
-      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 4, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
       Image image;
 
@@ -891,10 +893,10 @@ HB_FUNC( IMAGEDITHER )
    PHB_ITEM pItem;
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
-      hb_param( 4, HB_IT_INTEGER ) != NULL &&
-      hb_param( 5, HB_IT_INTEGER ) != NULL )
+                 hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                 hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                 hb_param( 4, HB_IT_INTEGER ) != NULL &&
+                 hb_param( 5, HB_IT_INTEGER ) != NULL )
    {
       Image image;
 

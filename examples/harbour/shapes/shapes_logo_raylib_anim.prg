@@ -17,7 +17,7 @@ PROCEDURE Main()
 
    LOCAL nBottomSideRecWidth := 16
    LOCAL nRightSideRecHeight := 16
-   
+
    LOCAL nState := 0
    LOCAL nAlpha := 1.0
 

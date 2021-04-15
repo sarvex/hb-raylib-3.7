@@ -65,7 +65,7 @@ PROCEDURE Main()
       DrawText( "(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)", Int( nScreenWidth - 330 ), Int( nScreenHeight - 20 ), 10, GRAY )
 
       EndDrawing()
- 
+
    ENDDO
 
    UnloadTexture( aBgTexture )

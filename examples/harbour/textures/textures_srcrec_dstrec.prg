@@ -24,7 +24,7 @@ PROCEDURE Main()
    InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [textures] examples - texture source and destination rectangles" )
 
    aScarfy := LoadTexture( "resources/Scarfy.png" )
-   
+
    aFrameWidth  := aScarfy[ TEXTURE2D_WIDTH ] / 6
    aFrameHeight := aScarfy[ TEXTURE2D_HEIGHT ]
 

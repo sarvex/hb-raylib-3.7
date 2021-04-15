@@ -31,7 +31,7 @@ PROCEDURE Main()
             CheckCollisionPointRec( mousePosition, { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ] - MOUSE_SCALE_MARK_SIZE, ;
             rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] - MOUSE_SCALE_MARK_SIZE, ;
             MOUSE_SCALE_MARK_SIZE, MOUSE_SCALE_MARK_SIZE } )
-            
+
          mouseScaleReady := .T.
 
          IF IsMouseButtonPressed( MOUSE_LEFT_BUTTON )
@@ -75,8 +75,8 @@ PROCEDURE Main()
          DrawRectangleLinesEx( rec, 1, RED )
 
          DrawTriangle( { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ] - MOUSE_SCALE_MARK_SIZE, rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] }, ;
-                       { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] }, ;
-                       { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] - MOUSE_SCALE_MARK_SIZE }, RED )
+            { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] }, ;
+            { rec[ RECTANGLE_X ] + rec[ RECTANGLE_WIDTH ], rec[ RECTANGLE_Y ] + rec[ RECTANGLE_HEIGHT ] - MOUSE_SCALE_MARK_SIZE }, RED )
       ENDIF
 
       EndDrawing()

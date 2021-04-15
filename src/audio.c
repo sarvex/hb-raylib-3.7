@@ -2,6 +2,8 @@
  * RayLib library: audio.c
  * version 3.5
  *
+ * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
+ * Copyright 2021 Maurizio la Cecilia ( m.lacecilia at gmail com )
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
@@ -159,7 +161,7 @@ HB_FUNC( UNLOADSOUND )
 // void PlaySound(Sound sound);                                    // Play a sound
 HB_FUNC( PLAYSOUND )
 {
-    PHB_ITEM pItem;
+   PHB_ITEM pItem;
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
    {
@@ -188,7 +190,7 @@ HB_FUNC( PLAYSOUND )
 // void PlaySoundMulti(Sound sound);                               // Play a sound (using multichannel buffer pool)
 HB_FUNC( PLAYSOUNDMULTI )
 {
-    PHB_ITEM pItem;
+   PHB_ITEM pItem;
 
    if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
    {
@@ -214,7 +216,7 @@ HB_FUNC( PLAYSOUNDMULTI )
 // void StopSoundMulti(void);                                      // Stop any sound playing (using multichannel buffer pool)
 HB_FUNC(STOPSOUNDMULTI)
 {
-   StopSoundMulti(); 
+   StopSoundMulti();
 }
 
 // int GetSoundsPlaying(void);                                     // Get number of sounds playing in the multichannel
