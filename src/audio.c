@@ -128,8 +128,8 @@ HB_FUNC( LOADSOUND )
 // Sound LoadSoundFromWave(Wave wave);                             // Load sound from wave data
 // void UpdateSound(Sound sound, const void *data, int samplesCount);// Update sound buffer with new data
 // void UnloadWave(Wave wave);                                     // Unload wave data
-// void UnloadSound(Sound sound);                                  // Unload sound
 
+// void UnloadSound(Sound sound);                                  // Unload sound
 HB_FUNC( UNLOADSOUND )
 {
     PHB_ITEM pItem;
@@ -158,6 +158,7 @@ HB_FUNC( UNLOADSOUND )
 // bool ExportWave(Wave wave, const char *fileName);               // Export wave data to file, returns true on success
 // bool ExportWaveAsCode(Wave wave, const char *fileName);         // Export wave sample data to code (.h), returns true on success
 // Wave/Sound management functions
+
 // void PlaySound(Sound sound);                                    // Play a sound
 HB_FUNC( PLAYSOUND )
 {
@@ -185,8 +186,83 @@ HB_FUNC( PLAYSOUND )
 }
 
 // void StopSound(Sound sound);                                    // Stop playing a sound
+HB_FUNC( STOPSOUND )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      StopSound( sound );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void PauseSound(Sound sound);                                   // Pause a sound
+HB_FUNC( PAUSESOUND )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      PauseSound( sound );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ResumeSound(Sound sound);                                  // Resume a paused sound
+HB_FUNC( RESUMESOUND )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      ResumeSound( sound );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void PlaySoundMulti(Sound sound);                               // Play a sound (using multichannel buffer pool)
 HB_FUNC( PLAYSOUNDMULTI )
 {
@@ -226,8 +302,83 @@ HB_FUNC(GETSOUNDSPLAYING)
 }
 
 // bool IsSoundPlaying(Sound sound);                               // Check if a sound is currently playing
+HB_FUNC( ISSOUNDPLAYING )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+       hb_retl( IsSoundPlaying( sound ));
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetSoundVolume(Sound sound, float volume);                 // Set volume for a sound (1.0 is max level)
+HB_FUNC( SETSOUNDVOLUME )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 && hb_param( 2, HB_IT_NUMERIC ) != NULL)
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      SetSoundVolume( sound, ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetSoundPitch(Sound sound, float pitch);                   // Set pitch for a sound (1.0 is base level)
+HB_FUNC( SETSOUNDPITCH )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 && hb_param( 2, HB_IT_NUMERIC ) != NULL)
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      SetSoundPitch( sound, ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void WaveFormat(Wave *wave, int sampleRate, int sampleSize, int channels);  // Convert wave data to desired format
 // Wave WaveCopy(Wave wave);                                       // Copy a wave to a new wave
 // void WaveCrop(Wave *wave, int initSample, int finalSample);     // Crop a wave to defined samples range
