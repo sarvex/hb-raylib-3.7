@@ -1003,15 +1003,264 @@ HB_FUNC( GETMUSICTIMEPLAYED )
 }
 
 // AudioStream management functions
+
 // AudioStream InitAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Init audio stream (to stream raw audio pcm data)
+HB_FUNC( INITAUDIOSTREAM )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      AudioStream audiostream = InitAudioStream( ( unsigned int ) hb_parni( 1 ), ( unsigned int ) hb_parni( 2 ), ( unsigned int ) hb_parni( 3 ) );
+
+      PHB_ITEM pInitAudioStreamArray = hb_itemArrayNew( 4 );
+
+      hb_arraySetPtr( pInitAudioStreamArray, 1, ( rAudioBuffer * ) audiostream.buffer );
+      hb_arraySetNI( pInitAudioStreamArray, 2, ( unsigned int ) audiostream.sampleRate );
+      hb_arraySetNI( pInitAudioStreamArray, 3, ( unsigned int ) audiostream.sampleSize );
+      hb_arraySetNI( pInitAudioStreamArray, 4, ( unsigned int ) audiostream.channels );
+
+      hb_itemReturnRelease( pInitAudioStreamArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UpdateAudioStream(AudioStream stream, const void *data, int samplesCount); // Update audio stream buffers with data
+HB_FUNC( UPDATEAUDIOSTREAM )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 &&
+                  hb_param( 2, HB_IT_POINTER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      UpdateAudioStream( stream, hb_parptr( 2 ), hb_parni( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void CloseAudioStream(AudioStream stream);                      // Close audio stream and free memory
+HB_FUNC( CLOSEAUDIOSTREAM )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      CloseAudioStream( stream );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsAudioStreamProcessed(AudioStream stream);                // Check if any audio stream buffers requires refill
+HB_FUNC( ISAUDIOSTREAMPROCESSED )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      hb_retl( IsAudioStreamProcessed( stream ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void PlayAudioStream(AudioStream stream);                       // Play audio stream
+HB_FUNC( PLAYAUDIOSTREAM )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      PlayAudioStream( stream );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void PauseAudioStream(AudioStream stream);                      // Pause audio stream
+HB_FUNC( PAUSEAUDIOSTREAM )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      PauseAudioStream( stream );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ResumeAudioStream(AudioStream stream);                     // Resume audio stream
+HB_FUNC( RESUMEAUDIOSTREAM )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      ResumeAudioStream( stream );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool IsAudioStreamPlaying(AudioStream stream);                  // Check if audio stream is playing
+HB_FUNC( ISAUDIOSTREAMPLAYING )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      hb_retl( IsAudioStreamPlaying( stream ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void StopAudioStream(AudioStream stream);                       // Stop audio stream
+HB_FUNC( STOPAUDIOSTREAM )
+{
+   PHB_ITEM pItem;
+
+   if(  ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      StopAudioStream( stream );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetAudioStreamVolume(AudioStream stream, float volume);    // Set volume for audio stream (1.0 is max level)
+HB_FUNC( SETAUDIOSTREAMVOLUME )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 &&
+                 hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      SetAudioStreamVolume( stream, ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetAudioStreamPitch(AudioStream stream, float pitch);      // Set pitch for audio stream (1.0 is base level)
+HB_FUNC( SetAudioStreamPitch )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 &&
+                 hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      AudioStream stream;
+
+      stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pItem, 1 );
+      stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+
+      SetAudioStreamPitch( stream, ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void SetAudioStreamBufferSizeDefault(int size);                 // Default size for new audio streams
+HB_FUNC( SETAUDIOSTREAMBUFFERSIZEDEFAULT )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetAudioStreamBufferSizeDefault( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
