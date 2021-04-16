@@ -74,7 +74,9 @@ HB_FUNC( LOADWAVE )
 // Wave LoadWaveFromMemory(const char *fileType, const unsigned char *fileData, int dataSize); // Load wave from memory buffer, fileType refers to extension: i.e. "wav"
 HB_FUNC( LOADWAVEFROMMEMORY )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL && hb_param( 3, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_STRING ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
       const unsigned char fileData = hb_parni( 2 );
       Wave wave = LoadWaveFromMemory( hb_parc( 1 ), &fileData, hb_parni( 3 ) );
@@ -126,8 +128,94 @@ HB_FUNC( LOADSOUND )
 }
 
 // Sound LoadSoundFromWave(Wave wave);                             // Load sound from wave data
+HB_FUNC( LOADSOUNDFROMWAVE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Wave wave;
+
+      wave.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+      wave.data        = hb_arrayGetPtr( pItem, 5 );
+
+      Sound sound = LoadSoundFromWave( wave );
+
+      PHB_ITEM pLoadSoundArray = hb_itemArrayNew( 2 );
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pLoadSoundArray, 1 );
+
+      hb_arrayNew( pSubarray, 4 );
+      hb_arraySetPtr( pSubarray, 1, sound.stream.buffer );
+      hb_arraySetNI( pSubarray, 2, ( unsigned int ) sound.stream.sampleRate );
+      hb_arraySetNI( pSubarray, 3, ( unsigned int ) sound.stream.sampleSize );
+      hb_arraySetNI( pSubarray, 4, ( unsigned int ) sound.stream.channels );
+
+      hb_arraySetNI( pLoadSoundArray, 2, ( unsigned int ) sound.sampleCount );
+
+      hb_itemReturnRelease( pLoadSoundArray );
+      hb_itemRelease( pSubarray );
+
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UpdateSound(Sound sound, const void *data, int samplesCount);// Update sound buffer with new data
+HB_FUNC( UPDATESOUND )
+{
+    PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 &&
+                 hb_param( 2, HB_IT_POINTER ) != NULL &&
+                 hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Sound sound;
+
+      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+
+      sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+
+      UpdateSound( sound, hb_parptr( 2 ), hb_parni( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UnloadWave(Wave wave);                                     // Unload wave data
+HB_FUNC( UNLOADWAVE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Wave wave;
+
+      wave.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+      wave.data        = hb_arrayGetPtr( pItem, 5 );
+
+      UnloadWave( wave );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void UnloadSound(Sound sound);                                  // Unload sound
 HB_FUNC( UNLOADSOUND )
@@ -156,7 +244,53 @@ HB_FUNC( UNLOADSOUND )
 }
 
 // bool ExportWave(Wave wave, const char *fileName);               // Export wave data to file, returns true on success
+HB_FUNC( EXPORTWAVE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
+                 hb_param( 2, HB_IT_STRING )  != NULL )
+   {
+      Wave wave;
+
+      wave.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+      wave.data        = hb_arrayGetPtr( pItem, 5 );
+
+      hb_retl( ExportWave( wave, hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // bool ExportWaveAsCode(Wave wave, const char *fileName);         // Export wave sample data to code (.h), returns true on success
+HB_FUNC( EXPORTWAVEASCODE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 &&
+                 hb_param( 2, HB_IT_STRING )  != NULL )
+   {
+      Wave wave;
+
+      wave.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+      wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
+      wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
+      wave.data        = hb_arrayGetPtr( pItem, 5 );
+
+      hb_retl( ExportWaveAsCode( wave, hb_parc( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Wave/Sound management functions
 
 // void PlaySound(Sound sound);                                    // Play a sound
