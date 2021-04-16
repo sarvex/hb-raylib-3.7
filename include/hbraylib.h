@@ -14,7 +14,7 @@
 
 HB_EXTERN_BEGIN
 
-extern HB_EXPORT Image* hb_raylib_param( int iParam );
+extern HB_EXPORT Image* hb_image_param( int iParam );
 
 HB_EXTERN_END
 

@@ -9,7 +9,7 @@
 #include "hbraylib.h"
 
 /* --- Image* support --- */
-static HB_GARBAGE_FUNC( hb_raylib_destructor )
+static HB_GARBAGE_FUNC( hb_image_destructor )
 {
    Image ** ppImage = ( Image ** ) Cargo;
 
@@ -19,15 +19,15 @@ static HB_GARBAGE_FUNC( hb_raylib_destructor )
    }
 }
 
-static const HB_GC_FUNCS s_gcRaylibFuncs =
+static const HB_GC_FUNCS s_gcImageFuncs =
 {
-   hb_raylib_destructor,
+   hb_image_destructor,
    hb_gcDummyMark
 };
 
-Image * hb_raylib_param( int iParam )
+Image * hb_image_param( int iParam )
 {
-   Image ** ppImage = ( Image ** ) hb_parptrGC( &s_gcRaylibFuncs, iParam );
+   Image ** ppImage = ( Image ** ) hb_parptrGC( &s_gcImageFuncs, iParam );
 
    if( ppImage && *ppImage )
    {
