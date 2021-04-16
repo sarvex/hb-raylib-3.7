@@ -2,7 +2,8 @@
  * RayLib library: rlgl.c
  * version 3.5
  *
- * Copyright 2020 Rafał Jopek ( rafaljopek at hotmail com )
+ * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
+ * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
 

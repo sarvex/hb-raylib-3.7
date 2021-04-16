@@ -583,6 +583,80 @@ HB_FUNC( IMAGETEXT )
 }
 
 // Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint);         // Create an image from text (custom sprite font)
+HB_FUNC( IMAGETEXTEX )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 6 &&
+                  hb_param( 2, HB_IT_STRING  ) != NULL &&
+                  hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Font font;
+
+      font.baseSize     = hb_arrayGetNI( pItem1, 1 );
+      font.charsCount   = hb_arrayGetNI( pItem1, 2 );
+      font.charsPadding = hb_arrayGetNI( pItem1, 3 );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem1, 4 );
+
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+
+         // Rectangle *recs
+         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pItem1, 5 );
+
+         font.recs->x      = ( float ) hb_arrayGetND( pSubarrayRectangle, 1 );
+         font.recs->y      = ( float ) hb_arrayGetND( pSubarrayRectangle, 2 );
+         font.recs->width  = ( float ) hb_arrayGetND( pSubarrayRectangle, 3 );
+         font.recs->height = ( float ) hb_arrayGetND( pSubarrayRectangle, 4 );
+
+         // CharInfo *chars
+         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pItem1, 6 );
+
+         font.chars->value    = hb_arrayGetNI( pSubarrayCharInfo, 1 );
+         font.chars->offsetX  = hb_arrayGetNI( pSubarrayCharInfo, 2 );
+         font.chars->offsetY  = hb_arrayGetNI( pSubarrayCharInfo, 3 );
+         font.chars->advanceX = hb_arrayGetNI( pSubarrayCharInfo, 4 );
+
+            // Image image
+            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
+
+            font.chars->image.data    = hb_arrayGetPtr( pSubarrayImage, 1 );
+            font.chars->image.width   = hb_arrayGetNI( pSubarrayImage, 2 );
+            font.chars->image.height  = hb_arrayGetNI( pSubarrayImage, 3 );
+            font.chars->image.mipmaps = hb_arrayGetNI( pSubarrayImage, 4 );
+            font.chars->image.format  = hb_arrayGetNI( pSubarrayImage, 5 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Image imageret = ImageTextEx( font, hb_parc( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), tint );
+
+      PHB_ITEM pImageTextExArray = hb_itemArrayNew( 5 );
+
+      hb_arraySetPtr( pImageTextExArray, 1, imageret.data );
+      hb_arraySetNI( pImageTextExArray, 2, imageret.width );
+      hb_arraySetNI( pImageTextExArray, 3, imageret.height );
+      hb_arraySetNI( pImageTextExArray, 4, imageret.mipmaps );
+      hb_arraySetNI( pImageTextExArray, 5, imageret.format );
+
+      hb_itemReturnRelease( pImageTextExArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void ImageFormat(Image *image, int newFormat);                                                     // Convert image data to desired format
 HB_FUNC( IMAGEFORMAT )
@@ -1751,6 +1825,85 @@ HB_FUNC( IMAGEDRAWTEXT )
 }
 
 // void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
+HB_FUNC( IMAGEDRAWTEXTEX )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 6 &&
+                  hb_param( 3, HB_IT_STRING ) != NULL &&
+       ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+                  hb_param( 5, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 6, HB_IT_NUMERIC ) != NULL &&
+       ( pItem4 = hb_param( 7, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 )
+   {
+      Image dst;
+
+      dst.data    =  hb_arrayGetPtr( pItem1, 1 );
+      dst.width   =  hb_arrayGetNI( pItem1, 2 );
+      dst.height  =  hb_arrayGetNI( pItem1, 3 );
+      dst.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      dst.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Font font;
+
+      font.baseSize     = hb_arrayGetNI( pItem2, 1 );
+      font.charsCount   = hb_arrayGetNI( pItem2, 2 );
+      font.charsPadding = hb_arrayGetNI( pItem2, 3 );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem2, 4 );
+
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+
+         // Rectangle *recs
+         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pItem2, 5 );
+
+         font.recs->x      = ( float ) hb_arrayGetND( pSubarrayRectangle, 1 );
+         font.recs->y      = ( float ) hb_arrayGetND( pSubarrayRectangle, 2 );
+         font.recs->width  = ( float ) hb_arrayGetND( pSubarrayRectangle, 3 );
+         font.recs->height = ( float ) hb_arrayGetND( pSubarrayRectangle, 4 );
+
+         // CharInfo *chars
+         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pItem2, 6 );
+
+         font.chars->value    = hb_arrayGetNI( pSubarrayCharInfo, 1 );
+         font.chars->offsetX  = hb_arrayGetNI( pSubarrayCharInfo, 2 );
+         font.chars->offsetY  = hb_arrayGetNI( pSubarrayCharInfo, 3 );
+         font.chars->advanceX = hb_arrayGetNI( pSubarrayCharInfo, 4 );
+
+            // Image image
+            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
+
+            font.chars->image.data    = hb_arrayGetPtr( pSubarrayImage, 1 );
+            font.chars->image.width   = hb_arrayGetNI( pSubarrayImage, 2 );
+            font.chars->image.height  = hb_arrayGetNI( pSubarrayImage, 3 );
+            font.chars->image.mipmaps = hb_arrayGetNI( pSubarrayImage, 4 );
+            font.chars->image.format  = hb_arrayGetNI( pSubarrayImage, 5 );
+
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      ImageDrawTextEx( &dst, font, hb_parc( 3 ), position, ( float ) hb_parnd( 5 ), ( float ) hb_parnd( 6 ), tint );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Texture loading functions
 // NOTE: These functions require GPU access
