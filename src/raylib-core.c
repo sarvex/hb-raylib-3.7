@@ -321,7 +321,6 @@ HB_FUNC( GETMONITORREFRESHRATE )
    }
 }
 
-
 // Vector2 GetWindowPosition(void);                            // Get window position XY on monitor
 HB_FUNC( GETWINDOWPOSITION )
 {
@@ -463,8 +462,54 @@ HB_FUNC( ENDDRAWING )
 
 // void BeginMode2D(Camera2D camera);                          // Initialize 2D mode with custom camera (2D)
 // void EndMode2D(void);                                       // Ends 2D mode with custom camera
+
 // void BeginMode3D(Camera3D camera);                          // Initializes 3D mode with custom camera (3D)
+HB_FUNC( BEGINMODE3D )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Camera3D camera;
+
+         // Vector3 position
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem, 1 );
+
+         camera.position.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.position.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+         camera.position.z = ( float ) hb_arrayGetND( pSubarray1, 3 );
+
+         // Vector3 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+         camera.target.z = ( float ) hb_arrayGetND( pSubarray2, 3 );
+
+         // Vector3 up
+         PHB_ITEM pSubarray3 = hb_arrayGetItemPtr( pItem, 3 );
+
+         camera.up.x = ( float ) hb_arrayGetND( pSubarray3, 1 );
+         camera.up.y = ( float ) hb_arrayGetND( pSubarray3, 2 );
+         camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
+
+      camera.fovy = ( float ) hb_arrayGetND( pItem, 4 );
+      camera.type =           hb_arrayGetNI( pItem, 5 );
+
+      BeginMode3D( camera );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
+HB_FUNC( ENDMODE3D )
+{
+   EndMode3D();
+}
+
 // void BeginTextureMode(RenderTexture2D target);              // Initializes render texture for drawing
 // void EndTextureMode(void);                                  // Ends drawing to render texture
 

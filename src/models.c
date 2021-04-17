@@ -9,6 +9,109 @@
 #include "hbraylib.h"
 
 //------------------------------------------------------------------------------------
+// Basic 3d Shapes Drawing Functions (Module: models)
+//------------------------------------------------------------------------------------
+
+// Basic geometric 3D shapes drawing functions
+// void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color);                                    // Draw a line in 3D world space
+// void DrawPoint3D(Vector3 position, Color color);                                                   // Draw a point in 3D space, actually a small line
+// void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color); // Draw a circle in 3D world space
+// void DrawTriangle3D(Vector3 v1, Vector3 v2, Vector3 v3, Color color);                              // Draw a color-filled triangle (vertex in counter-clockwise order!)
+// void DrawTriangleStrip3D(Vector3 *points, int pointsCount, Color color);                           // Draw a triangle strip defined by points
+
+// void DrawCube(Vector3 position, float width, float height, float length, Color color);             // Draw cube
+HB_FUNC( DRAWCUBE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 3 &&
+                 hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+                 hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+                 hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Vector3 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem, 2 );
+      position.z = ( float ) hb_arrayGetND( pItem, 3 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      DrawCube( position, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void DrawCubeV(Vector3 position, Vector3 size, Color color);                                       // Draw cube (Vector version)
+
+// void DrawCubeWires(Vector3 position, float width, float height, float length, Color color);        // Draw cube wires
+HB_FUNC( DRAWCUBEWIRES )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 3 &&
+                 hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+                 hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+                 hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Vector3 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem, 2 );
+      position.z = ( float ) hb_arrayGetND( pItem, 3 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+
+      DrawCubeWires( position, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void DrawCubeWiresV(Vector3 position, Vector3 size, Color color);                                  // Draw cube wires (Vector version)
+// void DrawCubeTexture(Texture2D texture, Vector3 position, float width, float height, float length, Color color); // Draw cube textured
+// void DrawSphere(Vector3 centerPos, float radius, Color color);                                     // Draw sphere
+// void DrawSphereEx(Vector3 centerPos, float radius, int rings, int slices, Color color);            // Draw sphere with extended parameters
+// void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Color color);         // Draw sphere wires
+// void DrawCylinder(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color); // Draw a cylinder/cone
+// void DrawCylinderWires(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color); // Draw a cylinder/cone wires
+// void DrawPlane(Vector3 centerPos, Vector2 size, Color color);                                      // Draw a plane XZ
+// void DrawRay(Ray ray, Color color);                                                                // Draw a ray line
+
+// void DrawGrid(int slices, float spacing);                                                          // Draw a grid (centered at (0, 0, 0))
+HB_FUNC( DRAWGRID )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   {
+      DrawGrid( hb_parni( 1 ), ( float ) hb_parnd( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void DrawGizmo(Vector3 position);                                                                  // Draw simple gizmo
+
+//------------------------------------------------------------------------------------
 // Model 3d Loading and Drawing Functions (Module: models)
 //------------------------------------------------------------------------------------
 
