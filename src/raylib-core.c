@@ -813,6 +813,29 @@ HB_FUNC( ISFILEDROPPED )
 }
 
 // char **GetDroppedFiles(int *count);                         // Get dropped files names (memory should be freed)
+HB_FUNC( GETDROPPEDFILES )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      int count;
+      char ** files = GetDroppedFiles( &count );
+      hb_storni( count, 1 );
+
+      PHB_ITEM pFilesArray = hb_itemArrayNew( count );
+
+      for( int i = 0; i < count; i++ )
+      {
+         hb_arraySetC( pFilesArray, i + 1, files[ i ] );
+      }
+
+      hb_itemReturnRelease( pFilesArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void ClearDroppedFiles(void);                               // Clear dropped files paths buffer (free memory)
 HB_FUNC( CLEARDROPPEDFILES )
 {

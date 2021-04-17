@@ -85,7 +85,7 @@ PROCEDURE Main()
             ENDIF
          NEXT
       ENDIF
-      
+
       BeginDrawing()
 
       ClearBackground( RAYWHITE )
