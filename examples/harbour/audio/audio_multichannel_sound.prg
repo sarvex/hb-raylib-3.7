@@ -11,8 +11,8 @@ PROCEDURE Main()
 
    InitAudioDevice()
 
-   aFxWav = LoadSound( "resources/sound.wav" )
-   aFxOgg = LoadSound( "resources/target.ogg" )
+   aFxWav := LoadSound( "resources/sound.wav" )
+   aFxOgg := LoadSound( "resources/target.ogg" )
 
    SetTargetFPS( 60 )
 
