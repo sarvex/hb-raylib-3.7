@@ -490,7 +490,8 @@ HB_FUNC( SETSOUNDPITCH )
 {
    PHB_ITEM pItem;
 
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 && hb_param( 2, HB_IT_NUMERIC ) != NULL)
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 &&
+                 hb_param( 2, HB_IT_NUMERIC ) != NULL)
    {
       Sound sound;
 
