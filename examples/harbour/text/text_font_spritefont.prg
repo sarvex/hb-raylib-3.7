@@ -19,7 +19,7 @@ PROCEDURE Main()
    aFont2 := LoadFont( "resources/custom_alagard.png" )
    aFont3 := LoadFont( "resources/custom_jupiter_crash.png" )
 
-   aFontPosition1 := { nScreenWidth / 2 - MeasureTextEx( aFont1, cMsg1, aFont1[ FONT_BASESIZE ], -3 )[ VECTOR2_X ] / 2, nScreenHeight / 2 - aFont1[ FONT_BASESIZE ] / 2 - 80 }
+   aFontPosition1 := { nScreenWidth / 2 - MeasureTextEx( aFont1, cMsg1, aFont1[ FONT_BASESIZE ]+0.0, -3.0 )[ VECTOR2_X ] / 2, nScreenHeight / 2 - aFont1[ FONT_BASESIZE ] / 2 - 80 }
 
    aFontPosition2 := { nScreenWidth / 2 - MeasureTextEx( aFont2, cMsg2, aFont2[ FONT_BASESIZE ], -2 )[ VECTOR2_X ] / 2, nScreenHeight / 2 - aFont2[ FONT_BASESIZE ] / 2 - 10 }
 
