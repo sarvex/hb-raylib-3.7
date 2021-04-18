@@ -242,13 +242,12 @@ HB_FUNC( GETMONITORPOSITION )
    {
       Vector2 vector2 = GetMonitorPosition( hb_parni( 1 ) );
 
-      PHB_ITEM info = hb_itemArrayNew( 2 );
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-      hb_arraySetNI( info, 1, ( float ) vector2.x );
-      hb_arraySetNI( info, 2, ( float ) vector2.y );
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
 
-      hb_itemReturnRelease( info );
-
+      hb_itemReturnRelease( pVector2Array );
    }
    else
    {
@@ -324,27 +323,27 @@ HB_FUNC( GETMONITORREFRESHRATE )
 // Vector2 GetWindowPosition(void);                            // Get window position XY on monitor
 HB_FUNC( GETWINDOWPOSITION )
 {
-   PHB_ITEM info = hb_itemArrayNew( 2 );
-
    Vector2 vector2 = GetWindowPosition();
 
-   hb_arraySetNI( info, 1, ( float ) vector2.x );
-   hb_arraySetNI( info, 2, ( float ) vector2.y );
+   PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-   hb_itemReturnRelease( info );
+   hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+   hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( pVector2Array );
 }
 
 // Vector2 GetWindowScaleDPI(void);                            // Get window scale DPI factor
-HB_FUNC( GetWindowScaleDPI )
+HB_FUNC( GETWINDOWSCALEDPI )
 {
-   PHB_ITEM info = hb_itemArrayNew( 2 );
-
    Vector2 vector2 = GetWindowScaleDPI();
 
-   hb_arraySetNI( info, 1, ( float ) vector2.x );
-   hb_arraySetNI( info, 2, ( float ) vector2.y );
+   PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-   hb_itemReturnRelease( info );
+   hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+   hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( pVector2Array );
 }
 
 // const char *GetMonitorName(int monitor);                    // Get the human-readable, UTF-8 encoded name of the primary monitor
@@ -461,7 +460,42 @@ HB_FUNC( ENDDRAWING )
 }
 
 // void BeginMode2D(Camera2D camera);                          // Initialize 2D mode with custom camera (2D)
+HB_FUNC( BEGINMODE2D )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   {
+      Camera2D camera;
+
+         //Vector2 offset
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem, 1 );
+
+         camera.offset.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.offset.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+
+         //Vector2 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+
+      camera.rotation = ( float ) hb_arrayGetND( pItem, 3 );
+      camera.zoom     = ( float ) hb_arrayGetND( pItem, 3 );
+
+      BeginMode2D( camera );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void EndMode2D(void);                                       // Ends 2D mode with custom camera
+HB_FUNC( ENDMODE2D )
+{
+   EndMode2D();
+}
 
 // void BeginMode3D(Camera3D camera);                          // Initializes 3D mode with custom camera (3D)
 HB_FUNC( BEGINMODE3D )
@@ -511,13 +545,55 @@ HB_FUNC( ENDMODE3D )
 }
 
 // void BeginTextureMode(RenderTexture2D target);              // Initializes render texture for drawing
+HB_FUNC( BEGINTEXTUREMODE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 3 )
+   {
+      RenderTexture2D target;
+
+      target.id = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+
+         // Texture texture
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem, 2 );
+
+         target.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarray1, 1 );
+         target.texture.width   =                  hb_arrayGetNI( pSubarray1, 2 );
+         target.texture.height  =                  hb_arrayGetNI( pSubarray1, 3 );
+         target.texture.mipmaps =                  hb_arrayGetNI( pSubarray1, 4 );
+         target.texture.format  =                  hb_arrayGetNI( pSubarray1, 5 );
+
+         // Texture depth
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem, 3 );
+
+         target.depth.id      = ( unsigned int ) hb_arrayGetNI( pSubarray2, 1 );
+         target.depth.width   =                  hb_arrayGetNI( pSubarray2, 2 );
+         target.depth.height  =                  hb_arrayGetNI( pSubarray2, 3 );
+         target.depth.mipmaps =                  hb_arrayGetNI( pSubarray2, 4 );
+         target.depth.format  =                  hb_arrayGetNI( pSubarray2, 5 );
+
+      BeginTextureMode( target );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void EndTextureMode(void);                                  // Ends drawing to render texture
+HB_FUNC( ENDTEXTUREMODE )
+{
+   EndTextureMode();
+}
 
 // void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
 HB_FUNC( BEGINSCISSORMODE )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL &&
-       hb_param( 3, HB_IT_INTEGER ) != NULL && hb_param( 4, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL )
    {
       BeginScissorMode( hb_parni( 1 ), hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ) );
    }
@@ -536,12 +612,276 @@ HB_FUNC( ENDSCISSORMODE )
 // Screen-space-related functions
 
 // Ray GetMouseRay(Vector2 mousePosition, Camera camera);      // Returns a ray trace from mouse position
+HB_FUNC( GETMOUSERAY )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 5 )
+   {
+      Vector2 mousePosition;
+
+      mousePosition.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      mousePosition.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Camera camera;
+
+         // Vector3 position
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem2, 1 );
+
+         camera.position.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.position.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+         camera.position.z = ( float ) hb_arrayGetND( pSubarray1, 3 );
+
+         // Vector3 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem2, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+         camera.target.z = ( float ) hb_arrayGetND( pSubarray2, 3 );
+
+         // Vector3 up
+         PHB_ITEM pSubarray3 = hb_arrayGetItemPtr( pItem2, 3 );
+
+         camera.up.x = ( float ) hb_arrayGetND( pSubarray3, 1 );
+         camera.up.y = ( float ) hb_arrayGetND( pSubarray3, 2 );
+         camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
+
+      camera.fovy = ( float ) hb_arrayGetND( pItem2, 4 );
+      camera.type =           hb_arrayGetNI( pItem2, 5 );
+
+      Ray ray = GetMouseRay( mousePosition, camera );
+
+      PHB_ITEM pRayArray = hb_itemArrayNew( 2 );
+
+      // Vector3 position
+      PHB_ITEM pSubarray1Vector3 = hb_arrayGetItemPtr( pRayArray, 1 );
+
+      hb_arrayNew( pSubarray1Vector3, 3 );
+      hb_arraySetND( pSubarray1Vector3, 1, ( float ) ray.position.x );
+      hb_arraySetND( pSubarray1Vector3, 2, ( float ) ray.position.y );
+      hb_arraySetND( pSubarray1Vector3, 3, ( float ) ray.position.z );
+
+      // VectVector3or3 direction
+      PHB_ITEM pSubarray2Vector3 = hb_arrayGetItemPtr( pRayArray, 2 );
+
+      hb_arrayNew( pSubarray2Vector3, 3 );
+      hb_arraySetND( pSubarray2Vector3, 1, ( float ) ray.direction.x );
+      hb_arraySetND( pSubarray2Vector3, 2, ( float ) ray.direction.y );
+      hb_arraySetND( pSubarray2Vector3, 3, ( float ) ray.direction.z );
+
+      hb_itemReturnRelease( pRayArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Matrix GetCameraMatrix(Camera camera);                      // Returns camera transform matrix (view matrix)
 // Matrix GetCameraMatrix2D(Camera2D camera);                  // Returns camera 2d transform matrix
+
 // Vector2 GetWorldToScreen(Vector3 position, Camera camera);  // Returns the screen space position for a 3d world space position
+HB_FUNC( GETWORLDTOSCREEN )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 3 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 5 )
+   {
+      Vector3 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
+      position.z = ( float ) hb_arrayGetND( pItem1, 3 );
+
+      Camera camera;
+
+         // Vector3 position
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem2, 1 );
+
+         camera.position.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.position.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+         camera.position.z = ( float ) hb_arrayGetND( pSubarray1, 3 );
+
+         // Vector3 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem2, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+         camera.target.z = ( float ) hb_arrayGetND( pSubarray2, 3 );
+
+         // Vector3 up
+         PHB_ITEM pSubarray3 = hb_arrayGetItemPtr( pItem2, 3 );
+
+         camera.up.x = ( float ) hb_arrayGetND( pSubarray3, 1 );
+         camera.up.y = ( float ) hb_arrayGetND( pSubarray3, 2 );
+         camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
+
+      camera.fovy = ( float ) hb_arrayGetND( pItem2, 4 );
+      camera.type =           hb_arrayGetNI( pItem2, 5 );
+
+      Vector2 vector2 = GetWorldToScreen( position, camera );
+
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
+
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+      hb_itemReturnRelease( pVector2Array );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height); // Returns size position for a 3d world space position
+HB_FUNC( GETWORLDTOSCREENEX )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 3 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 5 &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 4, HB_IT_INTEGER ) != NULL)
+   {
+      Vector3 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
+      position.z = ( float ) hb_arrayGetND( pItem1, 3 );
+
+      Camera camera;
+
+         // Vector3 position
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem2, 1 );
+
+         camera.position.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.position.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+         camera.position.z = ( float ) hb_arrayGetND( pSubarray1, 3 );
+
+         // Vector3 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem2, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+         camera.target.z = ( float ) hb_arrayGetND( pSubarray2, 3 );
+
+         // Vector3 up
+         PHB_ITEM pSubarray3 = hb_arrayGetItemPtr( pItem2, 3 );
+
+         camera.up.x = ( float ) hb_arrayGetND( pSubarray3, 1 );
+         camera.up.y = ( float ) hb_arrayGetND( pSubarray3, 2 );
+         camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
+
+      camera.fovy = ( float ) hb_arrayGetND( pItem2, 4 );
+      camera.type =           hb_arrayGetNI( pItem2, 5 );
+
+      Vector2 vector2 = GetWorldToScreenEx( position, camera, hb_parni( 3 ), hb_parni( 4 ) );
+
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
+
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+      hb_itemReturnRelease( pVector2Array );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera); // Returns the screen space position for a 2d camera world space position
+HB_FUNC( GETWORLDTOSCREEN2D )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Camera2D camera;
+
+         //Vector2 offset
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem1, 1 );
+
+         camera.offset.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.offset.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+
+         //Vector2 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem1, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+
+      camera.rotation = ( float ) hb_arrayGetND( pItem1, 3 );
+      camera.zoom     = ( float ) hb_arrayGetND( pItem1, 3 );
+
+      Vector2 vector2 = GetWorldToScreen2D( position, camera );
+
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
+
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+      hb_itemReturnRelease( pVector2Array );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera); // Returns the world space position for a 2d camera screen space position
+HB_FUNC( GETSCREENTOWORLD2D )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+   {
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
+
+      Camera2D camera;
+
+         //Vector2 offset
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem1, 1 );
+
+         camera.offset.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.offset.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+
+         //Vector2 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem1, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+
+      camera.rotation = ( float ) hb_arrayGetND( pItem1, 3 );
+      camera.zoom     = ( float ) hb_arrayGetND( pItem1, 3 );
+
+      Vector2 vector2 = GetScreenToWorld2D( position, camera );
+
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
+
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+      hb_itemReturnRelease( pVector2Array );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Timing-related functions
 
@@ -618,18 +958,45 @@ HB_FUNC( SETTRACELOGEXIT )
 }
 
 // void SetTraceLogCallback(TraceLogCallback callback);        // Set a trace log callback to enable custom logging
+
 // void TraceLog(int logType, const char *text, ...);          // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
+HB_FUNC( TRACELOG )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_STRING )  != NULL )
+   {
+      TraceLog( hb_parni( 1 ), hb_parc( 2 ), hb_parni( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void *MemAlloc(int size);                                   // Internal memory allocator
 HB_FUNC( MEMALLOC )
 {
-   hb_retptr( MemAlloc( hb_parni( 1 ) ) );
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retptr( MemAlloc( hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // void MemFree(void *ptr);                                    // Internal memory free
 HB_FUNC( MEMFREE )
 {
-   MemFree( hb_parptr( 1 ) );
+   if( hb_param( 1, HB_IT_POINTER ) != NULL )
+   {
+      MemFree( hb_parptr( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // void TakeScreenshot(const char *fileName);                  // Takes a screenshot of current screen (saved a .png)
@@ -831,6 +1198,29 @@ HB_FUNC( GETWORKINGDIRECTORY )
 }
 
 // char **GetDirectoryFiles(const char *dirPath, int *count);  // Get filenames in a directory path (memory should be freed)
+HB_FUNC( GETDIRECTORYFILES )
+{
+   if( hb_param( 1, HB_IT_STRING  ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      int count;
+      char ** files = GetDirectoryFiles( hb_parc( 1 ), &count );
+      hb_storni( count, 1 );
+
+      PHB_ITEM pFilesArray = hb_itemArrayNew( count );
+
+      for( int i = 0; i < count; i++ )
+      {
+         hb_arraySetC( pFilesArray, i + 1, files[ i ] );
+      }
+
+      hb_itemReturnRelease( pFilesArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void ClearDirectoryFiles(void);                             // Clear directory files paths buffers (free memory)
 HB_FUNC( CLEARDIRECTORYFILES )
@@ -910,7 +1300,7 @@ HB_FUNC( SAVESTORAGEVALUE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
-      SaveStorageValue( hb_parni( 1 ), hb_parni( 2 ) );
+      SaveStorageValue( ( unsigned int) hb_parni( 1 ), hb_parni( 2 ) );
    }
    else
    {
@@ -923,7 +1313,7 @@ HB_FUNC( LOADSTORAGEVALUE )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
    {
-      hb_retni( LoadStorageValue( hb_parni( 1 ) ) );
+      hb_retni( LoadStorageValue( ( unsigned int ) hb_parni( 1 ) ) );
    }
    else
    {
@@ -1045,7 +1435,8 @@ HB_FUNC( ISGAMEPADAVAILABLE )
 // bool IsGamepadName(int gamepad, const char *name);      // Check gamepad name (if available)
 HB_FUNC( ISGAMEPADNAME )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_STRING  ) != NULL )
    {
       hb_retl( IsGamepadName( hb_parni( 1 ), hb_parc( 2 ) ) );
    }
@@ -1071,7 +1462,8 @@ HB_FUNC( GETGAMEPADNAME )
 // bool IsGamepadButtonPressed(int gamepad, int button);   // Detect if a gamepad button has been pressed once
 HB_FUNC( ISGAMEPADBUTTONPRESSED )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retl( IsGamepadButtonPressed( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
@@ -1084,7 +1476,8 @@ HB_FUNC( ISGAMEPADBUTTONPRESSED )
 // bool IsGamepadButtonDown(int gamepad, int button);      // Detect if a gamepad button is being pressed
 HB_FUNC( ISGAMEPADBUTTONDOWN )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retl( IsGamepadButtonDown( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
@@ -1097,7 +1490,8 @@ HB_FUNC( ISGAMEPADBUTTONDOWN )
 // bool IsGamepadButtonReleased(int gamepad, int button);  // Detect if a gamepad button has been released once
 HB_FUNC( ISGAMEPADBUTTONRELEASED )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retl( IsGamepadButtonReleased( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
@@ -1110,7 +1504,8 @@ HB_FUNC( ISGAMEPADBUTTONRELEASED )
 // bool IsGamepadButtonUp(int gamepad, int button);        // Detect if a gamepad button is NOT being pressed
 HB_FUNC( ISGAMEPADBUTTONUP )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retl( IsGamepadButtonUp( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
@@ -1142,7 +1537,8 @@ HB_FUNC( GETGAMEPADAXISCOUNT )
 // float GetGamepadAxisMovement(int gamepad, int axis);    // Return axis movement value for a gamepad axis
 HB_FUNC( GETGAMEPADAXISMOVEMENT )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 1, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retnd( ( float ) GetGamepadAxisMovement( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
@@ -1221,20 +1617,21 @@ HB_FUNC( GETMOUSEY )
 // Vector2 GetMousePosition(void);                         // Returns mouse position XY
 HB_FUNC( GETMOUSEPOSITION )
 {
-   PHB_ITEM info = hb_itemArrayNew( 2 );
-
    Vector2 vector2 = GetMousePosition();
 
-   hb_arraySetNI( info, 1, ( float ) vector2.x );
-   hb_arraySetNI( info, 2, ( float ) vector2.y );
+   PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-   hb_itemReturnRelease( info );
+   hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+   hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( pVector2Array );
 }
 
 // void SetMousePosition(int x, int y);                    // Set mouse position XY
 HB_FUNC( SETMOUSEPOSITION )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       SetMousePosition( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -1247,7 +1644,8 @@ HB_FUNC( SETMOUSEPOSITION )
 // void SetMouseOffset(int offsetX, int offsetY);          // Set mouse offset
 HB_FUNC( SETMOUSEOFFSET )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       SetMouseOffset( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -1260,7 +1658,8 @@ HB_FUNC( SETMOUSEOFFSET )
 // void SetMouseScale(float scaleX, float scaleY);         // Set mouse scaling
 HB_FUNC( SETMOUSESCALE )
 {
-   if( hb_param( 1, HB_IT_NUMERIC ) != NULL && hb_param( 2, HB_IT_NUMERIC ) != NULL )
+   if( hb_param( 1, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 2, HB_IT_NUMERIC ) != NULL )
    {
       SetMouseScale( ( float ) hb_parnd( 1 ), ( float ) hb_parnd( 2 ) );
    }
@@ -1285,7 +1684,14 @@ HB_FUNC( GETMOUSECURSOR )
 // void SetMouseCursor(int cursor);                        // Set mouse cursor
 HB_FUNC( SETMOUSECURSOR )
 {
-   SetMouseCursor( hb_parni( 1 ) );
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetMouseCursor( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // Input-related functions: touch
@@ -1309,12 +1715,12 @@ HB_FUNC( GETTOUCHPOSITION )
    {
       Vector2 vector2 = GetTouchPosition( hb_parni( 1 ) );
 
-      PHB_ITEM info = hb_itemArrayNew( 2 );
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-      hb_arraySetNI( info, 1, ( float ) vector2.x );
-      hb_arraySetNI( info, 2, ( float ) vector2.y );
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
 
-      hb_itemReturnRelease( info );
+      hb_itemReturnRelease( pVector2Array );
    }
    else
    {
@@ -1373,14 +1779,14 @@ HB_FUNC( GetGestureHoldDuration )
 // Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
 HB_FUNC( GetGestureDragVector )
 {
-   PHB_ITEM info = hb_itemArrayNew( 2 );
-
    Vector2 vector2 = GetGestureDragVector();
 
-   hb_arraySetNI( info, 1, ( float ) vector2.x );
-   hb_arraySetNI( info, 2, ( float ) vector2.y );
+   PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-   hb_itemReturnRelease( info );
+   hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+   hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( pVector2Array );
 }
 
 // float GetGestureDragAngle(void);                        // Get gesture drag angle
@@ -1392,14 +1798,14 @@ HB_FUNC( GETGESTUREDRAGANGLE )
 // Vector2 GetGesturePinchVector(void);                    // Get gesture pinch delta
 HB_FUNC( GETGESTUREPINCHVECTOR )
 {
-   PHB_ITEM info = hb_itemArrayNew( 2 );
-
    Vector2 vector2 = GetGesturePinchVector();
 
-   hb_arraySetNI( info, 1, ( float ) vector2.x );
-   hb_arraySetNI( info, 2, ( float ) vector2.y );
+   PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-   hb_itemReturnRelease( info );
+   hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+   hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
+
+   hb_itemReturnRelease( pVector2Array );
 }
 
 // float GetGesturePinchAngle(void);                       // Get gesture pinch angle
@@ -1413,7 +1819,87 @@ HB_FUNC( GETGESTUREPINCHANGLE )
 //------------------------------------------------------------------------------------
 
 // void SetCameraMode(Camera camera, int mode);                // Set camera mode (multiple camera modes available)
+HB_FUNC( SETCAMERAMODE )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 &&
+                 hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Camera camera;
+
+         // Vector3 position
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem, 1 );
+
+         camera.position.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.position.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+         camera.position.z = ( float ) hb_arrayGetND( pSubarray1, 3 );
+
+         // Vector3 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+         camera.target.z = ( float ) hb_arrayGetND( pSubarray2, 3 );
+
+         // Vector3 up
+         PHB_ITEM pSubarray3 = hb_arrayGetItemPtr( pItem, 3 );
+
+         camera.up.x = ( float ) hb_arrayGetND( pSubarray3, 1 );
+         camera.up.y = ( float ) hb_arrayGetND( pSubarray3, 2 );
+         camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
+
+      camera.fovy = ( float ) hb_arrayGetND( pItem, 4 );
+      camera.type =           hb_arrayGetNI( pItem, 5 );
+
+      SetCameraMode( camera, hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void UpdateCamera(Camera *camera);                          // Update camera position for selected mode
+HB_FUNC( UPDATECAMERA )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      Camera camera;
+
+         // Vector3 position
+         PHB_ITEM pSubarray1 = hb_arrayGetItemPtr( pItem, 1 );
+
+         camera.position.x = ( float ) hb_arrayGetND( pSubarray1, 1 );
+         camera.position.y = ( float ) hb_arrayGetND( pSubarray1, 2 );
+         camera.position.z = ( float ) hb_arrayGetND( pSubarray1, 3 );
+
+         // Vector3 target
+         PHB_ITEM pSubarray2 = hb_arrayGetItemPtr( pItem, 2 );
+
+         camera.target.x = ( float ) hb_arrayGetND( pSubarray2, 1 );
+         camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
+         camera.target.z = ( float ) hb_arrayGetND( pSubarray2, 3 );
+
+         // Vector3 up
+         PHB_ITEM pSubarray3 = hb_arrayGetItemPtr( pItem, 3 );
+
+         camera.up.x = ( float ) hb_arrayGetND( pSubarray3, 1 );
+         camera.up.y = ( float ) hb_arrayGetND( pSubarray3, 2 );
+         camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
+
+      camera.fovy = ( float ) hb_arrayGetND( pItem, 4 );
+      camera.type =           hb_arrayGetNI( pItem, 5 );
+
+      UpdateCamera( &camera );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void SetCameraPanControl(int keyPan);                       // Set camera pan key to combine with mouse movement (free camera)
 HB_FUNC( SETCAMERAPANCONTROL )

@@ -1394,8 +1394,8 @@ HB_FUNC( IMAGEDRAWPIXELV )
    PHB_ITEM pItem1, pItem2, pItem3;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
-       ( pItem2 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
-       ( pItem3 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
    {
       Image dst;
 
