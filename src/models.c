@@ -22,26 +22,26 @@
 // void DrawCube(Vector3 position, float width, float height, float length, Color color);             // Draw cube
 HB_FUNC( DRAWCUBE )
 {
-   PHB_ITEM pItem;
+   PHB_ITEM pItem1, pItem2;
 
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 3 &&
-                 hb_param( 2, HB_IT_NUMERIC ) != NULL &&
-                 hb_param( 3, HB_IT_NUMERIC ) != NULL &&
-                 hb_param( 4, HB_IT_NUMERIC ) != NULL &&
-       ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 3 &&
+                  hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
       Vector3 position;
 
-      position.x = ( float ) hb_arrayGetND( pItem, 1 );
-      position.y = ( float ) hb_arrayGetND( pItem, 2 );
-      position.z = ( float ) hb_arrayGetND( pItem, 3 );
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
+      position.z = ( float ) hb_arrayGetND( pItem1, 3 );
 
       Color color;
 
-      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
-      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
-      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
-      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
       DrawCube( position, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), color );
    }
