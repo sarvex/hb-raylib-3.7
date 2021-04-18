@@ -141,7 +141,8 @@ HB_FUNC( UNLOADFONT )
 // void DrawFPS(int posX, int posY);                                                     // Shows current FPS
 HB_FUNC( DRAWFPS )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       DrawFPS( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -258,7 +259,8 @@ HB_FUNC( DRAWTEXTEX )
 // int MeasureText(const char *text, int fontSize);                                      // Measure string width for default font
 HB_FUNC( MEASURETEXT )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retni( MeasureText( hb_parc( 1 ), hb_parni( 2 ) ) );
    }
@@ -343,7 +345,8 @@ HB_FUNC( MEASURETEXTEX )
 // bool TextIsEqual(const char *text1, const char *text2);                               // Check if two text string are equal
 HB_FUNC( TEXTISEQUAL )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_STRING ) != NULL )
    {
       hb_retl( TextIsEqual( hb_parc( 1 ), hb_parc( 2 ) ) );
    }
@@ -401,7 +404,8 @@ HB_FUNC( TEXTSUBTEXT )
 // int TextFindIndex(const char *text, const char *find);                                // Find first text occurrence within a string
 HB_FUNC( TEXTFINDINDEX )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_STRING ) != NULL )
    {
       hb_retni( TextFindIndex( hb_parc( 1 ), hb_parc( 2 ) ) );
    }
@@ -485,7 +489,8 @@ HB_FUNC( GETCODEPOINTSCOUNT )
 // int GetNextCodepoint(const char *text, int *bytesProcessed);    // Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure
 HB_FUNC( GETNEXTCODEPOINT )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_STRING )  != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       int bytesProcessed;
       hb_retni( GetNextCodepoint( hb_parc( 1 ), &bytesProcessed ) );
@@ -500,7 +505,8 @@ HB_FUNC( GETNEXTCODEPOINT )
 // const char *CodepointToUtf8(int codepoint, int *byteLength);    // Encode codepoint into utf8 text (char array length returned as parameter)
 HB_FUNC( CODEPOINTTOUTF8 )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       int byteLength;
       hb_retc( CodepointToUtf8( hb_parni( 1 ), &byteLength ) );

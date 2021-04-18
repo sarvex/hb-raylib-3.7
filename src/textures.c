@@ -100,8 +100,7 @@ HB_FUNC( LOADIMAGEFROMMEMORY )
        hb_param( 2, HB_IT_INTEGER ) != NULL &&
        hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
-      const unsigned char fileData = ( const unsigned char ) hb_parni( 2 );
-      Image image = LoadImageFromMemory( hb_parc( 1 ), &fileData, hb_parni( 3 ) );
+      Image image = LoadImageFromMemory( hb_parc( 1 ), ( const unsigned char *) hb_parptr( 2 ), hb_parni( 3 ) );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 

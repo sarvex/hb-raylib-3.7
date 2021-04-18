@@ -78,9 +78,7 @@ HB_FUNC( LOADWAVEFROMMEMORY )
        hb_param( 2, HB_IT_STRING ) != NULL &&
        hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
-      const unsigned char fileData = hb_parni( 2 );
-      Wave wave = LoadWaveFromMemory( hb_parc( 1 ), &fileData, hb_parni( 3 ) );
-      hb_storni( fileData, 2 );
+      Wave wave = LoadWaveFromMemory( hb_parc( 1 ), ( const unsigned char * ) hb_parptr( 2 ), hb_parni( 3 ) );
 
       PHB_ITEM info = hb_itemArrayNew( 5 );
 
