@@ -18,7 +18,9 @@
 // void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
 HB_FUNC( INITWINDOW )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL && hb_param( 3, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_STRING )  != NULL )
    {
       InitWindow( hb_parni( 1 ), hb_parni( 2 ), hb_parc( 3 ) );
    }
@@ -84,19 +86,40 @@ HB_FUNC( ISWINDOWRESIZED )
 // bool IsWindowState(unsigned int flag);                      // Check if one specific window flag is enabled
 HB_FUNC( ISWINDOWSTATE )
 {
-   hb_retl( IsWindowState( ( unsigned int ) hb_parni( 1 ) ) );
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retl( IsWindowState( ( unsigned int ) hb_parni( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // void SetWindowState(unsigned int flags);                    // Set window configuration state using flags
 HB_FUNC( SETWINDOWSTATE )
 {
-   SetWindowState( ( unsigned int ) hb_parni( 1 ) );
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetWindowState( ( unsigned int ) hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // void ClearWindowState(unsigned int flags);                  // Clear window configuration state flags
 HB_FUNC( CLEARWINDOWSTATE )
 {
-   ClearWindowState( ( unsigned int ) hb_parni( 1 ) );
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      ClearWindowState( ( unsigned int ) hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
 }
 
 // void ToggleFullscreen(void);                                // Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
@@ -162,7 +185,8 @@ HB_FUNC( SETWINDOWTITLE )
 // void SetWindowPosition(int x, int y);                       // Set window position on screen (only PLATFORM_DESKTOP)
 HB_FUNC( SETWINDOWPOSITION )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       SetWindowPosition( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -188,7 +212,8 @@ HB_FUNC( SETWINDOWMONITOR )
 // void SetWindowMinSize(int width, int height);               // Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 HB_FUNC( SETWINDOWMINSIZE )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       SetWindowMinSize( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -201,7 +226,8 @@ HB_FUNC( SETWINDOWMINSIZE )
 // void SetWindowSize(int width, int height);                  // Set window dimensions
 HB_FUNC( SETWINDOWSIZE )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       SetWindowSize( hb_parni( 1 ), hb_parni( 2 ) );
    }
@@ -1015,7 +1041,8 @@ HB_FUNC( TAKESCREENSHOT )
 // int GetRandomValue(int min, int max);                       // Returns a random value between min and max (both included)
 HB_FUNC( GETRANDOMVALUE )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       hb_retni( GetRandomValue( hb_parni( 1 ), hb_parni( 2 ) ) );
    }
@@ -1028,15 +1055,26 @@ HB_FUNC( GETRANDOMVALUE )
 // Files management functions
 
 // unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead);     // Load file data as byte array (read)
+HB_FUNC( LOADFILEDATA )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      unsigned int bytesRead;
+      hb_retptr( ( unsigned char * ) LoadFileData( hb_parc( 1 ), &bytesRead ) );
+      hb_storni( bytesRead, 1 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void UnloadFileData(unsigned char *data);                   // Unload file data allocated by LoadFileData()
 HB_FUNC( UNLOADFILEDATA )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_POINTER ) != NULL )
    {
-      unsigned char data;
-      UnloadFileData( &data );
-      hb_storni( data, 1 );
+      UnloadFileData( ( unsigned char * ) hb_parptr( 1 ) );
    }
    else
    {
@@ -1058,14 +1096,24 @@ HB_FUNC( SAVEFILEDATA )
 }
 
 // char *LoadFileText(const char *fileName);                   // Load text data from file (read), returns a '\0' terminated string
+HB_FUNC( LOADFILETEXT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( LoadFileText( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // void UnloadFileText(unsigned char *text);                   // Unload file text data allocated by LoadFileText()
 HB_FUNC( UNLOADFILETEXT )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_POINTER ) != NULL )
    {
-      unsigned char text = ( unsigned char ) hb_parni( 1 );
-      UnloadFileText( &text );
+      UnloadFileText( ( unsigned char * ) hb_parptr( 1 ) );
    }
    else
    {
@@ -1076,7 +1124,8 @@ HB_FUNC( UNLOADFILETEXT )
 // bool SaveFileText(const char *fileName, char *text);        // Save text data to file (write), string must be '\0' terminated, returns true on success
 HB_FUNC( SAVEFILETEXT )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_STRING ) != NULL )
    {
       char text = ( char ) hb_parni( 2 );
       hb_retl( SaveFileText( hb_parc( 1 ), &text ) );
@@ -1116,7 +1165,8 @@ HB_FUNC( DIRECTORYEXISTS )
 // bool IsFileExtension(const char *fileName, const char *ext);// Check file extension (including point: .png, .wav)
 HB_FUNC( ISFILEEXTENSION )
 {
-   if( hb_param( 1, HB_IT_STRING ) != NULL && hb_param( 1, HB_IT_STRING ) != NULL )
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_STRING ) != NULL )
    {
       hb_retl( IsFileExtension( hb_parc( 1 ), hb_parc( 2 ) ) );
    }
@@ -1291,7 +1341,34 @@ HB_FUNC( GETFILEMODTIME )
 }
 
 // unsigned char *CompressData(unsigned char *data, int dataLength, int *compDataLength);        // Compress data (DEFLATE algorithm)
+HB_FUNC( COMPRESSDATA )
+{
+   if( hb_param( 1, HB_IT_POINTER ) != NULL )
+   {
+      int compDataLength;
+      hb_retptr( ( unsigned char * ) CompressData( ( unsigned char * ) hb_parptr( 1 ), hb_parni( 2 ), &compDataLength ) );
+      hb_storni( compDataLength, 3 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // unsigned char *DecompressData(unsigned char *compData, int compDataLength, int *dataLength);  // Decompress data (DEFLATE algorithm)
+HB_FUNC( DECOMPRESSDATA )
+{
+   if( hb_param( 1, HB_IT_POINTER ) != NULL )
+   {
+      int dataLength;
+      hb_retptr( ( unsigned char * ) DecompressData( ( unsigned char * ) hb_parptr( 1 ), hb_parni( 2 ), &dataLength ) );
+      hb_storni( dataLength, 3 );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Persistent storage management
 
