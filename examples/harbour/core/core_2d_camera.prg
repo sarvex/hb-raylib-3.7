@@ -70,7 +70,7 @@ PROCEDURE Main()
          aCamera[ CAMERA2D_ROTATION ] := -40
       ENDIF
 
-      aCamera[ CAMERA2D_ZOOM ] += IntToF( GetMouseWheelMove() ) * 0.05
+      aCamera[ CAMERA2D_ZOOM ] += GetMouseWheelMove() * 0.05
 
       IF aCamera[ CAMERA2D_ZOOM ] > 3.0
          aCamera[ CAMERA2D_ZOOM ] := 3.0
