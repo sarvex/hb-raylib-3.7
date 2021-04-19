@@ -8,7 +8,6 @@
 #define CAMERA3D_FOVY       4
 #define CAMERA3D_TYPE       5
 
-
 PROCEDURE Main()
 
    LOCAL nScreenWidth := 800
@@ -51,7 +50,6 @@ PROCEDURE Main()
       DrawCube( { - 16.0, 2.5, 0.0 }, 1.0, 5.0, 32.0, BLUE )
       DrawCube( { 16.0, 2.5, 0.0 }, 1.0, 5.0, 32.0, LIME )
       DrawCube( { 0.0, 2.5, 16.0 }, 32.0, 5.0, 1.0, GOLD )
-
 
       FOR i := 1 TO MAX_COLUMNS
          DrawCube( aPositions[ i ], 2.0, aHeights[ i ], 2.0, aColors[ i ] )
