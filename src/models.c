@@ -56,26 +56,26 @@ HB_FUNC( DRAWCUBE )
 // void DrawCubeWires(Vector3 position, float width, float height, float length, Color color);        // Draw cube wires
 HB_FUNC( DRAWCUBEWIRES )
 {
-   PHB_ITEM pItem;
+   PHB_ITEM pItem1, pItem2;
 
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 3 &&
-                 hb_param( 2, HB_IT_NUMERIC ) != NULL &&
-                 hb_param( 3, HB_IT_NUMERIC ) != NULL &&
-                 hb_param( 4, HB_IT_NUMERIC ) != NULL &&
-       ( pItem = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 4 )
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 3 &&
+                  hb_param( 2, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem2 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
       Vector3 position;
 
-      position.x = ( float ) hb_arrayGetND( pItem, 1 );
-      position.y = ( float ) hb_arrayGetND( pItem, 2 );
-      position.z = ( float ) hb_arrayGetND( pItem, 3 );
+      position.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem1, 2 );
+      position.z = ( float ) hb_arrayGetND( pItem1, 3 );
 
       Color color;
 
-      color.r = ( unsigned char ) hb_arrayGetNI( pItem, 1 );
-      color.g = ( unsigned char ) hb_arrayGetNI( pItem, 2 );
-      color.b = ( unsigned char ) hb_arrayGetNI( pItem, 3 );
-      color.a = ( unsigned char ) hb_arrayGetNI( pItem, 4 );
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
       DrawCubeWires( position, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), color );
    }
@@ -92,7 +92,42 @@ HB_FUNC( DRAWCUBEWIRES )
 // void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Color color);         // Draw sphere wires
 // void DrawCylinder(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color); // Draw a cylinder/cone
 // void DrawCylinderWires(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color); // Draw a cylinder/cone wires
+
 // void DrawPlane(Vector3 centerPos, Vector2 size, Color color);                                      // Draw a plane XZ
+HB_FUNC( DRAWPLANE )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 3 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Vector3 centerPos;
+
+      centerPos.x = ( float ) hb_arrayGetND( pItem1, 1 );
+      centerPos.y = ( float ) hb_arrayGetND( pItem1, 2 );
+      centerPos.z = ( float ) hb_arrayGetND( pItem1, 3 );
+
+      Vector2 size;
+
+      size.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      size.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color color;
+
+      color.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      color.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      color.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      color.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      DrawPlane( centerPos, size, color );
+   }
+   else
+   {
+      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawRay(Ray ray, Color color);                                                                // Draw a ray line
 
 // void DrawGrid(int slices, float spacing);                                                          // Draw a grid (centered at (0, 0, 0))
