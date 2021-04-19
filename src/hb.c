@@ -17,3 +17,8 @@ HB_FUNC( NTOL )
 {
    hb_retl( hb_parni( 1 ) );
 }
+
+HB_FUNC( INTTOF )
+{
+   hb_retnd( ( float ) hb_parni( 1 ) );
+}
