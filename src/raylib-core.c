@@ -507,7 +507,7 @@ HB_FUNC( BEGINMODE2D )
          camera.target.y = ( float ) hb_arrayGetND( pSubarray2, 2 );
 
       camera.rotation = ( float ) hb_arrayGetND( pItem, 3 );
-      camera.zoom     = ( float ) hb_arrayGetND( pItem, 3 );
+      camera.zoom     = ( float ) hb_arrayGetND( pItem, 4 );
 
       BeginMode2D( camera );
    }
