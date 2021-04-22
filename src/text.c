@@ -84,9 +84,7 @@ HB_FUNC( LOADFONTEX )
        hb_param( 3, HB_IT_INTEGER ) != NULL &&
        hb_param( 4, HB_IT_INTEGER ) != NULL )
    {
-      int fontChars;
-      Font font = LoadFontEx( hb_parc( 1 ), hb_parni( 2 ), &fontChars, hb_parni( 4 ) );
-      hb_storni( fontChars, 3 );
+      Font font = LoadFontEx( hb_parc( 1 ), hb_parni( 2 ), ( int * ) hb_parptr( 3 ), hb_parni( 4 ) );
 
       PHB_ITEM pFontArray = hb_itemArrayNew( 6 );
 
@@ -235,9 +233,8 @@ HB_FUNC( UNLOADFONT )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-         font.recs = ( Rectangle * ) hb_arrayGetPtr( pItem, 5 );
-
-         font.chars = ( CharInfo * ) hb_arrayGetPtr( pItem, 6 );
+      font.recs  = ( Rectangle * ) hb_arrayGetPtr( pItem, 5 );
+      font.chars = ( CharInfo * ) hb_arrayGetPtr( pItem, 6 );
 
       UnloadFont( font );
    }
