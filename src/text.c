@@ -39,33 +39,8 @@ HB_FUNC( LOADFONT )
          hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
          hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
 
-         // Rectangle *recs
-         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pLoadFontArray, 5 );
-
-         hb_arrayNew( pSubarrayRectangle, 4 );
-         hb_arraySetND( pSubarrayRectangle, 1, ( float ) font.recs->x );
-         hb_arraySetND( pSubarrayRectangle, 2, ( float ) font.recs->y );
-         hb_arraySetND( pSubarrayRectangle, 3, ( float ) font.recs->width );
-         hb_arraySetND( pSubarrayRectangle, 4, ( float ) font.recs->height );
-
-         // CharInfo *chars
-         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pLoadFontArray, 6 );
-
-         hb_arrayNew( pSubarrayCharInfo, 5 );
-         hb_arraySetNI( pSubarrayCharInfo, 1,  font.chars->value );
-         hb_arraySetNI( pSubarrayCharInfo, 2,  font.chars->offsetX );
-         hb_arraySetNI( pSubarrayCharInfo, 3,  font.chars->offsetY );
-         hb_arraySetNI( pSubarrayCharInfo, 4,  font.chars->advanceX );
-
-            // Image image
-            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
-
-            hb_arrayNew( pSubarrayImage, 5 );
-            hb_arraySetPtr( pSubarrayImage, 1, font.chars->image.data );
-            hb_arraySetNI( pSubarrayImage, 2, font.chars->image.width );
-            hb_arraySetNI( pSubarrayImage, 3, font.chars->image.height );
-            hb_arraySetNI( pSubarrayImage, 4, font.chars->image.mipmaps );
-            hb_arraySetNI( pSubarrayImage, 5, font.chars->image.format );
+      hb_arraySetPtr( pLoadFontArray, 5, font.recs );
+      hb_arraySetPtr( pLoadFontArray, 6, font.chars );
 
       hb_itemReturnRelease( pLoadFontArray );
    }
@@ -104,30 +79,9 @@ HB_FUNC( UNLOADFONT )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-         // Rectangle *recs
-         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pItem, 5 );
+         font.recs = ( Rectangle * ) hb_arrayGetPtr( pItem, 5 );
 
-         font.recs->x      = ( float ) hb_arrayGetND( pSubarrayRectangle, 1 );
-         font.recs->y      = ( float ) hb_arrayGetND( pSubarrayRectangle, 2 );
-         font.recs->width  = ( float ) hb_arrayGetND( pSubarrayRectangle, 3 );
-         font.recs->height = ( float ) hb_arrayGetND( pSubarrayRectangle, 4 );
-
-         // CharInfo *chars
-         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pItem, 6 );
-
-         font.chars->value    = hb_arrayGetNI( pSubarrayCharInfo, 1 );
-         font.chars->offsetX  = hb_arrayGetNI( pSubarrayCharInfo, 2 );
-         font.chars->offsetY  = hb_arrayGetNI( pSubarrayCharInfo, 3 );
-         font.chars->advanceX = hb_arrayGetNI( pSubarrayCharInfo, 4 );
-
-            // Image image
-            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
-
-            font.chars->image.data    = hb_arrayGetPtr( pSubarrayImage, 1 );
-            font.chars->image.width   = hb_arrayGetNI( pSubarrayImage, 2 );
-            font.chars->image.height  = hb_arrayGetNI( pSubarrayImage, 3 );
-            font.chars->image.mipmaps = hb_arrayGetNI( pSubarrayImage, 4 );
-            font.chars->image.format  = hb_arrayGetNI( pSubarrayImage, 5 );
+         font.chars = ( CharInfo * ) hb_arrayGetPtr( pItem, 6 );
 
       UnloadFont( font );
    }
@@ -206,30 +160,9 @@ HB_FUNC( DRAWTEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-         // Rectangle *recs
-         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pItem1, 5 );
+      font.recs = hb_arrayGetPtr( pItem1, 5 );
 
-         font.recs->x      = ( float ) hb_arrayGetND( pSubarrayRectangle, 1 );
-         font.recs->y      = ( float ) hb_arrayGetND( pSubarrayRectangle, 2 );
-         font.recs->width  = ( float ) hb_arrayGetND( pSubarrayRectangle, 3 );
-         font.recs->height = ( float ) hb_arrayGetND( pSubarrayRectangle, 4 );
-
-         // CharInfo *chars
-         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pItem1, 6 );
-
-         font.chars->value    = hb_arrayGetNI( pSubarrayCharInfo, 1 );
-         font.chars->offsetX  = hb_arrayGetNI( pSubarrayCharInfo, 2 );
-         font.chars->offsetY  = hb_arrayGetNI( pSubarrayCharInfo, 3 );
-         font.chars->advanceX = hb_arrayGetNI( pSubarrayCharInfo, 4 );
-
-            // Image image
-            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
-
-            font.chars->image.data    = hb_arrayGetPtr( pSubarrayImage, 1 );
-            font.chars->image.width   = hb_arrayGetNI( pSubarrayImage, 2 );
-            font.chars->image.height  = hb_arrayGetNI( pSubarrayImage, 3 );
-            font.chars->image.mipmaps = hb_arrayGetNI( pSubarrayImage, 4 );
-            font.chars->image.format  = hb_arrayGetNI( pSubarrayImage, 5 );
+      font.chars = hb_arrayGetPtr( pItem1, 6 );
 
       Vector2 position;
 
@@ -295,30 +228,9 @@ HB_FUNC( MEASURETEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-         // Rectangle *recs
-         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pItem, 5 );
+      font.recs = hb_arrayGetPtr( pItem, 5 );
 
-         font.recs->x      = ( float ) hb_arrayGetND( pSubarrayRectangle, 1 );
-         font.recs->y      = ( float ) hb_arrayGetND( pSubarrayRectangle, 2 );
-         font.recs->width  = ( float ) hb_arrayGetND( pSubarrayRectangle, 3 );
-         font.recs->height = ( float ) hb_arrayGetND( pSubarrayRectangle, 4 );
-
-         // CharInfo *chars
-         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pItem, 6 );
-
-         font.chars->value    = hb_arrayGetNI( pSubarrayCharInfo, 1 );
-         font.chars->offsetX  = hb_arrayGetNI( pSubarrayCharInfo, 2 );
-         font.chars->offsetY  = hb_arrayGetNI( pSubarrayCharInfo, 3 );
-         font.chars->advanceX = hb_arrayGetNI( pSubarrayCharInfo, 4 );
-
-            // Image image
-            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
-
-            font.chars->image.data    = hb_arrayGetPtr( pSubarrayImage, 1 );
-            font.chars->image.width   = hb_arrayGetNI( pSubarrayImage, 2 );
-            font.chars->image.height  = hb_arrayGetNI( pSubarrayImage, 3 );
-            font.chars->image.mipmaps = hb_arrayGetNI( pSubarrayImage, 4 );
-            font.chars->image.format  = hb_arrayGetNI( pSubarrayImage, 5 );
+      font.chars = hb_arrayGetPtr( pItem, 6 );
 
       Vector2 vector2 = MeasureTextEx( font, hb_parc( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ) );
 
