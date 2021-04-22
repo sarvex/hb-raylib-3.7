@@ -55,15 +55,15 @@ HB_FUNC( LOADWAVE )
    {
       Wave wave = LoadWave( hb_parc( 1 ) );
 
-      PHB_ITEM info = hb_itemArrayNew( 5 );
+      PHB_ITEM pWaveArray = hb_itemArrayNew( 5 );
 
-      hb_arraySetNI( info, 1, ( unsigned int ) wave.sampleCount );
-      hb_arraySetNI( info, 2, ( unsigned int ) wave.sampleRate );
-      hb_arraySetNI( info, 3, ( unsigned int ) wave.sampleSize );
-      hb_arraySetNI( info, 4, ( unsigned int ) wave.channels );
-      hb_arraySetPtr( info, 5, wave.data );
+      hb_arraySetNI( pWaveArray, 1, ( unsigned int ) wave.sampleCount );
+      hb_arraySetNI( pWaveArray, 2, ( unsigned int ) wave.sampleRate );
+      hb_arraySetNI( pWaveArray, 3, ( unsigned int ) wave.sampleSize );
+      hb_arraySetNI( pWaveArray, 4, ( unsigned int ) wave.channels );
+      hb_arraySetPtr( pWaveArray, 5,                 wave.data );
 
-      hb_itemReturnRelease( info );
+      hb_itemReturnRelease( pWaveArray );
    }
    else
    {
@@ -80,15 +80,15 @@ HB_FUNC( LOADWAVEFROMMEMORY )
    {
       Wave wave = LoadWaveFromMemory( hb_parc( 1 ), ( const unsigned char * ) hb_parptr( 2 ), hb_parni( 3 ) );
 
-      PHB_ITEM info = hb_itemArrayNew( 5 );
+      PHB_ITEM pWaveArray = hb_itemArrayNew( 5 );
 
-      hb_arraySetNI( info, 1, ( unsigned int ) wave.sampleCount );
-      hb_arraySetNI( info, 2, ( unsigned int ) wave.sampleRate );
-      hb_arraySetNI( info, 3, ( unsigned int ) wave.sampleSize );
-      hb_arraySetNI( info, 4, ( unsigned int ) wave.channels );
-      hb_arraySetPtr( info, 5, wave.data );
+      hb_arraySetNI( pWaveArray, 1, ( unsigned int ) wave.sampleCount );
+      hb_arraySetNI( pWaveArray, 2, ( unsigned int ) wave.sampleRate );
+      hb_arraySetNI( pWaveArray, 3, ( unsigned int ) wave.sampleSize );
+      hb_arraySetNI( pWaveArray, 4, ( unsigned int ) wave.channels );
+      hb_arraySetPtr( pWaveArray, 5,                 wave.data );
 
-      hb_itemReturnRelease( info );
+      hb_itemReturnRelease( pWaveArray );
    }
    else
    {
@@ -103,21 +103,21 @@ HB_FUNC( LOADSOUND )
    {
       Sound sound = LoadSound( hb_parc( 1 ) );
 
-      PHB_ITEM pLoadSoundArray = hb_itemArrayNew( 2 );
+      PHB_ITEM pSoundArray = hb_itemArrayNew( 2 );
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pLoadSoundArray, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pSoundArray, 1 );
 
-      hb_arrayNew( pSubarray, 4 );
-      hb_arraySetPtr( pSubarray, 1, sound.stream.buffer );
-      hb_arraySetNI( pSubarray, 2, ( unsigned int ) sound.stream.sampleRate );
-      hb_arraySetNI( pSubarray, 3, ( unsigned int ) sound.stream.sampleSize );
-      hb_arraySetNI( pSubarray, 4, ( unsigned int ) sound.stream.channels );
+      hb_arrayNew( pSubarrayAudioStream, 4 );
+      hb_arraySetPtr( pSubarrayAudioStream, 1,                 sound.stream.buffer );
+      hb_arraySetNI( pSubarrayAudioStream, 2, ( unsigned int ) sound.stream.sampleRate );
+      hb_arraySetNI( pSubarrayAudioStream, 3, ( unsigned int ) sound.stream.sampleSize );
+      hb_arraySetNI( pSubarrayAudioStream, 4, ( unsigned int ) sound.stream.channels );
 
-      hb_arraySetNI( pLoadSoundArray, 2, ( unsigned int ) sound.sampleCount );
+      hb_arraySetNI( pSoundArray, 2, ( unsigned int ) sound.sampleCount );
 
-      hb_itemReturnRelease( pLoadSoundArray );
-      hb_itemRelease( pSubarray );
-
+      hb_itemReturnRelease( pSoundArray );
+      hb_itemRelease( pSubarrayAudioStream );
    }
    else
    {
@@ -138,25 +138,25 @@ HB_FUNC( LOADSOUNDFROMWAVE )
       wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
       wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
       wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
-      wave.data        = hb_arrayGetPtr( pItem, 5 );
+      wave.data        =                  hb_arrayGetPtr( pItem, 5 );
 
       Sound sound = LoadSoundFromWave( wave );
 
-      PHB_ITEM pLoadSoundArray = hb_itemArrayNew( 2 );
+      PHB_ITEM pSoundArray = hb_itemArrayNew( 2 );
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pLoadSoundArray, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pSoundArray, 1 );
 
-      hb_arrayNew( pSubarray, 4 );
-      hb_arraySetPtr( pSubarray, 1, sound.stream.buffer );
-      hb_arraySetNI( pSubarray, 2, ( unsigned int ) sound.stream.sampleRate );
-      hb_arraySetNI( pSubarray, 3, ( unsigned int ) sound.stream.sampleSize );
-      hb_arraySetNI( pSubarray, 4, ( unsigned int ) sound.stream.channels );
+      hb_arrayNew( pSubarrayAudioStream, 4 );
+      hb_arraySetPtr( pSubarrayAudioStream, 1,                 sound.stream.buffer );
+      hb_arraySetNI( pSubarrayAudioStream, 2, ( unsigned int ) sound.stream.sampleRate );
+      hb_arraySetNI( pSubarrayAudioStream, 3, ( unsigned int ) sound.stream.sampleSize );
+      hb_arraySetNI( pSubarrayAudioStream, 4, ( unsigned int ) sound.stream.channels );
 
-      hb_arraySetNI( pLoadSoundArray, 2, ( unsigned int ) sound.sampleCount );
+      hb_arraySetNI( pSoundArray, 2, ( unsigned int ) sound.sampleCount );
 
-      hb_itemReturnRelease( pLoadSoundArray );
-      hb_itemRelease( pSubarray );
-
+      hb_itemReturnRelease( pSoundArray );
+      hb_itemRelease( pSubarrayAudioStream );
    }
    else
    {
@@ -175,12 +175,13 @@ HB_FUNC( UPDATESOUND )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -224,12 +225,13 @@ HB_FUNC( UNLOADSOUND )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -300,12 +302,13 @@ HB_FUNC( PLAYSOUND )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -326,12 +329,13 @@ HB_FUNC( STOPSOUND )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -352,12 +356,13 @@ HB_FUNC( PAUSESOUND )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -378,12 +383,13 @@ HB_FUNC( RESUMESOUND )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -404,12 +410,13 @@ HB_FUNC( PLAYSOUNDMULTI )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -430,7 +437,7 @@ HB_FUNC(STOPSOUNDMULTI)
 // int GetSoundsPlaying(void);                                     // Get number of sounds playing in the multichannel
 HB_FUNC(GETSOUNDSPLAYING)
 {
-   hb_retni(GetSoundsPlaying());
+   hb_retni( GetSoundsPlaying() );
 }
 
 // bool IsSoundPlaying(Sound sound);                               // Check if a sound is currently playing
@@ -442,12 +449,13 @@ HB_FUNC( ISSOUNDPLAYING )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -468,12 +476,13 @@ HB_FUNC( SETSOUNDVOLUME )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -495,12 +504,13 @@ HB_FUNC( SETSOUNDPITCH )
    {
       Sound sound;
 
-      PHB_ITEM pSubarray = hb_arrayGetItemPtr( pItem, 1 );
+      // AudioStream stream
+      PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
 
-      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarray, 1 );
-      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarray, 2 );
-      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarray, 3 );
-      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarray, 4 );
+      sound.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+      sound.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+      sound.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+      sound.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
 
       sound.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
 
@@ -528,7 +538,7 @@ HB_FUNC( WAVEFORMAT )
       wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
       wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
       wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
-      wave.data        = hb_arrayGetPtr( pItem, 5 );
+      wave.data        =                  hb_arrayGetPtr( pItem, 5 );
 
       WaveFormat( &wave, hb_parni( 2 ), hb_parni( 3 ), hb_parni( 4 ) );
    }
@@ -551,7 +561,7 @@ HB_FUNC( WAVECOPY )
       wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
       wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
       wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
-      wave.data        = hb_arrayGetPtr( pItem, 5 );
+      wave.data        =                  hb_arrayGetPtr( pItem, 5 );
 
       Wave waveret = WaveCopy( wave );
 
@@ -561,7 +571,7 @@ HB_FUNC( WAVECOPY )
       hb_arraySetNI( info, 2, ( unsigned int ) waveret.sampleRate );
       hb_arraySetNI( info, 3, ( unsigned int ) waveret.sampleSize );
       hb_arraySetNI( info, 4, ( unsigned int ) waveret.channels );
-      hb_arraySetPtr( info, 5, waveret.data );
+      hb_arraySetPtr( info, 5,                 waveret.data );
 
       hb_itemReturnRelease( info );
    }
@@ -586,7 +596,7 @@ HB_FUNC( WAVECROP )
       wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
       wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
       wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
-      wave.data        = hb_arrayGetPtr( pItem, 5 );
+      wave.data        =                  hb_arrayGetPtr( pItem, 5 );
 
       WaveCrop( &wave, hb_parni( 2 ), hb_parni( 3 ) );
    }
@@ -609,7 +619,7 @@ HB_FUNC( LOADWAVESAMPLES )
       wave.sampleRate  = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
       wave.sampleSize  = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
       wave.channels    = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
-      wave.data        = hb_arrayGetPtr( pItem, 5 );
+      wave.data        =                  hb_arrayGetPtr( pItem, 5 );
 
       hb_retptr( LoadWaveSamples( wave ) );
    }
@@ -643,10 +653,10 @@ HB_FUNC( LOADMUSICSTREAM )
    {
       Music music = LoadMusicStream( hb_parc( 1 ) );
 
-      PHB_ITEM pLoadMusicStreamArray = hb_itemArrayNew( 5 );
+      PHB_ITEM pMusicArray = hb_itemArrayNew( 5 );
 
          //AudioStream stream
-         PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pLoadMusicStreamArray, 1 );
+         PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pMusicArray, 1 );
 
          hb_arrayNew( pSubarrayAudioStream, 4 );
          hb_arraySetPtr( pSubarrayAudioStream, 1, ( rAudioBuffer * ) music.stream.buffer );
@@ -654,14 +664,13 @@ HB_FUNC( LOADMUSICSTREAM )
          hb_arraySetNI( pSubarrayAudioStream, 3, ( unsigned int ) music.stream.sampleSize );
          hb_arraySetNI( pSubarrayAudioStream, 4, ( unsigned int ) music.stream.channels );
 
-      hb_arraySetNI(  pLoadMusicStreamArray, 2, ( unsigned int ) music.sampleCount );
-      hb_arraySetL(   pLoadMusicStreamArray, 3, music.looping );
-      hb_arraySetNI(  pLoadMusicStreamArray, 4, music.ctxType );
-      hb_arraySetPtr( pLoadMusicStreamArray, 5, music.ctxData );
+      hb_arraySetNI(  pMusicArray, 2, ( unsigned int ) music.sampleCount );
+      hb_arraySetL(   pMusicArray, 3, music.looping );
+      hb_arraySetNI(  pMusicArray, 4, music.ctxType );
+      hb_arraySetPtr( pMusicArray, 5, music.ctxData );
 
-      hb_itemReturnRelease( pLoadMusicStreamArray );
+      hb_itemReturnRelease( pMusicArray );
       hb_itemRelease( pSubarrayAudioStream );
-
    }
    else
    {
