@@ -14,7 +14,33 @@
 //------------------------------------------------------------------------------------
 
 // Font loading/unloading functions
+
 // Font GetFontDefault(void);                                                            // Get the default Font
+HB_FUNC( GETFONTDEFAULT )
+{
+   Font font = GetFontDefault();
+
+   PHB_ITEM pFontArray = hb_itemArrayNew( 6 );
+
+   hb_arraySetNI( pFontArray, 1, font.baseSize );
+   hb_arraySetNI( pFontArray, 2, font.charsCount );
+   hb_arraySetNI( pFontArray, 3, font.charsPadding );
+
+      // Texture2D texture
+      PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pFontArray, 4 );
+
+      hb_arrayNew( pSubarrayTexture2D, 5 );
+      hb_arraySetNI( pSubarrayTexture2D, 1, ( unsigned int ) font.texture.id );
+      hb_arraySetNI( pSubarrayTexture2D, 2, font.texture.width );
+      hb_arraySetNI( pSubarrayTexture2D, 3, font.texture.height );
+      hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
+      hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
+
+      hb_arraySetPtr( pFontArray, 5, font.recs );
+      hb_arraySetPtr( pFontArray, 6, font.chars );
+
+   hb_itemReturnRelease( pFontArray );
+}
 
 // Font LoadFont(const char *fileName);                                                  // Load font from file into GPU memory (VRAM)
 HB_FUNC( LOADFONT )
@@ -23,14 +49,14 @@ HB_FUNC( LOADFONT )
    {
       Font font = LoadFont( hb_parc( 1 ) );
 
-      PHB_ITEM pLoadFontArray = hb_itemArrayNew( 6 );
+      PHB_ITEM pFontArray = hb_itemArrayNew( 6 );
 
-      hb_arraySetNI( pLoadFontArray, 1, font.baseSize );
-      hb_arraySetNI( pLoadFontArray, 2, font.charsCount );
-      hb_arraySetNI( pLoadFontArray, 3, font.charsPadding );
+      hb_arraySetNI( pFontArray, 1, font.baseSize );
+      hb_arraySetNI( pFontArray, 2, font.charsCount );
+      hb_arraySetNI( pFontArray, 3, font.charsPadding );
 
          // Texture2D texture
-         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pLoadFontArray, 4 );
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pFontArray, 4 );
 
          hb_arrayNew( pSubarrayTexture2D, 5 );
          hb_arraySetNI( pSubarrayTexture2D, 1, ( unsigned int ) font.texture.id );
@@ -39,10 +65,10 @@ HB_FUNC( LOADFONT )
          hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
          hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
 
-      hb_arraySetPtr( pLoadFontArray, 5, font.recs );
-      hb_arraySetPtr( pLoadFontArray, 6, font.chars );
+      hb_arraySetPtr( pFontArray, 5, font.recs );
+      hb_arraySetPtr( pFontArray, 6, font.chars );
 
-      hb_itemReturnRelease( pLoadFontArray );
+      hb_itemReturnRelease( pFontArray );
    }
    else
    {
@@ -51,8 +77,138 @@ HB_FUNC( LOADFONT )
 }
 
 // Font LoadFontEx(const char *fileName, int fontSize, int *fontChars, int charsCount);  // Load font from file with extended parameters
+HB_FUNC( LOADFONTEX )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL )
+   {
+      int fontChars;
+      Font font = LoadFontEx( hb_parc( 1 ), hb_parni( 2 ), &fontChars, hb_parni( 4 ) );
+      hb_storni( fontChars, 3 );
+
+      PHB_ITEM pFontArray = hb_itemArrayNew( 6 );
+
+      hb_arraySetNI( pFontArray, 1, font.baseSize );
+      hb_arraySetNI( pFontArray, 2, font.charsCount );
+      hb_arraySetNI( pFontArray, 3, font.charsPadding );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pFontArray, 4 );
+
+         hb_arrayNew( pSubarrayTexture2D, 5 );
+         hb_arraySetNI( pSubarrayTexture2D, 1, ( unsigned int ) font.texture.id );
+         hb_arraySetNI( pSubarrayTexture2D, 2, font.texture.width );
+         hb_arraySetNI( pSubarrayTexture2D, 3, font.texture.height );
+         hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
+         hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
+
+      hb_arraySetPtr( pFontArray, 5, font.recs );
+      hb_arraySetPtr( pFontArray, 6, font.chars );
+
+      hb_itemReturnRelease( pFontArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Font LoadFontFromImage(Image image, Color key, int firstChar);                        // Load font from Image (XNA style)
+HB_FUNC( LOADFONTFROMIMAGE )
+{
+   PHB_ITEM pItem1, pItem2;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL )
+   {
+      Image image;
+
+      image.data    =  hb_arrayGetPtr( pItem1, 1 );
+      image.width   =  hb_arrayGetNI( pItem1, 2 );
+      image.height  =  hb_arrayGetNI( pItem1, 3 );
+      image.mipmaps =  hb_arrayGetNI( pItem1, 4 );
+      image.format  =  hb_arrayGetNI( pItem1, 5 );
+
+      Color key;
+
+      key.r = ( unsigned char ) hb_arrayGetNI( pItem2, 1 );
+      key.g = ( unsigned char ) hb_arrayGetNI( pItem2, 2 );
+      key.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
+      key.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
+
+      Font font = LoadFontFromImage( image, key, hb_parni( 3 ) );
+
+      PHB_ITEM pFontArray = hb_itemArrayNew( 6 );
+
+      hb_arraySetNI( pFontArray, 1, font.baseSize );
+      hb_arraySetNI( pFontArray, 2, font.charsCount );
+      hb_arraySetNI( pFontArray, 3, font.charsPadding );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pFontArray, 4 );
+
+         hb_arrayNew( pSubarrayTexture2D, 5 );
+         hb_arraySetNI( pSubarrayTexture2D, 1, ( unsigned int ) font.texture.id );
+         hb_arraySetNI( pSubarrayTexture2D, 2, font.texture.width );
+         hb_arraySetNI( pSubarrayTexture2D, 3, font.texture.height );
+         hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
+         hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
+
+      hb_arraySetPtr( pFontArray, 5, font.recs );
+      hb_arraySetPtr( pFontArray, 6, font.chars );
+
+      hb_itemReturnRelease( pFontArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Font LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int charsCount); // Load font from memory buffer, fileType refers to extension: i.e. "ttf"
+HB_FUNC( LoadFontFromMemory )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL &&
+       hb_param( 2, HB_IT_POINTER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       hb_param( 6, HB_IT_INTEGER ) != NULL )
+   {
+      int fontChars;
+      Font font = LoadFontFromMemory( hb_parc( 1 ), ( const unsigned char * ) hb_parptr( 2 ), hb_parni( 3 ), hb_parni( 4 ), &fontChars, hb_parni( 6 ) );
+      hb_storni( fontChars, 5 );
+
+      PHB_ITEM pFontArray = hb_itemArrayNew( 6 );
+
+      hb_arraySetNI( pFontArray, 1, font.baseSize );
+      hb_arraySetNI( pFontArray, 2, font.charsCount );
+      hb_arraySetNI( pFontArray, 3, font.charsPadding );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pFontArray, 4 );
+
+         hb_arrayNew( pSubarrayTexture2D, 5 );
+         hb_arraySetNI( pSubarrayTexture2D, 1, ( unsigned int ) font.texture.id );
+         hb_arraySetNI( pSubarrayTexture2D, 2, font.texture.width );
+         hb_arraySetNI( pSubarrayTexture2D, 3, font.texture.height );
+         hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
+         hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
+
+      hb_arraySetPtr( pFontArray, 5, font.recs );
+      hb_arraySetPtr( pFontArray, 6, font.chars );
+
+      hb_itemReturnRelease( pFontArray );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // CharInfo *LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int charsCount, int type);      // Load font data for further use
 // Image GenImageFontAtlas(const CharInfo *chars, Rectangle **recs, int charsCount, int fontSize, int padding, int packMethod);      // Generate image font atlas using chars info
 // void UnloadFontData(CharInfo *chars, int charsCount);                                 // Unload font chars info data (RAM)
@@ -160,8 +316,7 @@ HB_FUNC( DRAWTEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-      font.recs = hb_arrayGetPtr( pItem1, 5 );
-
+      font.recs  = hb_arrayGetPtr( pItem1, 5 );
       font.chars = hb_arrayGetPtr( pItem1, 6 );
 
       Vector2 position;
@@ -185,8 +340,177 @@ HB_FUNC( DRAWTEXTEX )
 }
 
 // void DrawTextRec(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);   // Draw text using font inside rectangle limits
+HB_FUNC( DRAWTEXTREC )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 6 &&
+                  hb_param( 2, HB_IT_STRING )  != NULL &&
+       ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+                  hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 5, HB_IT_NUMERIC ) != NULL &&
+                  hb_param( 6, HB_IT_LOGICAL ) != NULL &&
+       ( pItem3 = hb_param( 7, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Font font;
+
+      font.baseSize     = hb_arrayGetNI( pItem1, 1 );
+      font.charsCount   = hb_arrayGetNI( pItem1, 2 );
+      font.charsPadding = hb_arrayGetNI( pItem1, 3 );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem1, 4 );
+
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+
+      font.recs  = hb_arrayGetPtr( pItem1, 5 );
+      font.chars = hb_arrayGetPtr( pItem1, 6 );
+
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      DrawTextRec( font, hb_parc( 2 ), rec, ( float ) hb_parnd( 4 ), ( float ) hb_parnd( 5 ), hb_parl( 6 ), tint );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTextRecEx(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint);    // Draw text using font inside rectangle limits with support for text selection
+HB_FUNC( DRAWTEXTRECEX )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4, pItem5;
+
+   if( ( pItem1 = hb_param(  1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 6 &&
+                  hb_param(  2, HB_IT_STRING )  != NULL &&
+       ( pItem2 = hb_param(  3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 &&
+                  hb_param(  4, HB_IT_NUMERIC ) != NULL &&
+                  hb_param(  5, HB_IT_NUMERIC ) != NULL &&
+                  hb_param(  6, HB_IT_LOGICAL ) != NULL &&
+       ( pItem3 = hb_param(  7, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 &&
+                  hb_param(  8, HB_IT_INTEGER ) != NULL &&
+                  hb_param(  9, HB_IT_INTEGER ) != NULL &&
+       ( pItem4 = hb_param( 10, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 &&
+       ( pItem5 = hb_param( 11, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem5 ) == 4 )
+   {
+      Font font;
+
+      font.baseSize     = hb_arrayGetNI( pItem1, 1 );
+      font.charsCount   = hb_arrayGetNI( pItem1, 2 );
+      font.charsPadding = hb_arrayGetNI( pItem1, 3 );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem1, 4 );
+
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+
+      font.recs  = hb_arrayGetPtr( pItem1, 5 );
+      font.chars = hb_arrayGetPtr( pItem1, 6 );
+
+      Rectangle rec;
+
+      rec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
+      rec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
+      rec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
+      rec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      Color selectTint;
+
+      selectTint.r = ( unsigned char ) hb_arrayGetNI( pItem4, 1 );
+      selectTint.g = ( unsigned char ) hb_arrayGetNI( pItem4, 2 );
+      selectTint.b = ( unsigned char ) hb_arrayGetNI( pItem4, 3 );
+      selectTint.a = ( unsigned char ) hb_arrayGetNI( pItem4, 4 );
+
+      Color selectBackTint;
+
+      selectBackTint.r = ( unsigned char ) hb_arrayGetNI( pItem5, 1 );
+      selectBackTint.g = ( unsigned char ) hb_arrayGetNI( pItem5, 2 );
+      selectBackTint.b = ( unsigned char ) hb_arrayGetNI( pItem5, 3 );
+      selectBackTint.a = ( unsigned char ) hb_arrayGetNI( pItem5, 4 );
+
+      DrawTextRecEx( font, hb_parc( 2 ), rec, ( float ) hb_parnd( 4 ), ( float ) hb_parnd( 5 ), hb_parl( 6 ), tint, hb_parni( 8 ), hb_parni( 9 ), selectTint, selectBackTint );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // void DrawTextCodepoint(Font font, int codepoint, Vector2 position, float fontSize, Color tint);   // Draw one character (codepoint)
+HB_FUNC( DRAWTEXTCODEPOINT )
+{
+   PHB_ITEM pItem1, pItem2, pItem3;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 6 &&
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+                  hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       ( pItem3 = hb_param( 5, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 4 )
+   {
+      Font font;
+
+      font.baseSize     = hb_arrayGetNI( pItem1, 1 );
+      font.charsCount   = hb_arrayGetNI( pItem1, 2 );
+      font.charsPadding = hb_arrayGetNI( pItem1, 3 );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem1, 4 );
+
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+
+      font.recs  = hb_arrayGetPtr( pItem1, 5 );
+      font.chars = hb_arrayGetPtr( pItem1, 6 );
+
+      Vector2 position;
+
+      position.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      position.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+
+      DrawTextCodepoint( font, hb_parni( 2 ), position, ( float ) hb_parnd( 4 ), tint );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Text misc. functions
 // int MeasureText(const char *text, int fontSize);                                      // Measure string width for default font
@@ -228,18 +552,17 @@ HB_FUNC( MEASURETEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-      font.recs = hb_arrayGetPtr( pItem, 5 );
-
+      font.recs  = hb_arrayGetPtr( pItem, 5 );
       font.chars = hb_arrayGetPtr( pItem, 6 );
 
       Vector2 vector2 = MeasureTextEx( font, hb_parc( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ) );
 
-      PHB_ITEM pMeasureTextExArray = hb_itemArrayNew( 2 );
+      PHB_ITEM pVector2Array = hb_itemArrayNew( 2 );
 
-      hb_arraySetNI( pMeasureTextExArray, 1, ( float ) vector2.x );
-      hb_arraySetNI( pMeasureTextExArray, 2, ( float ) vector2.y );
+      hb_arraySetNI( pVector2Array, 1, ( float ) vector2.x );
+      hb_arraySetNI( pVector2Array, 2, ( float ) vector2.y );
 
-      hb_itemReturnRelease( pMeasureTextExArray );
+      hb_itemReturnRelease( pVector2Array );
    }
    else
    {
@@ -248,11 +571,44 @@ HB_FUNC( MEASURETEXTEX )
 }
 
 // int GetGlyphIndex(Font font, int codepoint);                                          // Get index position for a unicode character on font
+HB_FUNC( GETGLYPHINDEX )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 6 &&
+                 hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      Font font;
+
+      font.baseSize     = hb_arrayGetNI( pItem, 1 );
+      font.charsCount   = hb_arrayGetNI( pItem, 2 );
+      font.charsPadding = hb_arrayGetNI( pItem, 3 );
+
+         // Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem, 4 );
+
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+
+      font.recs  = hb_arrayGetPtr( pItem, 5 );
+      font.chars = hb_arrayGetPtr( pItem, 6 );
+
+      GetGlyphIndex( font, hb_parni( 2 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Text strings management functions (no utf8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
 
 // int TextCopy(char *dst, const char *src);                                             // Copy one string to another, returns bytes copied
+
 
 // bool TextIsEqual(const char *text1, const char *text2);                               // Check if two text string are equal
 HB_FUNC( TEXTISEQUAL )
@@ -286,7 +642,7 @@ HB_FUNC( TEXTFORMAT )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL )
    {
-      hb_retc( TextFormat( hb_parc( 1 ), hb_parni( 2 ), hb_parni( 3 )  ) );
+      hb_retc( TextFormat( hb_parc( 1 ), hb_parni( 2 ), hb_parni( 3 ) ) );
    }
    else
    {

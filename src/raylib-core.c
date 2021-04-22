@@ -1343,7 +1343,9 @@ HB_FUNC( GETFILEMODTIME )
 // unsigned char *CompressData(unsigned char *data, int dataLength, int *compDataLength);        // Compress data (DEFLATE algorithm)
 HB_FUNC( COMPRESSDATA )
 {
-   if( hb_param( 1, HB_IT_POINTER ) != NULL )
+   if( hb_param( 1, HB_IT_POINTER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
       int compDataLength;
       hb_retptr( ( unsigned char * ) CompressData( ( unsigned char * ) hb_parptr( 1 ), hb_parni( 2 ), &compDataLength ) );
@@ -1358,7 +1360,9 @@ HB_FUNC( COMPRESSDATA )
 // unsigned char *DecompressData(unsigned char *compData, int compDataLength, int *dataLength);  // Decompress data (DEFLATE algorithm)
 HB_FUNC( DECOMPRESSDATA )
 {
-   if( hb_param( 1, HB_IT_POINTER ) != NULL )
+   if( hb_param( 1, HB_IT_POINTER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
       int dataLength;
       hb_retptr( ( unsigned char * ) DecompressData( ( unsigned char * ) hb_parptr( 1 ), hb_parni( 2 ), &dataLength ) );
@@ -1375,7 +1379,8 @@ HB_FUNC( DECOMPRESSDATA )
 // bool SaveStorageValue(unsigned int position, int value);    // Save integer value to storage file (to defined position), returns true on success
 HB_FUNC( SAVESTORAGEVALUE )
 {
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL && hb_param( 2, HB_IT_INTEGER ) != NULL )
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
       SaveStorageValue( ( unsigned int) hb_parni( 1 ), hb_parni( 2 ) );
    }
