@@ -1753,32 +1753,32 @@ HB_FUNC( IMAGEDRAW )
 
       Image src;
 
-      src.data    =  hb_arrayGetPtr( pItem1, 1 );
-      src.width   =  hb_arrayGetNI( pItem1, 2 );
-      src.height  =  hb_arrayGetNI( pItem1, 3 );
-      src.mipmaps =  hb_arrayGetNI( pItem1, 4 );
-      src.format  =  hb_arrayGetNI( pItem1, 5 );
+      src.data    =  hb_arrayGetPtr( pItem2, 1 );
+      src.width   =  hb_arrayGetNI( pItem2, 2 );
+      src.height  =  hb_arrayGetNI( pItem2, 3 );
+      src.mipmaps =  hb_arrayGetNI( pItem2, 4 );
+      src.format  =  hb_arrayGetNI( pItem2, 5 );
 
       Rectangle srcRec;
 
-      srcRec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
-      srcRec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
-      srcRec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
-      srcRec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+      srcRec.x      = ( float ) hb_arrayGetND( pItem3, 1 );
+      srcRec.y      = ( float ) hb_arrayGetND( pItem3, 2 );
+      srcRec.width  = ( float ) hb_arrayGetND( pItem3, 3 );
+      srcRec.height = ( float ) hb_arrayGetND( pItem3, 4 );
 
       Rectangle dstRec;
 
-      dstRec.x      = ( float ) hb_arrayGetND( pItem2, 1 );
-      dstRec.y      = ( float ) hb_arrayGetND( pItem2, 2 );
-      dstRec.width  = ( float ) hb_arrayGetND( pItem2, 3 );
-      dstRec.height = ( float ) hb_arrayGetND( pItem2, 4 );
+      dstRec.x      = ( float ) hb_arrayGetND( pItem4, 1 );
+      dstRec.y      = ( float ) hb_arrayGetND( pItem4, 2 );
+      dstRec.width  = ( float ) hb_arrayGetND( pItem4, 3 );
+      dstRec.height = ( float ) hb_arrayGetND( pItem4, 4 );
 
       Color tint;
 
-      tint.r = ( unsigned char ) hb_arrayGetNI( pItem3, 1 );
-      tint.g = ( unsigned char ) hb_arrayGetNI( pItem3, 2 );
-      tint.b = ( unsigned char ) hb_arrayGetNI( pItem3, 3 );
-      tint.a = ( unsigned char ) hb_arrayGetNI( pItem3, 4 );
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem5, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem5, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem5, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem5, 4 );
 
       ImageDraw( &dst, src, srcRec, dstRec, tint );
    }
