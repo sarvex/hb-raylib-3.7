@@ -37,8 +37,8 @@ HB_FUNC( GETFONTDEFAULT )
       hb_arraySetNI( pSubarrayTexture2D, 4, font.texture.mipmaps );
       hb_arraySetNI( pSubarrayTexture2D, 5, font.texture.format );
 
-      hb_arraySetPtr( pFontArray, 5, font.recs );
-      hb_arraySetPtr( pFontArray, 6, font.chars );
+   hb_arraySetPtr( pFontArray, 5, font.recs );
+   hb_arraySetPtr( pFontArray, 6, font.chars );
 
    hb_itemReturnRelease( pFontArray );
 }
