@@ -1360,9 +1360,9 @@ HB_FUNC( IMAGEDRAWPIXEL )
    PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
-      hb_param( 2, HB_IT_INTEGER ) != NULL &&
-      hb_param( 3, HB_IT_INTEGER ) != NULL &&
-      ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+                  hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                  hb_param( 3, HB_IT_INTEGER ) != NULL &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
       Image dst;
 
