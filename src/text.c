@@ -3,6 +3,7 @@
  * version 3.5
  *
  * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
+ * Copyright 2021 Maurizio la Cecilia ( m.lacecilia at gmail com )
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
