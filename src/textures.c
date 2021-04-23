@@ -607,30 +607,8 @@ HB_FUNC( IMAGETEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-         // Rectangle *recs
-         PHB_ITEM pSubarrayRectangle = hb_arrayGetItemPtr( pItem1, 5 );
-
-         font.recs->x      = ( float ) hb_arrayGetND( pSubarrayRectangle, 1 );
-         font.recs->y      = ( float ) hb_arrayGetND( pSubarrayRectangle, 2 );
-         font.recs->width  = ( float ) hb_arrayGetND( pSubarrayRectangle, 3 );
-         font.recs->height = ( float ) hb_arrayGetND( pSubarrayRectangle, 4 );
-
-         // CharInfo *chars
-         PHB_ITEM pSubarrayCharInfo = hb_arrayGetItemPtr( pItem1, 6 );
-
-         font.chars->value    = hb_arrayGetNI( pSubarrayCharInfo, 1 );
-         font.chars->offsetX  = hb_arrayGetNI( pSubarrayCharInfo, 2 );
-         font.chars->offsetY  = hb_arrayGetNI( pSubarrayCharInfo, 3 );
-         font.chars->advanceX = hb_arrayGetNI( pSubarrayCharInfo, 4 );
-
-            // Image image
-            PHB_ITEM pSubarrayImage = hb_arrayGetItemPtr( pSubarrayCharInfo, 5 );
-
-            font.chars->image.data    = hb_arrayGetPtr( pSubarrayImage, 1 );
-            font.chars->image.width   = hb_arrayGetNI( pSubarrayImage, 2 );
-            font.chars->image.height  = hb_arrayGetNI( pSubarrayImage, 3 );
-            font.chars->image.mipmaps = hb_arrayGetNI( pSubarrayImage, 4 );
-            font.chars->image.format  = hb_arrayGetNI( pSubarrayImage, 5 );
+      font.recs  = hb_arrayGetPtr( pItem2, 5 );
+      font.chars = hb_arrayGetPtr( pItem2, 6 );
 
       Color tint;
 
@@ -1854,13 +1832,14 @@ HB_FUNC( IMAGEDRAWTEXTEX )
       font.charsCount   = hb_arrayGetNI( pItem2, 2 );
       font.charsPadding = hb_arrayGetNI( pItem2, 3 );
 
-      PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem2, 4 );
+         //Texture2D texture
+         PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem2, 4 );
 
-      font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
-      font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
-      font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
-      font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
-      font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
+         font.texture.id      = ( unsigned int ) hb_arrayGetNI( pSubarrayTexture2D, 1 );
+         font.texture.width   = hb_arrayGetNI( pSubarrayTexture2D, 2 );
+         font.texture.height  = hb_arrayGetNI( pSubarrayTexture2D, 3 );
+         font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
+         font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
       font.recs  = hb_arrayGetPtr( pItem2, 5 );
       font.chars = hb_arrayGetPtr( pItem2, 6 );
