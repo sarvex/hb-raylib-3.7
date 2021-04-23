@@ -12,3 +12,4 @@ docs/vendor
 *.log
 lib
 tmp
+.vscode
