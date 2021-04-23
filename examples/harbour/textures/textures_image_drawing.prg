@@ -27,7 +27,7 @@ PROCEDURE Main()
 
    ImageDraw( aParrots, aCat, { 0, 0, aCat[ TEXTURE2D_WIDTH ], aCat[ TEXTURE2D_HEIGHT ] }, { 30, 40, aCat[ TEXTURE2D_WIDTH ] * 1.5, aCat[ TEXTURE2D_HEIGHT ] * 1.5 }, WHITE )
    // ImageCrop( aParrots, { 0, 50, aParrots[ TEXTURE2D_WIDTH ], aParrots[ TEXTURE2D_HEIGHT ] - 100 } )
-   // ImageDrawPixel( aParrots, 10, 10, RAYWHITE )
+   ImageDrawPixel( aParrots, 10, 10, RAYWHITE )
    ImageDrawCircle( aParrots, 10, 10, 5, RAYWHITE )
    ImageDrawRectangle( aParrots, 5, 20, 10, 10, RAYWHITE )
 
@@ -35,7 +35,7 @@ PROCEDURE Main()
 
    aFont := LoadFont( "resources/custom_jupiter_crash.png" )
 
-   // ImageDrawTextEx( aParrots, aFont, "PARROTS & CAT", { 300, 230 }, aFont[ FONT_BASESIZE ], - 2, WHITE )
+   ImageDrawTextEx( aParrots, aFont, "PARROTS & CAT", { 300, 230 }, aFont[ FONT_BASESIZE ], - 2, WHITE )
 
    UnloadFont( aFont )
 
@@ -51,7 +51,8 @@ PROCEDURE Main()
       ClearBackground( RAYWHITE )
 
       DrawTexture( aTexture, Int( nScreenWidth / 2 - aTexture[ TEXTURE2D_WIDTH ] / 2 ), Int( nScreenHeight / 2 - aTexture[ TEXTURE2D_HEIGHT ] / 2 - 40 ), WHITE )
-      DrawRectangleLines( Int( nScreenWidth / 2 - aTexture[ TEXTURE2D_WIDTH ] / 2 ), Int( nScreenHeight / 2 - aTexture[ TEXTURE2D_HEIGHT ] / 2 - 40 ), Int( aTexture[ TEXTURE2D_WIDTH ] ), Int( aTexture[ TEXTURE2D_HEIGHT ] ), DARKGRAY )
+      DrawRectangleLines( Int( nScreenWidth / 2 - aTexture[ TEXTURE2D_WIDTH ] / 2 ), Int( nScreenHeight / 2 - aTexture[ TEXTURE2D_HEIGHT ] / 2 - 40 ), ;
+         Int( aTexture[ TEXTURE2D_WIDTH ] ), Int( aTexture[ TEXTURE2D_HEIGHT ] ), DARKGRAY )
 
       DrawText( "We are drawing only one texture from various images composed!", 240, 350, 10, DARKGRAY )
       DrawText( "Source images have been cropped, scaled, flipped and copied one over the other.", 190, 370, 10, DARKGRAY )
