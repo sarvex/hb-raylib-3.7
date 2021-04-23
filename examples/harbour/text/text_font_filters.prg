@@ -80,8 +80,8 @@ PROCEDURE Main()
       DrawTextEx( aFont, cMsg, aFontPosition, nFontSize, 0, BLACK )
 
       DrawRectangle( 0, nScreenHeight - 80, nScreenWidth, 80, LIGHTGRAY )
-      DrawText( TextFormat( "Font size: %02.02f", nFontSize ), 20, nScreenHeight - 50, 10, DARKGRAY )
-      DrawText( TextFormat( "Text size: [%02.02f, %02.02f]", aTextSize[ VECTOR2_X ], aTextSize[ VECTOR2_Y ] ), 20, nScreenHeight - 30, 10, DARKGRAY )
+      DrawText( TextFormat( "Font size: %02.02i", nFontSize ), 20, nScreenHeight - 50, 10, DARKGRAY )
+      DrawText( TextFormat( "Text size: [%02.02i, %02.02i]", aTextSize[ VECTOR2_X ], aTextSize[ VECTOR2_Y ] ), 20, nScreenHeight - 30, 10, DARKGRAY )
       DrawText( "CURRENT TEXTURE FILTER:", 250, 400, 20, GRAY )
 
       IF nCurrentFontFilter == 0

@@ -1362,7 +1362,11 @@ HB_FUNC( IMAGEDRAWPIXEL )
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
                   hb_param( 2, HB_IT_INTEGER ) != NULL &&
                   hb_param( 3, HB_IT_INTEGER ) != NULL &&
+<<<<<<< HEAD
        ( pItem2 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+=======
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
+>>>>>>> aef257c0b05ac763f29850db66c72cbd07b2e1e7
    {
       Image dst;
 
