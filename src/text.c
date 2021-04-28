@@ -733,10 +733,10 @@ HB_FUNC( TEXTTOINTEGER )
    }
 }
 
+//  int TextToInteger(const char *text);                                                            // Get integer value from text (negative values not supported)
 // char *TextToUtf8(int *codepoints, int length);                  // Encode text codepoint into utf8 text (memory must be freed!)
 
 // UTF8 text strings management functions
-
 // int *GetCodepoints(const char *text, int *count);               // Get all codepoints in a string, codepoints count returned by parameters
 
 // int GetCodepointsCount(const char *text);                       // Get total number of characters (codepoints) in a UTF8 encoded string

@@ -1340,11 +1340,7 @@ HB_FUNC( IMAGEDRAWPIXEL )
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
                   hb_param( 2, HB_IT_INTEGER ) != NULL &&
                   hb_param( 3, HB_IT_INTEGER ) != NULL &&
-<<<<<<< HEAD
        ( pItem2 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
-=======
-       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
->>>>>>> aef257c0b05ac763f29850db66c72cbd07b2e1e7
    {
       Image dst;
 
@@ -2509,7 +2505,8 @@ HB_FUNC( DRAWTEXTUREPRO )
    }
 }
 
-// void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint);  // Draws a texture (or part of it) that stretches or shrinks nicely
+//void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint);   // Draws a texture (or part of it) that stretches or shrinks nicely
+//void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointsCount, Color tint);      // Draw a textured polygon
 
 // Color/pixel related functions
 

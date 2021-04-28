@@ -678,6 +678,8 @@ HB_FUNC( LOADMUSICSTREAM )
    }
 }
 
+//Music LoadMusicStreamFromMemory(const char *fileType, unsigned char* data, int dataSize); // Load music stream from data
+
 // void UnloadMusicStream(Music music);                            // Unload music stream
 HB_FUNC( UNLOADMUSICSTREAM )
 {
@@ -731,6 +733,36 @@ HB_FUNC( PLAYMUSICSTREAM )
       music.ctxData = hb_arrayGetPtr( pItem, 5 );
 
       PlayMusicStream( music );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// bool IsMusicPlaying(Music music);                               // Check if music is playing
+HB_FUNC( ISMUSICPLAYING )
+{
+   PHB_ITEM pItem;
+
+   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
+   {
+      Music music;
+
+         //AudioStream stream
+         PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
+
+         music.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
+         music.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
+         music.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
+         music.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
+
+      music.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
+      music.looping = hb_arrayGetL( pItem, 3 );
+      music.ctxType = hb_arrayGetNI( pItem, 4 );
+      music.ctxData = hb_arrayGetPtr( pItem, 5 );
+
+      hb_retl( IsMusicPlaying( music ) );
    }
    else
    {
@@ -858,35 +890,6 @@ HB_FUNC( RESUMEMUSICSTREAM )
    }
 }
 
-// bool IsMusicPlaying(Music music);                               // Check if music is playing
-HB_FUNC( ISMUSICPLAYING )
-{
-   PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
-   {
-      Music music;
-
-         //AudioStream stream
-         PHB_ITEM pSubarrayAudioStream = hb_arrayGetItemPtr( pItem, 1 );
-
-         music.stream.buffer     = ( rAudioBuffer * ) hb_arrayGetPtr( pSubarrayAudioStream, 1 );
-         music.stream.sampleRate = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 2 );
-         music.stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 3 );
-         music.stream.channels   = ( unsigned int ) hb_arrayGetNI( pSubarrayAudioStream, 4 );
-
-      music.sampleCount = ( unsigned int ) hb_arrayGetNI( pItem, 2 );
-      music.looping = hb_arrayGetL( pItem, 3 );
-      music.ctxType = hb_arrayGetNI( pItem, 4 );
-      music.ctxData = hb_arrayGetPtr( pItem, 5 );
-
-      hb_retl( IsMusicPlaying( music ) );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
 
 // void SetMusicVolume(Music music, float volume);                 // Set volume for music (1.0 is max level)
 HB_FUNC( SETMUSICVOLUME )

@@ -193,6 +193,8 @@ HB_FUNC( DRAWLINEBEZIER )
    }
 }
 
+//void DrawLineBezierQuad(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, Color color); //Draw line using quadratic bezier curves with a control point
+
 // void DrawLineStrip( Vector2 *points, int pointsCount, Color color);
 HB_FUNC( DRAWLINESTRIP )
 {

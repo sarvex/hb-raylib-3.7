@@ -261,6 +261,8 @@ HB_FUNC( GETMONITORCOUNT )
    hb_retni( GetMonitorCount() );
 }
 
+// int GetCurrentMonitor(void);                                            // Get current connected monitor
+
 // Vector2 GetMonitorPosition(int monitor);                    // Get specified monitor position
 HB_FUNC( GETMONITORPOSITION )
 {
@@ -523,6 +525,7 @@ HB_FUNC( ENDMODE2D )
    EndMode2D();
 }
 
+/*
 // void BeginMode3D(Camera3D camera);                          // Initializes 3D mode with custom camera (3D)
 HB_FUNC( BEGINMODE3D )
 {
@@ -563,7 +566,7 @@ HB_FUNC( BEGINMODE3D )
       hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-
+*/
 // void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
 HB_FUNC( ENDMODE3D )
 {
@@ -613,6 +616,11 @@ HB_FUNC( ENDTEXTUREMODE )
    EndTextureMode();
 }
 
+//void BeginShaderMode(Shader shader);                                    // Begin custom shader drawing
+//void EndShaderMode(void);                                               // End custom shader drawing (use default shader)
+//void BeginBlendMode(int mode);                                          // Begin blending mode (alpha, additive, multiplied)
+//void EndBlendMode(void);                                                // End blending mode (reset to default: alpha blending)
+
 // void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
 HB_FUNC( BEGINSCISSORMODE )
 {
@@ -629,14 +637,36 @@ HB_FUNC( BEGINSCISSORMODE )
    }
 }
 
+    void BeginVrStereoMode(VrStereoConfig config);                          // Begin stereo rendering
+    void EndVrStereoMode(void);                                             // End stereo rendering
+
 // void EndScissorMode(void);                                  // End scissor mode
 HB_FUNC( ENDSCISSORMODE )
 {
    EndScissorMode();
 }
 
-// Screen-space-related functions
+//void BeginVrStereoMode(VrStereoConfig config);                          // Begin stereo rendering
+//void EndVrStereoMode(void);                                             // End stereo rendering
 
+//VR stereo config functions for VR simulator
+//VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device);                 // Load VR stereo config for VR simulator device parameters
+//void UnloadVrStereoConfig(VrStereoConfig config);                       // Unload VR stereo config
+
+//Shader management functions
+//NOTE: Shader functionality is not available on OpenGL 1.1
+//Shader LoadShader(const char *vsFileName, const char *fsFileName);                                  // Load shader from files and bind default locations
+//Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode);                                // Load shader from code strings and bind default locations
+//int GetShaderLocation(Shader shader, const char *uniformName);                                      // Get shader uniform location
+//int GetShaderLocationAttrib(Shader shader, const char *attribName);                                 // Get shader attribute location
+//void SetShaderValue(Shader shader, int locIndex, const void *value, int uniformType);               // Set shader uniform value
+//void SetShaderValueV(Shader shader, int locIndex, const void *value, int uniformType, int count);   // Set shader uniform value vector
+//void SetShaderValueMatrix(Shader shader, int locIndex, Matrix mat);                                 // Set shader uniform value (matrix 4x4)
+//void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture);                         // Set shader uniform value for texture (sampler2d)
+//void UnloadShader(Shader shader);                                                                   // Unload shader from GPU memory (VRAM)
+
+// Screen-space-related functions
+/*
 // Ray GetMouseRay(Vector2 mousePosition, Camera camera);      // Returns a ray trace from mouse position
 HB_FUNC( GETMOUSERAY )
 {
@@ -818,6 +848,7 @@ HB_FUNC( GETWORLDTOSCREENEX )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
+*/
 
 // Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera); // Returns the screen space position for a 2d camera world space position
 HB_FUNC( GETWORLDTOSCREEN2D )
@@ -943,8 +974,34 @@ HB_FUNC( GetTime )
 }
 
 // Misc. functions
+// int GetRandomValue(int min, int max);                       // Returns a random value between min and max (both included)
+HB_FUNC( GETRANDOMVALUE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
+       hb_param( 2, HB_IT_INTEGER ) != NULL )
+   {
+      hb_retni( GetRandomValue( hb_parni( 1 ), hb_parni( 2 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
-// void SetConfigFlags(unsigned int flags);                    // Setup init configuration flags (view FLAGS)
+//  void TakeScreenshot(const char *fileName);                         // Takes a screenshot of current screen (filename extension defines format)
+HB_FUNC( TAKESCREENSHOT )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      TakeScreenshot( hb_parc( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void SetConfigFlags(unsigned int flags);                           // Setup init configuration flags (view FLAGS)
 HB_FUNC( SETCONFIGFLAGS )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
@@ -957,34 +1014,6 @@ HB_FUNC( SETCONFIGFLAGS )
    }
 }
 
-// void SetTraceLogLevel(int logType);                         // Set the current threshold (minimum) log level
-HB_FUNC( SETTRACELOGLEVEL )
-{
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
-   {
-      SetTraceLogLevel( hb_parni( 1 ) );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// void SetTraceLogExit(int logType);                          // Set the exit threshold (minimum) log level
-HB_FUNC( SETTRACELOGEXIT )
-{
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
-   {
-      SetTraceLogExit( hb_parni( 1 ) );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// void SetTraceLogCallback(TraceLogCallback callback);        // Set a trace log callback to enable custom logging
-
 // void TraceLog(int logType, const char *text, ...);          // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
 HB_FUNC( TRACELOG )
 {
@@ -992,6 +1021,19 @@ HB_FUNC( TRACELOG )
        hb_param( 2, HB_IT_STRING )  != NULL )
    {
       TraceLog( hb_parni( 1 ), hb_parc( 2 ), hb_parni( 3 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void SetTraceLogLevel(int logType);                             // Set the current threshold (minimum) log level
+HB_FUNC( SETTRACELOGLEVEL )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      SetTraceLogLevel( hb_parni( 1 ) );
    }
    else
    {
@@ -1012,7 +1054,9 @@ HB_FUNC( MEMALLOC )
    }
 }
 
-// void MemFree(void *ptr);                                    // Internal memory free
+//void *MemRealloc(void *ptr, int size);                                  // Internal memory reallocator
+
+//void MemFree(void *ptr);                                                // Internal memory free
 HB_FUNC( MEMFREE )
 {
    if( hb_param( 1, HB_IT_POINTER ) != NULL )
@@ -1025,32 +1069,13 @@ HB_FUNC( MEMFREE )
    }
 }
 
-// void TakeScreenshot(const char *fileName);                  // Takes a screenshot of current screen (saved a .png)
-HB_FUNC( TAKESCREENSHOT )
-{
-   if( hb_param( 1, HB_IT_STRING ) != NULL )
-   {
-      TakeScreenshot( hb_parc( 1 ) );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// int GetRandomValue(int min, int max);                       // Returns a random value between min and max (both included)
-HB_FUNC( GETRANDOMVALUE )
-{
-   if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
-       hb_param( 2, HB_IT_INTEGER ) != NULL )
-   {
-      hb_retni( GetRandomValue( hb_parni( 1 ), hb_parni( 2 ) ) );
-   }
-   else
-   {
-      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
+      // Set custom callbacks
+// WARNING: Callbacks setup is intended for advance users
+// void SetTraceLogCallback(TraceLogCallback callback);                    // Set custom trace log
+// void SetLoadFileDataCallback(LoadFileDataCallback callback);            // Set custom file binary data loader
+// void SetSaveFileDataCallback(SaveFileDataCallback callback);            // Set custom file binary data saver
+// void SetLoadFileTextCallback(LoadFileTextCallback callback);            // Set custom file text data loader
+// void SetSaveFileTextCallback(SaveFileTextCallback callback);            // Set custom file text data saver
 
 // Files management functions
 
@@ -1630,6 +1655,9 @@ HB_FUNC( GETGAMEPADAXISMOVEMENT )
    }
 }
 
+
+//   int SetGamepadMappings(const char *mappings);                           // Set internal gamepad mappings (SDL_GameControllerDB)
+
 // Input-related functions: mouse
 
 // bool IsMouseButtonPressed(int button);                  // Detect if a mouse button has been pressed once
@@ -1755,12 +1783,6 @@ HB_FUNC( SETMOUSESCALE )
 HB_FUNC( GETMOUSEWHEELMOVE )
 {
    hb_retni( GetMouseWheelMove() );
-}
-
-// int GetMouseCursor(void);                               // Returns mouse cursor if (MouseCursor enum)
-HB_FUNC( GETMOUSECURSOR )
-{
-   hb_retni( GetMouseCursor() );
 }
 
 // void SetMouseCursor(int cursor);                        // Set mouse cursor
@@ -1899,7 +1921,7 @@ HB_FUNC( GETGESTUREPINCHANGLE )
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: camera)
 //------------------------------------------------------------------------------------
-
+/*
 // void SetCameraMode(Camera camera, int mode);                // Set camera mode (multiple camera modes available)
 HB_FUNC( SETCAMERAMODE )
 {
@@ -1982,7 +2004,7 @@ HB_FUNC( UPDATECAMERA )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-
+*/
 // void SetCameraPanControl(int keyPan);                       // Set camera pan key to combine with mouse movement (free camera)
 HB_FUNC( SETCAMERAPANCONTROL )
 {
