@@ -1,6 +1,6 @@
 /*
  * RayLib library: models.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2020 -2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
@@ -616,6 +616,7 @@ HB_FUNC( DRAWGRID )
 }
 
 //Model loading/unloading functions
+
 //Model LoadModel(const char *fileName);                                                             // Load model from files (meshes and materials)
 //Model LoadModelFromMesh(Mesh mesh);                                                                // Load model from generated mesh (default material)
 //void UnloadModel(Model model);                                                                     // Unload model (including meshes) from memory (RAM and/or VRAM)

@@ -1,10 +1,10 @@
 #include "hbraylib.ch"
 
-#define CAMERA3D_POSITION   1
-#define CAMERA3D_TARGET     2
-#define CAMERA3D_UP         3
-#define CAMERA3D_FOVY       4
-#define CAMERA3D_TYPE       5
+#define CAMERA3D_POSITION    1
+#define CAMERA3D_TARGET      2
+#define CAMERA3D_UP          3
+#define CAMERA3D_FOVY        4
+#define CAMERA3D_PROJECTION  5
 
 PROCEDURE Main()
 
@@ -15,11 +15,11 @@ PROCEDURE Main()
 
    InitWindow( nScreenWidth, nScreenHeight, "Harbour raylib [core] example - 3d aCamera free" )
 
-   aCamera[ CAMERA3D_POSITION ] := { 10.0, 10.0, 10.0 }
-   aCamera[ CAMERA3D_TARGET   ] := { 0.0, 0.0, 0.0 }
-   aCamera[ CAMERA3D_UP       ] := { 0.0, 1.0, 0.0 }
-   aCamera[ CAMERA3D_FOVY     ] := 45.0
-   aCamera[ CAMERA3D_TYPE     ] := CAMERA_PERSPECTIVE
+   aCamera[ CAMERA3D_POSITION   ] := { 10.0, 10.0, 10.0 }
+   aCamera[ CAMERA3D_TARGET     ] := { 0.0, 0.0, 0.0 }
+   aCamera[ CAMERA3D_UP         ] := { 0.0, 1.0, 0.0 }
+   aCamera[ CAMERA3D_FOVY       ] := 45.0
+   aCamera[ CAMERA3D_PROJECTION ] := CAMERA_PERSPECTIVE
 
    SetCameraMode( aCamera, CAMERA_FREE )
 

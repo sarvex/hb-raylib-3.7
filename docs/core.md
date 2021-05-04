@@ -332,6 +332,18 @@ Get number of connected monitors
 
 ---
 
+#### GetCurrentMonitor()
+
+```c
+
+int GetCurrentMonitor(void);  
+
+```
+
+Get specified monitor position
+
+---
+
 #### GetMonitorPosition()
 
 ```c
@@ -428,7 +440,7 @@ Get window scale DPI factor
 
 ---
 
-GetMonitorName()
+## GetMonitorName()
 
 ```c
 
@@ -648,6 +660,54 @@ Ends drawing to render texture
 
 ---
 
+#### BeginShaderMode()
+
+```c
+
+void BeginShaderMode(Shader shader);  
+
+```
+
+Begin custom shader drawing
+
+---
+
+#### EndShaderMode()
+
+```c
+
+void EndShaderMode(void); 
+
+```
+
+End custom shader drawing (use default shader)
+
+---
+
+#### BeginBlendMode()
+
+```c
+
+void BeginBlendMode(int mode); 
+
+```
+
+Begin blending mode (alpha, additive, multiplied)
+
+---
+
+#### EndBlendMode()
+
+```c
+
+void EndBlendMode(void); 
+
+```
+
+End blending mode (reset to default: alpha blending)
+
+---
+
 #### BeginScissorMode()
 
 ```c
@@ -669,6 +729,167 @@ void EndScissorMode( void );
 ```
 
 End scissor mode
+
+---
+
+#### BeginVrStereoMode()
+
+```c
+
+void BeginVrStereoMode(VrStereoConfig config);
+
+```
+
+Begin stereo rendering
+
+---
+
+#### EndVrStereoMode()
+
+```c
+
+void EndVrStereoMode(void);
+
+```
+
+End stereo rendering
+
+---
+
+## VR stereo config functions for VR simulator
+
+#### VrStereoConfig LoadVrStereoConfig()
+
+```c
+
+VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device);
+
+```
+
+Load VR stereo config for VR simulator device parameters
+
+---
+
+#### UnloadVrStereoConfig()
+
+```c
+
+void UnloadVrStereoConfig(VrStereoConfig config); 
+
+```
+
+Unload VR stereo config
+
+
+## Shader management functions
+
+## NOTE: Shader functionality is not available on OpenGL 1.1
+
+#### Shader LoadShader()
+
+```c
+
+Shader LoadShader(const char *vsFileName, const char *fsFileName);  
+
+```
+
+Load shader from files and bind default locations
+
+---
+
+#### Shader LoadShaderFromMemory()
+
+```c
+
+Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode);    
+
+```
+
+Load shader from code strings and bind default locations
+
+---
+
+#### GetShaderLocation()
+
+```c
+
+int GetShaderLocation(Shader shader, const char *uniformName);  
+
+```
+
+Get shader uniform location
+
+---
+
+#### GetShaderLocationAttrib()
+
+```c
+
+int GetShaderLocationAttrib(Shader shader, const char *attribName);
+
+```
+
+Get shader attribute location
+
+---
+
+#### SetShaderValue()
+
+```c
+
+void SetShaderValue(Shader shader, int locIndex, const void *value, int uniformType);
+
+```
+
+Set shader uniform value
+
+---
+
+#### SetShaderValueV()
+
+```c
+
+void SetShaderValueV(Shader shader, int locIndex, const void *value, int uniformType, int count);
+
+```
+
+Set shader uniform value vector
+
+---
+
+#### SetShaderValueMatrix()
+
+```c
+
+void SetShaderValueMatrix(Shader shader, int locIndex, Matrix mat);   
+
+```
+
+Set shader uniform value (matrix 4x4)
+
+---
+
+#### SetShaderValueTexture()
+
+```c
+
+void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture);  
+
+```
+
+Set shader uniform value for texture (sampler2d)
+
+---
+
+#### UnloadShader()
+
+```c
+
+void UnloadShader(Shader shader);  
+
+```
+
+Unload shader from GPU memory (VRAM)
 
 ---
 
@@ -810,6 +1031,30 @@ Returns elapsed time in seconds since InitWindow( )
 
 ## Misc. functions
 
+####  GetRandomValue()
+
+```c
+
+int GetRandomValue(int min, int max); 
+
+```
+
+Returns a random value between min and max (both included)
+
+---
+
+####  TakeScreenshot()
+
+```c
+
+void TakeScreenshot(const char *fileName);  
+
+```
+
+Takes a screenshot of current screen (filename extension defines format)
+
+---
+
 #### SetConfigFlags()
 
 ```c
@@ -819,6 +1064,18 @@ void SetConfigFlags( unsigned int flags );
 ```
 
 Setup init configuration flags ( view FLAGS )
+
+---
+
+#### TraceLog()
+
+```c
+
+void TraceLog(int logType, const char *text, ...);
+
+```
+
+Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
 
 ---
 
@@ -834,17 +1091,31 @@ Set the current threshold ( minimum ) log level
 
 ---
 
-#### SetTraceLogExit()
+#### MemAlloc()
 
 ```c
 
-void SetTraceLogExit( int logType );
+void *MemAlloc(int size);
 
 ```
 
-Set the exit threshold ( minimum ) log level
+Internal memory allocator
 
 ---
+
+#### MemFree()
+
+```c
+
+void MemFree(void *ptr);
+
+```
+
+Internal memory free
+
+## Set custom callbacks
+
+## WARNING: Callbacks setup is intended for advance users
 
 #### SetTraceLogCallback()
 
@@ -858,63 +1129,51 @@ Set a trace log callback to enable custom logging
 
 ---
 
-#### TraceLog()
+#### SetLoadFileDataCallback()
 
 ```c
 
-void TraceLog( int logType, const char *text, ... );
+void SetLoadFileDataCallback(LoadFileDataCallback callback);
 
 ```
 
-Show trace log messages ( LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR )
+Set custom file binary data loader
 
 ---
 
-#### MemAlloc()
+#### SetSaveFileDataCallback()
 
 ```c
 
-void *MemAlloc( int size );
+void SetSaveFileDataCallback(SaveFileDataCallback callback);
 
 ```
 
-Internal memory allocator
+Set custom file binary data saver
 
 ---
 
-#### MemFree()
+#### SetLoadFileTextCallback()
 
 ```c
 
-void MemFree( void *ptr );
+void SetLoadFileTextCallback(LoadFileTextCallback callback); 
 
 ```
 
-Internal memory free
+Set custom file text data loader
 
 ---
 
-#### TakeScreenshot()
+#### SetSaveFileTextCallback()
 
 ```c
 
-void TakeScreenshot( const char *fileName );
+void SetSaveFileTextCallback(SaveFileTextCallback callback); 
 
 ```
 
-Takes a screenshot of current screen ( saved a .png )
-
----
-
-#### GetRandomValue()
-
-```c
-
-int GetRandomValue( int min, int max );
-
-```
-
-Returns a random value between min and max ( both included )
+Set custom file text data saver
 
 ---
 
@@ -1210,7 +1469,7 @@ Decompress data ( DEFLATE algorithm )
 
 ## Persistent storage management
 
-SaveStorageValue
+#### SaveStorageValue
 
 ```c
 
@@ -1587,18 +1846,6 @@ float GetMouseWheelMove( void );
 ```
 
 Returns mouse wheel movement Y
-
----
-
-#### GetMouseCursor()
-
-```c
-
-int GetMouseCursor( void );
-
-```
-
-Returns mouse cursor if ( MouseCursor enum )
 
 ---
 

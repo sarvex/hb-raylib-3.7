@@ -11,7 +11,7 @@
 
 ### Install raylib
 
-Download [raylib](https://github.com/raysan5/raylib/releases/tag/3.5.0) binary archive from this page and unpack in the directory:
+Download [raylib](https://github.com/raysan5/raylib/releases/tag/3.7.0) binary archive from this page and unpack in the directory:
 
 ```
 c:\raylib\bin *.dll

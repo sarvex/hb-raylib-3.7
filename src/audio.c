@@ -1,6 +1,6 @@
 /*
  * RayLib library: audio.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
  * Copyright 2021 Maurizio la Cecilia ( m.lacecilia at gmail com )

@@ -1,6 +1,6 @@
 /*
  * RayLib library: core.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *

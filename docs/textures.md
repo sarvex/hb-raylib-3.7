@@ -10,7 +10,7 @@ permalink: textures
 
 #### LoadImage()
 
-````c
+```c
 
 Image LoadImage( const char *fileName );
 
@@ -993,6 +993,18 @@ void DrawTextureNPatch( Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest
 ```
 
 Draws a texture ( or part of it ) that stretches or shrinks nicely
+
+---
+
+### DrawTexturePoly()
+
+```c
+
+void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointsCount, Color tint); 
+
+```
+
+Draw a textured polygon
 
 ---
 

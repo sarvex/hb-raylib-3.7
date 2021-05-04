@@ -1,6 +1,6 @@
 /*
  * RayLib library: text.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
  * Copyright 2021 Maurizio la Cecilia ( m.lacecilia at gmail com )
@@ -605,10 +605,10 @@ HB_FUNC( GETGLYPHINDEX )
 // Text strings management functions (no utf8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
 
-// int TextCopy(char *dst, const char *src);                                             // Copy one string to another, returns bytes copied
+// int TextCopy(char *dst, const char *src);                                                               // Copy one string to another, returns bytes copied
 
 
-// bool TextIsEqual(const char *text1, const char *text2);                               // Check if two text string are equal
+// bool TextIsEqual(const char *text1, const char *text2);                                              // Check if two text string are equal
 HB_FUNC( TEXTISEQUAL )
 {
    if( hb_param( 1, HB_IT_STRING ) != NULL &&

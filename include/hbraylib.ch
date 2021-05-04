@@ -68,6 +68,7 @@
 // required keys for alternative layouts
 
 // Alphanumeric keys
+#define KEY_NULL             0
 #define KEY_APOSTROPHE       39
 #define KEY_COMMA            44
 #define KEY_MINUS            45
@@ -202,12 +203,6 @@
 #define MOUSE_CURSOR_RESIZE_ALL      9     // The omni-directional resize/move cursor shape
 #define MOUSE_CURSOR_NOT_ALLOWED     10     // The operation-not-allowed shape#define
 
-// Gamepad number
-#define GAMEPAD_PLAYER1      0
-#define GAMEPAD_PLAYER2      1
-#define GAMEPAD_PLAYER3      2
-#define GAMEPAD_PLAYER4      3
-
 // Gamepad buttons
 // This is here just for error checking
 #define GAMEPAD_BUTTON_UNKNOWN          0
@@ -255,35 +250,52 @@
 #define GAMEPAD_AXIS_LEFT_TRIGGER     4      // [1..-1] (pressure-level)
 #define GAMEPAD_AXIS_RIGHT_TRIGGER    5      // [1..-1] (pressure-level)
 
-// Shader location points
-#define LOC_VERTEX_POSITION    0
-#define LOC_VERTEX_TEXCOORD01  1
-#define LOC_VERTEX_TEXCOORD02  2
-#define LOC_VERTEX_NORMAL      3
-#define LOC_VERTEX_TANGENT     4
-#define LOC_VERTEX_COLOR       5
-#define LOC_MATRIX_MVP         6
-#define LOC_MATRIX_MODEL       7
-#define LOC_MATRIX_VIEW        8
-#define LOC_MATRIX_PROJECTION  9
-#define LOC_VECTOR_VIEW        10
-#define LOC_COLOR_DIFFUSE      11
-#define LOC_COLOR_SPECULAR     12
-#define LOC_COLOR_AMBIENT      13
-#define LOC_MAP_ALBEDO         14 // LOC_MAP_DIFFUSE
-#define LOC_MAP_METALNESS      15 // LOC_MAP_SPECULAR
-#define LOC_MAP_NORMAL         16
-#define LOC_MAP_ROUGHNESS      17
-#define LOC_MAP_OCCLUSION      18
-#define LOC_MAP_EMISSION       19
-#define LOC_MAP_HEIGHT         20
-#define LOC_MAP_CUBEMAP        21
-#define LOC_MAP_IRRADIANCE     22
-#define LOC_MAP_PREFILTER      23
-#define LOC_MAP_BRDF           24
+// Material map index
+#define MATERIAL_MAP_ALBEDO           0     // MATERIAL_MAP_DIFFUSE
+#define MATERIAL_MAP_METALNESS        1     // MATERIAL_MAP_SPECULAR
+#define MATERIAL_MAP_NORMAL           2 
+#define MATERIAL_MAP_ROUGHNESS        3
+#define MATERIAL_MAP_OCCLUSION        4
+#define MATERIAL_MAP_EMISSION         5
+#define MATERIAL_MAP_HEIGHT           6
+#define MATERIAL_MAP_BRDG             7
+#define MATERIAL_MAP_CUBEMAP          8     // NOTE: Uses GL_TEXTURE_CUBE_MAP
+#define MATERIAL_MAP_IRRADIANCE       9     // NOTE: Uses GL_TEXTURE_CUBE_MAP
+#define MATERIAL_MAP_PREFILTER       10     // NOTE: Uses GL_TEXTURE_CUBE_MAP
 
-#define LOC_MAP_DIFFUSE      LOC_MAP_ALBEDO
-#define LOC_MAP_SPECULAR     LOC_MAP_METALNESS
+#define MATERIAL_MAP_DIFFUSE         MATERIAL_MAP_ALBEDO
+#define MATERIAL_MAP_SPECULAR        MATERIAL_MAP_METALNESS
+
+// Shader location index
+#define SHADER_LOC_VERTEX_POSITION    0
+#define SHADER_LOC_VERTEX_TEXCOORD01  1
+#define SHADER_LOC_VERTEX_TEXCOORD02  2
+#define SHADER_LOC_VERTEX_NORMAL      3
+#define SHADER_LOC_VERTEX_TANGENT     4
+#define SHADER_LOC_VERTEX_COLOR       5
+#define SHADER_LOC_MATRIX_MVP         6
+#define SHADER_LOC_MATRIX_VIEW        7
+#define SHADER_LOC_MATRIX_PROJECTION  8
+#define SHADER_LOC_MATRIX_MODEL       9
+#define SHADER_LOC_MATRIX_NORMAL     10 
+#define SHADER_LOC_VECTOR_VIEW       11
+#define SHADER_LOC_COLOR_DIFFUSE     12
+#define SHADER_LOC_COLOR_SPECULAR    13
+#define SHADER_LOC_COLOR_AMBIENT     14 
+#define SHADER_LOC_MAP_ALBEDO        15        // SHADER_LOC_MAP_DIFFUSE
+#define SHADER_LOC_MAP_METALNESS     16       // SHADER_LOC_MAP_SPECULAR
+#define SHADER_LOC_MAP_NORMAL        17
+#define SHADER_LOC_MAP_ROUGHNESS     18
+#define SHADER_LOC_MAP_OCCLUSION     19
+#define SHADER_LOC_MAP_EMISSION      20
+#define SHADER_LOC_MAP_HEIGHT        21
+#define SHADER_LOC_MAP_CUBEMAP       22
+#define SHADER_LOC_MAP_IRRADIANCE    23
+#define SHADER_LOC_MAP_PREFILTER     24
+#define SHADER_LOC_MAP_BRDF          25
+
+#define SHADER_LOC_MAP_DIFFUSE       SHADER_LOC_MAP_ALBEDO
+#define SHADER_LOC_MAP_SPECULAR      SHADER_LOC_MAP_METALNESS
 
 // Shader uniform data types
 #define UNIFORM_FLOAT       0
@@ -296,69 +308,53 @@
 #define UNIFORM_IVEC4       7
 #define UNIFORM_SAMPLER2D   8
 
-// Material maps
-#define MAP_ALBEDO      0       // MAP_DIFFUSE
-#define MAP_METALNESS   1       // MAP_SPECULAR
-#define MAP_NORMAL      2
-#define MAP_ROUGHNESS   3
-#define MAP_OCCLUSION   4
-#define MAP_EMISSION    5
-#define MAP_HEIGHT      6
-#define MAP_CUBEMAP     7       // NOTE: Uses GL_TEXTURE_CUBE_MAP
-#define MAP_IRRADIANCE  8       // NOTE: Uses GL_TEXTURE_CUBE_MAP
-#define MAP_PREFILTER   9       // NOTE: Uses GL_TEXTURE_CUBE_MAP
-#define MAP_BRDF        10
-
-#define MAP_DIFFUSE      MAP_ALBEDO
-#define MAP_SPECULAR     MAP_METALNESS
-
 // Pixel formats
 // NOTE: Support depends on OpenGL version and platform
-#define UNCOMPRESSED_GRAYSCALE      1      // 8 bit per pixel (no alpha)
-#define UNCOMPRESSED_GRAY_ALPHA     2      // 8*2 bpp (2 channels)
-#define UNCOMPRESSED_R5G6B5         3      // 16 bpp
-#define UNCOMPRESSED_R8G8B8         4      // 24 bpp
-#define UNCOMPRESSED_R5G5B5A1       5      // 16 bpp (1 bit alpha)
-#define UNCOMPRESSED_R4G4B4A4       6      // 16 bpp (4 bit alpha)
-#define UNCOMPRESSED_R8G8B8A8       7      // 32 bpp
-#define UNCOMPRESSED_R32            8      // 32 bpp (1 channel - float)
-#define UNCOMPRESSED_R32G32B32      9      // 32*3 bpp (3 channels - float)
-#define UNCOMPRESSED_R32G32B32A32   10     // 32*4 bpp (4 channels - float)
-#define COMPRESSED_DXT1_RGB         11     // 4 bpp (no alpha)
-#define COMPRESSED_DXT1_RGBA        12     // 4 bpp (1 bit alpha)
-#define COMPRESSED_DXT3_RGBA        13     // 8 bpp
-#define COMPRESSED_DXT5_RGBA        14     // 8 bpp
-#define COMPRESSED_ETC1_RGB         15     // 4 bpp
-#define COMPRESSED_ETC2_RGB         16     // 4 bpp
-#define COMPRESSED_ETC2_EAC_RGBA    17     // 8 bpp
-#define COMPRESSED_PVRT_RGB         18     // 4 bpp
-#define COMPRESSED_PVRT_RGBA        19     // 4 bpp
-#define COMPRESSED_ASTC_4x4_RGBA    20     // 8 bpp
-#define COMPRESSED_ASTC_8x8_RGBA    21     // 2 bpp
+#define PIXELFORMAT_UNCOMPRESSED_GRAYSCALE      1    // 8 bit per pixel (no alpha)
+#define PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA     2    // 8*2 bpp (2 channels)
+#define PIXELFORMAT_UNCOMPRESSED_R5G6B5         3    // 16 bpp
+#define PIXELFORMAT_UNCOMPRESSED_R8G8B8         4    // 24 bpp
+#define PIXELFORMAT_UNCOMPRESSED_R5G5B5A1       5    // 16 bpp (1 bit alpha)
+#define PIXELFORMAT_UNCOMPRESSED_R4G4B4A4       6    // 16 bpp (4 bit alpha)
+#define PIXELFORMAT_UNCOMPRESSED_R8G8B8A8       7    // 32 bpp
+#define PIXELFORMAT_UNCOMPRESSED_R32            8    // 32 bpp (1 channel - float)
+#define PIXELFORMAT_UNCOMPRESSED_R32G32B32      9    // 32*3 bpp (3 channels - float)
+#define PIXELFORMAT_UNCOMPRESSED_R32G32B32A32  10    // 32*4 bpp (4 channels - float)
+#define PIXELFORMAT_COMPRESSED_DXT1_RGB        11     // 4 bpp (no alpha)
+#define PIXELFORMAT_COMPRESSED_DXT1_RGBA       12     // 4 bpp (1 bit alpha)
+#define PIXELFORMAT_COMPRESSED_DXT3_RGBA       13     // 8 bpp
+#define PIXELFORMAT_COMPRESSED_DXT5_RGBA       14     // 8 bpp
+#define PIXELFORMAT_COMPRESSED_ETC1_RGB        15     // 4 bpp
+#define PIXELFORMAT_COMPRESSED_ETC2_RGB        16     // 4 bpp
+#define PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA   17     // 8 bpp
+#define PIXELFORMAT_COMPRESSED_PVRT_RGB        18     // 4 bpp
+#define PIXELFORMAT_COMPRESSED_PVRT_RGBA       19     // 4 bpp
+#define PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA   20     // 8 bpp
+#define PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA   21     // 2 bpp
 
 // Texture parameters: filter mode
 // NOTE 1: Filtering considers mipmaps if available in the texture
 // NOTE 2: Filter is accordingly set for minification and magnification
-#define FILTER_POINT             0        // No filter just pixel aproximation
-#define FILTER_BILINEAR          1        // Linear filtering
-#define FILTER_TRILINEAR         2        // Trilinear filtering (linear with mipmaps)
-#define FILTER_ANISOTROPIC_4X    3        // Anisotropic filtering 4x
-#define FILTER_ANISOTROPIC_8X    4        // Anisotropic filtering 8x
-#define FILTER_ANISOTROPIC_16X   5        // Anisotropic filtering 16x
+#define TEXTURE_FILTER_POINT             0      // No filter, just pixel aproximation
+#define TEXTURE_FILTER_BILINEAR          1      // Linear filtering
+#define TEXTURE_FILTER_TRILINEAR         2      // Trilinear filtering (linear with mipmaps)
+#define TEXTURE_FILTER_ANISOTROPIC_4X    3      // Anisotropic filtering 4x
+#define TEXTURE_FILTER_ANISOTROPIC_8X    4      // Anisotropic filtering 8x
+#define TEXTURE_FILTER_ANISOTROPIC_16X   5      // Anisotropic filtering 16x
 
 // Texture parameters: wrap mode
-#define WRAP_REPEAT              0        // Repeats texture in tiled mode
-#define WRAP_CLAMP               1        // Clamps texture to edge pixel in tiled mode
-#define WRAP_MIRROR_REPEAT       2        // Mirrors and repeats the texture in tiled mode
-#define WRAP_MIRROR_CLAMP        3        // Mirrors and clamps to border the texture in tiled mode
+#define TEXTURE_WRAP_REPEAT              0        // Repeats texture in tiled mode
+#define TEXTURE_WRAP_CLAMP               1        // Clamps texture to edge pixel in tiled mode
+#define TEXTURE_WRAP_MIRROR_REPEAT       2        // Mirrors and repeats the texture in tiled mode
+#define TEXTURE_WRAP_MIRROR_CLAMP        3        // Mirrors and clamps to border the texture in tiled mode
 
 // Cubemap layouts
-#define CUBEMAP_AUTO_DETECT           0   // Automatically detect layout type
-#define CUBEMAP_LINE_VERTICAL         1   // Layout is defined by a vertical line with faces
-#define CUBEMAP_LINE_HORIZONTAL       2   // Layout is defined by an horizontal line with faces
-#define CUBEMAP_CROSS_THREE_BY_FOUR   3   // Layout is defined by a 3x4 cross with cubemap faces
-#define CUBEMAP_CROSS_FOUR_BY_THREE   4   // Layout is defined by a 4x3 cross with cubemap faces
-#define CUBEMAP_PANORAMA              5   // Layout is defined by a panorama image (equirectangular map)
+#define CUBEMAP_LAYOUT_AUTO_DETECT           0   // Automatically detect layout type
+#define CUBEMAP_LAYOUT_LINE_VERTICAL         1   // Layout is defined by a vertical line with faces
+#define CUBEMAP_LAYOUT_LINE_HORIZONTAL       2   // Layout is defined by an horizontal line with faces
+#define CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR   3   // Layout is defined by a 3x4 cross with cubemap faces
+#define CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE   4   // Layout is defined by a 4x3 cross with cubemap faces
+#define CUBEMAP_LAYOUT_PANORAMA              5   // Layout is defined by a panorama image (equirectangular map)
 
 // Font type defines generation method
 #define FONT_DEFAULT   0       // Default font generation anti-aliased
@@ -389,18 +385,18 @@
 
 // Camera system modes
 #define CAMERA_CUSTOM           0
-#define CAMERA_FREE             2
-#define CAMERA_ORBITAL          3
-#define CAMERA_FIRST_PERSON     4
-#define CAMERA_THIRD_PERSON     5
+#define CAMERA_FREE             1
+#define CAMERA_ORBITAL          2
+#define CAMERA_FIRST_PERSON     3
+#define CAMERA_THIRD_PERSON     4
 
 // Camera projection modes
 #define CAMERA_PERSPECTIVE      0
 #define CAMERA_ORTHOGRAPHIC     1
 
-// N-patch types
-#define NPT_9PATCH              0   // Npatch defined by 3x3 tiles
-#define NPT_3PATCH_VERTICAL     1   // Npatch defined by 1x3 tiles
-#define NPT_3PATCH_HORIZONTAL   2   // Npatch defined by 3x1 tiles
+// N-patch layout
+#define NPATCH_NINE_PATCH             0   // Npatch layout: 3x3 tiles
+#define NPATCH_THREE_PATCH_VERTICAL   1   // Npatch layout: 1x3 tiles
+#define NPATCH_THREE_PATCH_HORIZONTAL 2   // Npatch layout: 3x1 tiles
 
 #endif /* HBRAYLIB_CH_ */

@@ -1,8 +1,8 @@
 /*
  * RayLib library: hbraylib.prg
- * version 3.5
+ * version 3.7
  *
- * Copyright 2020 Rafał Jopek ( rafaljopek at hotmail com )
+ * Copyright 2021 Rafał Jopek ( rafaljopek at hotmail com )
  *
  */
 

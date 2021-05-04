@@ -15,7 +15,7 @@ struct Color;           // Color type, RGBA (32bit)
 struct Rectangle;       // Rectangle type
 
 struct Image;           // Image type (multiple pixel formats supported)
-                        // NOTE: Data stored in CPU memory (RAM)
+                        // NOTE: Data stored in CPU memory (RAM)               
 struct Texture;         // Texture type (multiple internal formats supported)
                         // NOTE: Data stored in GPU memory (VRAM)
 struct RenderTexture;   // RenderTexture type, for texture rendering
@@ -43,6 +43,7 @@ struct Music;           // Music type (file streaming from memory)
 struct AudioStream;     // Raw audio stream type
 
 struct VrDeviceInfo;    // VR device parameters
+struct VrStereoConfig;  // VR Stereo rendering configuration for simulator
 
 ```
 

@@ -362,6 +362,16 @@ Load music stream from file
 
 ---
 
+#### LoadMusicStreamFromMemory()
+
+```c
+
+Music LoadMusicStreamFromMemory(const char *fileType, unsigned char* data, int dataSize);
+
+```
+
+---
+
 #### UnloadMusicStream()
 
 ```c
@@ -383,6 +393,18 @@ void PlayMusicStream( Music music );
 ```
 
 Start music playing
+
+---
+
+#### IsMusicPlaying()
+
+```c
+
+bool IsMusicPlaying(Music music);  
+
+```
+
+Check if music is playing
 
 ---
 
@@ -434,27 +456,15 @@ Resume playing paused music
 
 ---
 
-#### IsMusicPlaying()
+ #### SetMusicVolume() 
 
 ```c
 
-bool IsMusicPlaying( Music music );
+ void SetMusicVolume(Music music, float volume); 
 
 ```
 
-Check if music is playing
-
----
-
-#### SetMusicVolume()
-
-```c
-
-void SetMusicVolume( Music music, float volume );
-
-```
-
-Set volume for music ( 1.0 is max level )
+Set volume for music (1.0 is max level)
 
 ---
 

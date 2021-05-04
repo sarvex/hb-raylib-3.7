@@ -1,6 +1,6 @@
 /*
  * RayLib library: textures.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
  * Copyright 2021 Maurizio la Cecilia ( m.lacecilia at gmail com )
@@ -776,7 +776,7 @@ HB_FUNC( IMAGEALPHACLEAR )
 }
 
 // void ImageAlphaMask(Image *image, Image alphaMask);                                                // Apply alpha mask to image
-HB_FUNC( ImageAlphaMask )
+HB_FUNC( IMAGEALPHAMASK )
 {
    PHB_ITEM pItem1, pItem2;
 
@@ -1895,7 +1895,7 @@ HB_FUNC( LOADTEXTUREFROMIMAGE )
    {
       Image image;
 
-      image.data    =  hb_arrayGetPtr( pItem, 1 );
+      image.data    =  ( void * )hb_arrayGetPtr( pItem, 1 );
       image.width   =  hb_arrayGetNI( pItem, 2 );
       image.height  =  hb_arrayGetNI( pItem, 3 );
       image.mipmaps =  hb_arrayGetNI( pItem, 4 );

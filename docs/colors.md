@@ -29,6 +29,7 @@ permalink: colors
 #define BEIGE      (Color){ 211, 176, 131, 255 }        // Beige
 #define BROWN      (Color){ 127, 106, 79, 255 }         // Brown
 #define DARKBROWN  (Color){ 76, 63, 47, 255 }           // Dark Brown
+
 #define WHITE      (Color){ 255, 255, 255, 255 }        // White
 #define BLACK      (Color){ 0, 0, 0, 255 }              // Black
 #define BLANK      (Color){ 0, 0, 0, 0 }                // Transparent

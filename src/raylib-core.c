@@ -1,6 +1,6 @@
 /*
  * RayLib library: raylib-core.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
@@ -262,6 +262,10 @@ HB_FUNC( GETMONITORCOUNT )
 }
 
 // int GetCurrentMonitor(void);                                            // Get current connected monitor
+HB_FUNC( GETCURRENTMONITOR )
+{
+   hb_retni( GetCurrentMonitor() );
+}
 
 // Vector2 GetMonitorPosition(int monitor);                    // Get specified monitor position
 HB_FUNC( GETMONITORPOSITION )
@@ -525,7 +529,7 @@ HB_FUNC( ENDMODE2D )
    EndMode2D();
 }
 
-/*
+
 // void BeginMode3D(Camera3D camera);                          // Initializes 3D mode with custom camera (3D)
 HB_FUNC( BEGINMODE3D )
 {
@@ -557,7 +561,7 @@ HB_FUNC( BEGINMODE3D )
          camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
 
       camera.fovy = ( float ) hb_arrayGetND( pItem, 4 );
-      camera.type =           hb_arrayGetNI( pItem, 5 );
+      camera.projection =     hb_arrayGetNI( pItem, 5 );
 
       BeginMode3D( camera );
    }
@@ -566,7 +570,8 @@ HB_FUNC( BEGINMODE3D )
       hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-*/
+
+
 // void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
 HB_FUNC( ENDMODE3D )
 {
@@ -618,8 +623,25 @@ HB_FUNC( ENDTEXTUREMODE )
 
 //void BeginShaderMode(Shader shader);                                    // Begin custom shader drawing
 //void EndShaderMode(void);                                               // End custom shader drawing (use default shader)
+
 //void BeginBlendMode(int mode);                                          // Begin blending mode (alpha, additive, multiplied)
-//void EndBlendMode(void);                                                // End blending mode (reset to default: alpha blending)
+HB_FUNC( BEGINBLENDMODE )
+{
+   if( hb_param( 1, HB_IT_INTEGER ) != NULL )
+   {
+      BeginBlendMode( hb_parni( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+// void EndBlendMode(void);               // End blending mode (reset to default: alpha blending)
+HB_FUNC( ENDBLENDMODE )
+{
+   EndBlendMode();
+}
 
 // void BeginScissorMode(int x, int y, int width, int height); // Begin scissor mode (define screen area for following drawing)
 HB_FUNC( BEGINSCISSORMODE )
@@ -636,9 +658,6 @@ HB_FUNC( BEGINSCISSORMODE )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-
-    void BeginVrStereoMode(VrStereoConfig config);                          // Begin stereo rendering
-    void EndVrStereoMode(void);                                             // End stereo rendering
 
 // void EndScissorMode(void);                                  // End scissor mode
 HB_FUNC( ENDSCISSORMODE )
@@ -666,7 +685,7 @@ HB_FUNC( ENDSCISSORMODE )
 //void UnloadShader(Shader shader);                                                                   // Unload shader from GPU memory (VRAM)
 
 // Screen-space-related functions
-/*
+
 // Ray GetMouseRay(Vector2 mousePosition, Camera camera);      // Returns a ray trace from mouse position
 HB_FUNC( GETMOUSERAY )
 {
@@ -704,7 +723,7 @@ HB_FUNC( GETMOUSERAY )
          camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
 
       camera.fovy = ( float ) hb_arrayGetND( pItem2, 4 );
-      camera.type =           hb_arrayGetNI( pItem2, 5 );
+      camera.projection =     hb_arrayGetNI( pItem2, 5 );
 
       Ray ray = GetMouseRay( mousePosition, camera );
 
@@ -775,7 +794,7 @@ HB_FUNC( GETWORLDTOSCREEN )
          camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
 
       camera.fovy = ( float ) hb_arrayGetND( pItem2, 4 );
-      camera.type =           hb_arrayGetNI( pItem2, 5 );
+      camera.projection =     hb_arrayGetNI( pItem2, 5 );
 
       Vector2 vector2 = GetWorldToScreen( position, camera );
 
@@ -832,7 +851,7 @@ HB_FUNC( GETWORLDTOSCREENEX )
          camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
 
       camera.fovy = ( float ) hb_arrayGetND( pItem2, 4 );
-      camera.type =           hb_arrayGetNI( pItem2, 5 );
+      camera.projection =     hb_arrayGetNI( pItem2, 5 );
 
       Vector2 vector2 = GetWorldToScreenEx( position, camera, hb_parni( 3 ), hb_parni( 4 ) );
 
@@ -848,7 +867,7 @@ HB_FUNC( GETWORLDTOSCREENEX )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-*/
+
 
 // Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera); // Returns the screen space position for a 2d camera world space position
 HB_FUNC( GETWORLDTOSCREEN2D )
@@ -1655,7 +1674,6 @@ HB_FUNC( GETGAMEPADAXISMOVEMENT )
    }
 }
 
-
 //   int SetGamepadMappings(const char *mappings);                           // Set internal gamepad mappings (SDL_GameControllerDB)
 
 // Input-related functions: mouse
@@ -1921,8 +1939,8 @@ HB_FUNC( GETGESTUREPINCHANGLE )
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: camera)
 //------------------------------------------------------------------------------------
-/*
 // void SetCameraMode(Camera camera, int mode);                // Set camera mode (multiple camera modes available)
+
 HB_FUNC( SETCAMERAMODE )
 {
    PHB_ITEM pItem;
@@ -1954,7 +1972,7 @@ HB_FUNC( SETCAMERAMODE )
          camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
 
       camera.fovy = ( float ) hb_arrayGetND( pItem, 4 );
-      camera.type =           hb_arrayGetNI( pItem, 5 );
+      camera.projection =     hb_arrayGetNI( pItem, 5 );
 
       SetCameraMode( camera, hb_parni( 2 ) );
    }
@@ -1995,7 +2013,7 @@ HB_FUNC( UPDATECAMERA )
          camera.up.z = ( float ) hb_arrayGetND( pSubarray3, 3 );
 
       camera.fovy = ( float ) hb_arrayGetND( pItem, 4 );
-      camera.type =           hb_arrayGetNI( pItem, 5 );
+      camera.projection =     hb_arrayGetNI( pItem, 5 );
 
       UpdateCamera( &camera );
    }
@@ -2004,7 +2022,7 @@ HB_FUNC( UPDATECAMERA )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-*/
+
 // void SetCameraPanControl(int keyPan);                       // Set camera pan key to combine with mouse movement (free camera)
 HB_FUNC( SETCAMERAPANCONTROL )
 {

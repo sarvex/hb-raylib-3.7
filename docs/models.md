@@ -224,18 +224,6 @@ Draw a grid ( centered at ( 0, 0, 0 ) )
 
 ---
 
-#### DrawGizmo()
-
-```c
-
-void DrawGizmo( Vector3 position );
-
-```
-
-Draw simple gizmo
-
----
-
 ## Model loading/unloading functions
 
 #### LoadModel()
@@ -288,17 +276,6 @@ Unload model ( but not meshes ) from memory ( RAM and/or VRAM )
 
 ## Mesh loading/unloading functions
 
-#### LoadMeshes()
-
-```c
-
-Mesh *LoadMeshes( const char *fileName, int *meshCount );
-
-```
-
-Load meshes from model file
-
----
 
 #### UnloadMesh()
 
@@ -309,6 +286,53 @@ void UnloadMesh( Mesh mesh );
 ```
 
 Unload mesh from memory ( RAM and/or VRAM )
+
+---
+
+#### UpdateMeshBuffer()
+
+```c
+
+void UpdateMeshBuffer(Mesh mesh, int index, void *data, int dataSize, int offset);   
+
+```
+
+Update mesh vertex data in GPU for a specific buffer index
+
+---
+
+#### DrawMesh()
+
+```c
+
+void DrawMesh(Mesh mesh, Material material, Matrix transform); 
+
+```
+Draw a 3d mesh with material and transform
+
+---
+
+ ### DrawMeshInstanced()
+
+```c
+
+ void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int instances);
+
+```
+
+Draw multiple mesh instances with material and different transforms
+
+---
+
+#### UnloadMesh()
+
+```c
+
+void UnloadMesh(Mesh mesh); 
+
+``` 
+
+Export mesh data to file, returns true on success
 
 ---
 
@@ -768,11 +792,12 @@ Detect collision between ray and box
 
 ---
 
-#### GetCollisionRayMesh()
+
+#### GetCollisionRayMesh(); 
 
 ```c
 
-RayHitInfo GetCollisionRayMesh( Ray ray, Mesh mesh, Matrix transform );
+RayHitInfo GetCollisionRayMesh(Ray ray, Mesh mesh, Matrix transform); 
 
 ```
 

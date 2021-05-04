@@ -1,4 +1,3 @@
-
 #include "hbraylib.ch"
 
 PROCEDURE Main()

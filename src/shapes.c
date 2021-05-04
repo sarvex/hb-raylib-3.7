@@ -1,6 +1,6 @@
 /*
  * RayLib library: shapes.c
- * version 3.5
+ * version 3.7
  *
  * Copyright 2021 Leonardo Mendez ( mlmgerencir at gmail com )
  * Copyright 2020 - 2021 Rafał Jopek ( rafaljopek at hotmail com )
@@ -8,6 +8,12 @@
  */
 
 #include "hbraylib.h"
+
+
+// Set texture and rectangle to be used on shapes drawing
+// NOTE: It can be useful when using basic shapes and one single font,
+// defining a font char white rectangle would allow drawing everything in a single draw call
+//void SetShapesTexture(Texture2D texture, Rectangle source);
 
 /* --- Basic shapes drawing functions --- */
 

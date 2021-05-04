@@ -6,6 +6,19 @@ permalink: shapes
 
 # **Function reference module: shapes**
 
+> Set texture and rectangle to be used on shapes drawing
+> NOTE: It can be useful when using basic shapes and one single font,
+> defining a font char white rectangle would allow drawing everything in a single draw call
+
+```c
+
+void SetShapesTexture(Texture2D texture, Rectangle source);
+
+```
+
+#### SetShapesTexture()
+
+
 ## Basic shapes drawing functions
 
 #### DrawPixel()
@@ -77,6 +90,18 @@ void DrawLineBezier( Vector2 startPos, Vector2 endPos, float thick, Color color 
 ```
 
 Draw a line using cubic-bezier curves in-out
+
+---
+
+#### DrawLineBezierQuad()
+
+```c
+
+void DrawLineBezierQuad(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, Color color);
+
+```
+
+Draw line using quadratic bezier curves with a control point
 
 ---
 
@@ -492,9 +517,11 @@ Check if point is inside a triangle
 
 #### CheckCollisionLines()
 
-````c
+```c
 
 bool CheckCollisionLines( Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 *collisionPoint);
+
+```
 
 Check the collision between two lines
 
@@ -506,8 +533,8 @@ Check the collision between two lines
 
 Rectangle GetCollisionRec( Rectangle rec1, Rectangle rec2 );
 
-````
+```
 
-## Get collision rectangle for two rectangles collision
+Get collision rectangle for two rectangles collision
 
 ---
