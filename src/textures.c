@@ -2506,7 +2506,56 @@ HB_FUNC( DRAWTEXTUREPRO )
 }
 
 //void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint);   // Draws a texture (or part of it) that stretches or shrinks nicely
+
 //void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointsCount, Color tint);      // Draw a textured polygon
+HB_FUNC( DRAWTEXTUREPOLY )
+{
+   PHB_ITEM pItem1, pItem2, pItem3, pItem4, pItem5;
+
+   if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 5 &&
+       ( pItem2 = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
+       ( pItem3 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
+       ( pItem4 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 2 &&
+                  hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       ( pItem5 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem5 ) == 4 )
+   {
+      Texture2D texture;
+
+      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem1, 1 );
+      texture.width   = hb_arrayGetNI( pItem1, 2 );
+      texture.height  = hb_arrayGetNI( pItem1, 3 );
+      texture.mipmaps = hb_arrayGetNI( pItem1, 4 );
+      texture.format  = hb_arrayGetNI( pItem1, 5 );
+
+      Vector2 center;
+
+      center.x = ( float ) hb_arrayGetND( pItem2, 1 );
+      center.y = ( float ) hb_arrayGetND( pItem2, 2 );
+
+      Vector2 points;
+
+      points.x = ( float ) hb_arrayGetND( pItem3, 1 );
+      points.y = ( float ) hb_arrayGetND( pItem3, 2 );
+
+      Vector2 texcoords;
+
+      texcoords.x = ( float ) hb_arrayGetND( pItem4, 1 );
+      texcoords.y = ( float ) hb_arrayGetND( pItem4, 2 );
+
+      Color tint;
+
+      tint.r = ( unsigned char ) hb_arrayGetNI( pItem5, 1 );
+      tint.g = ( unsigned char ) hb_arrayGetNI( pItem5, 2 );
+      tint.b = ( unsigned char ) hb_arrayGetNI( pItem5, 3 );
+      tint.a = ( unsigned char ) hb_arrayGetNI( pItem5, 4 );
+
+      DrawTexturePoly( texture, center, &points, &texcoords, hb_parni( 5 ), tint );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Color/pixel related functions
 

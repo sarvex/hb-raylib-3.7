@@ -255,15 +255,16 @@ HB_FUNC( DRAWCIRCLE )
    }
 }
 
-// void DrawCircleSector( Vector2 center, float radius, int startAngle, int endAngle, int segments, Color color );
+
+//void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);
 HB_FUNC( DRAWCIRCLESECTOR )
 {
    PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
        hb_param( 2, HB_IT_NUMERIC ) != NULL &&
-       hb_param( 3, HB_IT_INTEGER ) != NULL &&
-       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 4, HB_IT_NUMERIC ) != NULL &&
        hb_param( 5, HB_IT_INTEGER ) != NULL &&
        ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
@@ -279,7 +280,7 @@ HB_FUNC( DRAWCIRCLESECTOR )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawCircleSector( center, ( float ) hb_parnd( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+      DrawCircleSector( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), hb_parni( 5 ), color );
    }
    else
    {
@@ -287,15 +288,15 @@ HB_FUNC( DRAWCIRCLESECTOR )
    }
 }
 
-// void DrawCircleSectorLines( Vector2 center, float radius, int startAngle, int endAngle, int segments, Color color );
+ //void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);
 HB_FUNC( DRAWCIRCLESECTORLINES )
 {
   PHB_ITEM pItem1, pItem2;
 
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
        hb_param( 2, HB_IT_NUMERIC ) != NULL &&
-       hb_param( 3, HB_IT_INTEGER ) != NULL &&
-       hb_param( 4, HB_IT_INTEGER ) != NULL &&
+       hb_param( 3, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 4, HB_IT_NUMERIC ) != NULL &&
        hb_param( 5, HB_IT_INTEGER ) != NULL &&
        ( pItem2 = hb_param( 6, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
@@ -311,7 +312,7 @@ HB_FUNC( DRAWCIRCLESECTORLINES )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawCircleSectorLines( center, ( float ) hb_parnd( 2 ), hb_parni( 3 ), hb_parni( 4 ), hb_parni( 5 ), color );
+      DrawCircleSectorLines( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), hb_parni( 5 ), color );
    }
    else
    {
@@ -457,8 +458,7 @@ HB_FUNC( DRAWELLIPSELINES )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-
-// void DrawRing( Vector2 center, float innerRadius, float outerRadius, int startAngle, int endAngle, int segments, Color color );
+//void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color); // Draw ring
 HB_FUNC( DRAWRING )
 {
    PHB_ITEM pItem1, pItem2;
@@ -466,8 +466,8 @@ HB_FUNC( DRAWRING )
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
        hb_param( 2, HB_IT_NUMERIC ) != NULL &&
        hb_param( 3, HB_IT_NUMERIC ) != NULL &&
-       hb_param( 4, HB_IT_INTEGER ) != NULL &&
-       hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 5, HB_IT_NUMERIC ) != NULL &&
        hb_param( 6, HB_IT_INTEGER ) != NULL &&
        ( pItem2 = hb_param( 7, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
@@ -483,7 +483,7 @@ HB_FUNC( DRAWRING )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawRing( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), color );
+      DrawRing( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), hb_parnd( 5 ), hb_parni( 6 ), color );
    }
    else
    {
@@ -491,7 +491,7 @@ HB_FUNC( DRAWRING )
    }
 }
 
-// void DrawRingLines( Vector2 center, float innerRadius, float outerRadius, int startAngle, int endAngle, int segments, Color color );
+//void DrawRingLines(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color);    // Draw ring outline
 HB_FUNC( DRAWRINGLINES )
 {
    PHB_ITEM pItem1, pItem2;
@@ -499,8 +499,8 @@ HB_FUNC( DRAWRINGLINES )
    if( ( pItem1 = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem1 ) == 2 &&
        hb_param( 2, HB_IT_NUMERIC ) != NULL &&
        hb_param( 3, HB_IT_NUMERIC ) != NULL &&
-       hb_param( 4, HB_IT_INTEGER ) != NULL &&
-       hb_param( 5, HB_IT_INTEGER ) != NULL &&
+       hb_param( 4, HB_IT_NUMERIC ) != NULL &&
+       hb_param( 5, HB_IT_NUMERIC ) != NULL &&
        hb_param( 6, HB_IT_INTEGER ) != NULL &&
        ( pItem2 = hb_param( 7, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 4 )
    {
@@ -516,7 +516,7 @@ HB_FUNC( DRAWRINGLINES )
       color.b = ( unsigned char ) hb_arrayGetNI( pItem2, 3 );
       color.a = ( unsigned char ) hb_arrayGetNI( pItem2, 4 );
 
-      DrawRingLines( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), hb_parni( 4 ), hb_parni( 5 ), hb_parni( 6 ), color );
+      DrawRingLines( center, ( float ) hb_parnd( 2 ), ( float ) hb_parnd( 3 ), ( float ) hb_parnd( 4 ), ( float ) hb_parnd( 5 ), hb_parni( 6 ), color );
    }
    else
    {

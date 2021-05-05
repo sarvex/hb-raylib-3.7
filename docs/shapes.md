@@ -133,7 +133,7 @@ Draw a color-filled circle
 
 ```c
 
-void DrawCircleSector( Vector2 center, float radius, int startAngle, int endAngle, int segments, Color color );
+void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);
 
 ```
 
@@ -145,7 +145,7 @@ Draw a piece of a circle
 
 ```c
 
-void DrawCircleSectorLines( Vector2 center, float radius, int startAngle, int endAngle, int segments, Color color );
+void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);
 
 ```
 
@@ -217,7 +217,7 @@ Draw ellipse outline
 
 ```c
 
-void DrawRing( Vector2 center, float innerRadius, float outerRadius, int startAngle, int endAngle, int segments, Color color );
+void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color); 
 
 ```
 
@@ -229,7 +229,7 @@ Draw ring
 
 ```c
 
-void DrawRingLines( Vector2 center, float innerRadius, float outerRadius, int startAngle, int endAngle, int segments, Color color );
+void DrawRingLines(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color);   
 
 ```
 
