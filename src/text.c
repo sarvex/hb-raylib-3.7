@@ -648,6 +648,42 @@ HB_FUNC( TEXTFORMAT )
    }
 }
 
+HB_FUNC( TEXTFORMATIF )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( TextFormat( hb_parc( 1 ), hb_parni( 2 ), ( float ) hb_parnd( 3 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+HB_FUNC( TEXTFORMATII )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( TextFormat( hb_parc( 1 ), hb_parni( 2 ), hb_parni( 3 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
+HB_FUNC( TEXTFORMATSI )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retc( TextFormat( hb_parc( 1 ), hb_parc( 2 ), hb_parni( 3 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // const char *TextSubtext(const char *text, int position, int length);                  // Get a piece of a text string
 HB_FUNC( TEXTSUBTEXT )
 {

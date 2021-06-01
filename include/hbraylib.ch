@@ -229,7 +229,7 @@
 #define GAMEPAD_BUTTON_RIGHT_TRIGGER_2   12
 
 // These are buttons in the center of the gamepad
-#define GAMEPAD_BUTTON_MIDDLE_LEFT       12 //PS3 Select
+#define GAMEPAD_BUTTON_MIDDLE_LEFT       13 //PS3 Select
 #define GAMEPAD_BUTTON_MIDDLE            14 //PS Button/XBOX Button
 #define GAMEPAD_BUTTON_MIDDLE_RIGHT      15 //PS3 Start
 
