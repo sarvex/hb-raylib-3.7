@@ -740,8 +740,8 @@ HB_FUNC( PLAYMUSICSTREAM )
    }
 }
 
-// bool IsMusicPlaying(Music music);                               // Check if music is playing
-HB_FUNC( ISMUSICPLAYING )
+//bool IsMusicStreamPlaying(Music music);                         // Check if music is playing
+HB_FUNC( ISMUSICSTREAMPLAYING )
 {
    PHB_ITEM pItem;
 
@@ -762,7 +762,7 @@ HB_FUNC( ISMUSICPLAYING )
       music.ctxType = hb_arrayGetNI( pItem, 4 );
       music.ctxData = hb_arrayGetPtr( pItem, 5 );
 
-      hb_retl( IsMusicPlaying( music ) );
+      hb_retl( IsMusicStreamPlaying( music ) );
    }
    else
    {
@@ -1064,7 +1064,7 @@ HB_FUNC( UPDATEAUDIOSTREAM )
 }
 
 // void CloseAudioStream(AudioStream stream);                      // Close audio stream and free memory
-HB_FUNC( CLOSEAUDIOSTREAM )
+HB_FUNC( UNLOADAUDIOSTREAM )
 {
    PHB_ITEM pItem;
 
@@ -1077,7 +1077,7 @@ HB_FUNC( CLOSEAUDIOSTREAM )
       stream.sampleSize = ( unsigned int ) hb_arrayGetNI( pItem, 3 );
       stream.channels   = ( unsigned int ) hb_arrayGetNI( pItem, 4 );
 
-      CloseAudioStream( stream );
+      UnloadAudioStream( stream );
    }
    else
    {

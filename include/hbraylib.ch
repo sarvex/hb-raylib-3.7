@@ -203,6 +203,15 @@
 #define MOUSE_CURSOR_RESIZE_ALL      9     // The omni-directional resize/move cursor shape
 #define MOUSE_CURSOR_NOT_ALLOWED     10     // The operation-not-allowed shape#define
 
+// Mouse buttons
+#define MOUSE_BUTTON_LEFT    0
+#define MOUSE_BUTTON_RIGHT   1
+#define MOUSE_BUTTON_MIDDLE  2
+#define MOUSE_BUTTON_SIDE    3
+#define MOUSE_BUTTON_EXTRA   4
+#define MOUSE_BUTTON_FORWARD 5
+#define MOUSE_BUTTON_BACK    6
+
 // Gamepad buttons
 // This is here just for error checking
 #define GAMEPAD_BUTTON_UNKNOWN          0
