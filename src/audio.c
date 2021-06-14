@@ -1022,14 +1022,14 @@ HB_FUNC( INITAUDIOSTREAM )
        hb_param( 2, HB_IT_INTEGER ) != NULL &&
        hb_param( 3, HB_IT_INTEGER ) != NULL )
    {
-      AudioStream audiostream = InitAudioStream( ( unsigned int ) hb_parni( 1 ), ( unsigned int ) hb_parni( 2 ), ( unsigned int ) hb_parni( 3 ) );
+      AudioStream stream = LoadAudioStream( ( unsigned int ) hb_parni( 1 ), ( unsigned int ) hb_parni( 2 ), ( unsigned int ) hb_parni( 3 ) );
 
       PHB_ITEM pInitAudioStreamArray = hb_itemArrayNew( 4 );
 
-      hb_arraySetPtr( pInitAudioStreamArray, 1, ( rAudioBuffer * ) audiostream.buffer );
-      hb_arraySetNI( pInitAudioStreamArray, 2, ( unsigned int ) audiostream.sampleRate );
-      hb_arraySetNI( pInitAudioStreamArray, 3, ( unsigned int ) audiostream.sampleSize );
-      hb_arraySetNI( pInitAudioStreamArray, 4, ( unsigned int ) audiostream.channels );
+      hb_arraySetPtr( pInitAudioStreamArray, 1, ( rAudioBuffer * ) stream.buffer );
+      hb_arraySetNI( pInitAudioStreamArray, 2, ( unsigned int ) stream.sampleRate );
+      hb_arraySetNI( pInitAudioStreamArray, 3, ( unsigned int ) stream.sampleSize );
+      hb_arraySetNI( pInitAudioStreamArray, 4, ( unsigned int ) stream.channels );
 
       hb_itemReturnRelease( pInitAudioStreamArray );
    }
