@@ -1016,7 +1016,7 @@ HB_FUNC( GETMUSICTIMEPLAYED )
 // AudioStream management functions
 
 // AudioStream InitAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Init audio stream (to stream raw audio pcm data)
-HB_FUNC( INITAUDIOSTREAM )
+HB_FUNC( LOADAUDIOSTREAM )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL &&
        hb_param( 2, HB_IT_INTEGER ) != NULL &&
