@@ -48,9 +48,7 @@ PROCEDURE Main()
             ENDIF
          ENDIF
       ELSE
-         IF GetMouseCursor() != MOUSE_CURSOR_DEFAULT
-            SetMouseCursor( MOUSE_CURSOR_DEFAULT )
-         ENDIF
+         SetMouseCursor( MOUSE_CURSOR_DEFAULT )
       ENDIF
 
       IF lMouseOnText
@@ -79,7 +77,7 @@ PROCEDURE Main()
 
       IF lMouseOnText
          IF nLetterCount < MAX_INPUT_CHARS
-            IF ( nFramesCounter / 20 ) % 2 == 0
+            IF ( nFramesCounter % 2 ) == 0
                DrawText( "_", Int( aTextBox[ RECTANGLE_X ] ) + 8 + MeasureText( cName, 40 ), Int( aTextBox[ RECTANGLE_Y ] ) + 12, 40, MAROON )
             ENDIF
          ELSE
