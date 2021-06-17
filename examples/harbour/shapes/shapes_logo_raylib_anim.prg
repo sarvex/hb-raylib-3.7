@@ -86,7 +86,7 @@ PROCEDURE Main()
       ClearBackground( RAYWHITE )
 
       IF nState == 0
-         IF ( nFramesCounter / 15 ) % 2 == 0
+         IF Int( nFramesCounter / 15 ) % 2 == 0
             DrawRectangle( nLogoPositionX,  nLogoPositionY, 16, 16, BLACK )
          ENDIF
       ELSE

@@ -50,10 +50,10 @@ PROCEDURE Main()
          boxB[ RECTANGLE_Y ] = screenUpperLimit
       ENDIF
 
-      collision := CheckCollisionRecs( boxA, boxB )
+      collision := CheckCollisionRecs( boxB, boxA )
 
       IF collision
-         boxCollision := GetCollisionRec( boxA, boxB )
+         boxCollision := GetCollisionRec( boxB, boxA )
       ENDIF
 
       IF IsKeyPressed( KEY_SPACE )

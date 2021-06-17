@@ -49,7 +49,7 @@ PROCEDURE Main()
       DrawCircleV( aBallPosition, nBallRadius, MAROON )
       DrawText( "PRESS SPACE to PAUSE BALL MOVEMENT", 10, GetScreenHeight() - 25, 20, LIGHTGRAY )
 
-      IF lPause .AND. nFramesCounter / 30 % 2 == 0
+      IF lPause .AND. Int(nFramesCounter / 30) % 2 == 0
          DrawText( "PAUSED", 350, 200, 30, GRAY )
       ENDIF
 
