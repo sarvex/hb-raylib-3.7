@@ -595,8 +595,8 @@ HB_FUNC( IMAGETEXTEX )
       Font font;
 
       font.baseSize     = hb_arrayGetNI( pItem1, 1 );
-      font.charsCount   = hb_arrayGetNI( pItem1, 2 );
-      font.charsPadding = hb_arrayGetNI( pItem1, 3 );
+      font.glyphCount   = hb_arrayGetNI( pItem1, 2 );
+      font.glyphPadding = hb_arrayGetNI( pItem1, 3 );
 
          // Texture2D texture
          PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem1, 4 );
@@ -607,8 +607,8 @@ HB_FUNC( IMAGETEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-      font.recs  = hb_arrayGetPtr( pItem2, 5 );
-      font.chars = hb_arrayGetPtr( pItem2, 6 );
+      font.recs   = hb_arrayGetPtr( pItem2, 5 );
+      font.glyphs = hb_arrayGetPtr( pItem2, 6 );
 
       Color tint;
 
@@ -1825,8 +1825,8 @@ HB_FUNC( IMAGEDRAWTEXTEX )
       Font font;
 
       font.baseSize     = hb_arrayGetNI( pItem2, 1 );
-      font.charsCount   = hb_arrayGetNI( pItem2, 2 );
-      font.charsPadding = hb_arrayGetNI( pItem2, 3 );
+      font.glyphCount   = hb_arrayGetNI( pItem2, 2 );
+      font.glyphPadding = hb_arrayGetNI( pItem2, 3 );
 
          //Texture2D texture
          PHB_ITEM pSubarrayTexture2D = hb_arrayGetItemPtr( pItem2, 4 );
@@ -1837,8 +1837,8 @@ HB_FUNC( IMAGEDRAWTEXTEX )
          font.texture.mipmaps = hb_arrayGetNI( pSubarrayTexture2D, 4 );
          font.texture.format  = hb_arrayGetNI( pSubarrayTexture2D, 5 );
 
-      font.recs  = hb_arrayGetPtr( pItem2, 5 );
-      font.chars = hb_arrayGetPtr( pItem2, 6 );
+      font.recs   = hb_arrayGetPtr( pItem2, 5 );
+      font.glyphs = hb_arrayGetPtr( pItem2, 6 );
 
       Vector2 position;
 
@@ -2068,56 +2068,6 @@ HB_FUNC( UPDATETEXTUREREC )
       hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
    }
 }
-
-// Image GetTextureData(Texture2D texture);                                                           // Get pixel data from GPU texture and return an Image
-HB_FUNC( GETTEXTUREDATA )
-{
-     PHB_ITEM pItem;
-
-   if( ( pItem = hb_param( 1, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 5 )
-   {
-      Texture2D texture;
-
-      texture.id      = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
-      texture.width   = hb_arrayGetNI( pItem, 2 );
-      texture.height  = hb_arrayGetNI( pItem, 3 );
-      texture.mipmaps = hb_arrayGetNI( pItem, 4 );
-      texture.format  = hb_arrayGetNI( pItem, 5 );
-
-      Image image = GetTextureData( texture );
-
-      PHB_ITEM info = hb_itemArrayNew( 5 );
-
-      hb_arraySetPtr( info, 1, image.data );
-      hb_arraySetNI( info, 2, image.width );
-      hb_arraySetNI( info, 3, image.height );
-      hb_arraySetNI( info, 4, image.mipmaps );
-      hb_arraySetNI( info, 5, image.format );
-
-      hb_itemReturnRelease( info );
-   }
-   else
-   {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-   }
-}
-
-// Image GetScreenData(void);                                                                         // Get pixel data from screen buffer and return an Image (screenshot)
-HB_FUNC( GETSCREENDATA )
-{
-   Image image = GetScreenData();
-
-   PHB_ITEM info = hb_itemArrayNew( 5 );
-
-   hb_arraySetPtr( info, 1, image.data );
-   hb_arraySetNI( info, 2, image.width );
-   hb_arraySetNI( info, 3, image.height );
-   hb_arraySetNI( info, 4, image.mipmaps );
-   hb_arraySetNI( info, 5, image.format );
-
-   hb_itemReturnRelease( info );
-}
-
 // Texture configuration functions
 
 // void GenTextureMipmaps(Texture2D *texture);                                                        // Generate GPU mipmaps for a texture
