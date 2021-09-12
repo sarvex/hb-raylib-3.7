@@ -1152,12 +1152,12 @@ HB_FUNC( LOADFILETEXT )
    }
 }
 
-// void UnloadFileText(unsigned char *text);                   // Unload file text data allocated by LoadFileText()
+// void UnloadFileText(char *text);                            // Unload file text data allocated by LoadFileText()
 HB_FUNC( UNLOADFILETEXT )
 {
    if( hb_param( 1, HB_IT_POINTER ) != NULL )
    {
-      UnloadFileText( ( unsigned char * ) hb_parptr( 1 ) );
+      UnloadFileText( ( char * ) hb_parptr( 1 ) );
    }
    else
    {
@@ -1884,12 +1884,6 @@ HB_FUNC( IsGestureDetected )
 HB_FUNC( GetGestureDetected )
 {
    hb_retni( GetGestureDetected() );
-}
-
-// int GetTouchPointsCount(void);                          // Get touch points count
-HB_FUNC( GetTouchPointsCount )
-{
-   hb_retni( GetTouchPointsCount() );
 }
 
 // float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
