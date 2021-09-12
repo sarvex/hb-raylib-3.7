@@ -42,6 +42,19 @@ To test it, type:
 hb-raylib\examples\harbour\tutorial>hbmk2 tutorial_01.prg
 ```
 
+# Installing and building raylib on multiple platforms
+
+raylib contains detailed instructions on building and usage on multiple platforms.
+
+ - [Working on Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows)
+ - [Working on macOS](https://github.com/raysan5/raylib/wiki/Working-on-macOS)
+ - [Working on GNU Linux](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux)
+ - [Working on FreeBSD](https://github.com/raysan5/raylib/wiki/Working-on-FreeBSD)
+ - [Working on Raspberry Pi](https://github.com/raysan5/raylib/wiki/Working-on-Raspberry-Pi)
+ - [Working for Android](https://github.com/raysan5/raylib/wiki/Working-for-Android)
+ - [Working for Web (HTML5)](https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5))
+ - [Working anywhere with CMake](https://github.com/raysan5/raylib/wiki/Working-with-CMake)
+
 ---
 
 [Edit me](https://github.com/rjopek/hb-raylib/edit/main/docs/tutorial/README.md)
