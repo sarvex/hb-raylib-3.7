@@ -417,6 +417,33 @@ HB_FUNC( GETCLIPBOARDTEXT )
    }
 }
 
+// Custom frame control functions
+
+// void SwapScreenBuffer(void);                                // Swap back buffer with front buffer (screen drawing)
+HB_FUNC( SWAPSCREENBUFFER )
+{
+   SwapScreenBuffer();
+}
+
+// void PollInputEvents(void);                                 // Register all input events
+HB_FUNC( POLLINPUTEVENTS )
+{
+   PollInputEvents();
+}
+
+// void WaitTime(float ms);                                    // Wait for some milliseconds (halt program execution)
+HB_FUNC( WAITTIME )
+{
+   if( hb_param( 1, HB_IT_NUMERIC ) != NULL )
+   {
+      WaitTime( ( float ) hb_parnd( 1 ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
+
 // Cursor-related functions
 
 // void ShowCursor(void);                                      // Shows cursor
@@ -571,7 +598,6 @@ HB_FUNC( BEGINMODE3D )
    }
 }
 
-
 // void EndMode3D(void);                                       // Ends 3D mode and returns to default 2D orthographic mode
 HB_FUNC( ENDMODE3D )
 {
@@ -669,11 +695,13 @@ HB_FUNC( ENDSCISSORMODE )
 //void EndVrStereoMode(void);                                             // End stereo rendering
 
 //VR stereo config functions for VR simulator
+
 //VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device);                 // Load VR stereo config for VR simulator device parameters
 //void UnloadVrStereoConfig(VrStereoConfig config);                       // Unload VR stereo config
 
 //Shader management functions
 //NOTE: Shader functionality is not available on OpenGL 1.1
+
 //Shader LoadShader(const char *vsFileName, const char *fsFileName);                                  // Load shader from files and bind default locations
 //Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode);                                // Load shader from code strings and bind default locations
 //int GetShaderLocation(Shader shader, const char *uniformName);                                      // Get shader uniform location
@@ -993,6 +1021,7 @@ HB_FUNC( GetTime )
 }
 
 // Misc. functions
+
 // int GetRandomValue(int min, int max);                       // Returns a random value between min and max (both included)
 HB_FUNC( GETRANDOMVALUE )
 {
@@ -1088,8 +1117,9 @@ HB_FUNC( MEMFREE )
    }
 }
 
-      // Set custom callbacks
+// Set custom callbacks
 // WARNING: Callbacks setup is intended for advance users
+
 // void SetTraceLogCallback(TraceLogCallback callback);                    // Set custom trace log
 // void SetLoadFileDataCallback(LoadFileDataCallback callback);            // Set custom file binary data loader
 // void SetSaveFileDataCallback(SaveFileDataCallback callback);            // Set custom file binary data saver
@@ -1674,7 +1704,18 @@ HB_FUNC( GETGAMEPADAXISMOVEMENT )
    }
 }
 
-//   int SetGamepadMappings(const char *mappings);                           // Set internal gamepad mappings (SDL_GameControllerDB)
+// int SetGamepadMappings(const char *mappings);                           // Set internal gamepad mappings (SDL_GameControllerDB)
+HB_FUNC( SETGAMEPADMAPPINGS )
+{
+   if( hb_param( 1, HB_IT_STRING ) != NULL )
+   {
+      hb_retni( SetGamepadMappings( hb_parc( 1 ) ) );
+   }
+   else
+   {
+      hb_errRT_BASE_SubstR( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+}
 
 // Input-related functions: mouse
 
@@ -1754,6 +1795,8 @@ HB_FUNC( GETMOUSEPOSITION )
 
    hb_itemReturnRelease( pVector2Array );
 }
+
+// Vector2 GetMouseDelta(void);                            // Get mouse delta between frames
 
 // void SetMousePosition(int x, int y);                    // Set mouse position XY
 HB_FUNC( SETMOUSEPOSITION )
@@ -1850,6 +1893,12 @@ HB_FUNC( GETTOUCHPOSITION )
    }
 }
 
+// int GetTouchPointCount(void);                           // Get number of touch points
+HB_FUNC( GETTOUCHPOINTCOUNT )
+{
+   hb_retni( GetTouchPointCount() );
+}
+
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: gestures)
 //------------------------------------------------------------------------------------
@@ -1933,6 +1982,7 @@ HB_FUNC( GETGESTUREPINCHANGLE )
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: camera)
 //------------------------------------------------------------------------------------
+
 // void SetCameraMode(Camera camera, int mode);                // Set camera mode (multiple camera modes available)
 
 HB_FUNC( SETCAMERAMODE )
