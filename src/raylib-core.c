@@ -1917,7 +1917,7 @@ HB_FUNC( SETGESTURESENABLED )
 }
 
 // bool IsGestureDetected(int gesture);                    // Check if a gesture have been detected
-HB_FUNC( IsGestureDetected )
+HB_FUNC( ISGESTUREDETECTED )
 {
    if( hb_param( 1, HB_IT_INTEGER ) != NULL )
    {
@@ -1930,19 +1930,19 @@ HB_FUNC( IsGestureDetected )
 }
 
 // int GetGestureDetected(void);                           // Get latest detected gesture
-HB_FUNC( GetGestureDetected )
+HB_FUNC( GETGESTUREDETECTED )
 {
    hb_retni( GetGestureDetected() );
 }
 
 // float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
-HB_FUNC( GetGestureHoldDuration )
+HB_FUNC( GETGESTUREHOLDDURATION )
 {
    hb_retnd( ( float ) GetGestureHoldDuration() );
 }
 
 // Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
-HB_FUNC( GetGestureDragVector )
+HB_FUNC( GETGESTUREDRAGVECTOR )
 {
    Vector2 vector2 = GetGestureDragVector();
 
