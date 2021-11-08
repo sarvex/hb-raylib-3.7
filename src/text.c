@@ -347,7 +347,7 @@ HB_FUNC( DRAWTEXTPRO )
        ( pItem2 = hb_param( 3, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem2 ) == 2 &&
        ( pItem3 = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem3 ) == 2 &&
                   hb_param( 5, HB_IT_NUMERIC ) != NULL &&
-                  hb_param( 6, HB_IT_NUMERIC ) != NULL &&                  
+                  hb_param( 6, HB_IT_NUMERIC ) != NULL &&
                   hb_param( 7, HB_IT_NUMERIC ) != NULL &&
        ( pItem4 = hb_param( 8, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem4 ) == 4 )
    {
@@ -373,7 +373,7 @@ HB_FUNC( DRAWTEXTPRO )
 
       position.x = ( float ) hb_arrayGetND( pItem2, 1 );
       position.y = ( float ) hb_arrayGetND( pItem2, 2 );
-      
+
       Vector2 origin;
 
       origin.x = ( float ) hb_arrayGetND( pItem3, 1 );
